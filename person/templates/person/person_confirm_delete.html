@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block conteudo_painel %}
+    <h2>Exclusão de Pessoa</h2>
+    <br>
+    <form method="post">{% csrf_token %}
+        <p>Tem certeza que deseja apagar?</p>
+        <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="top"
+                title="Cuidado! Essa operação não pode ser desfeita!">Confirmar
+        </button>
+        <a href="{% url 'person:person-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+    </form>
+{% endblock %}

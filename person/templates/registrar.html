@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+Preencha as informações abaixo
+{% endblock titulo_painel %}
+{% block conteudo_painel %}
+<form action="registrado.html" method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ form.name|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.cpf|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.birth_date|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.sex|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+           {{ form.phone|as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+           {{ form.civil_status|as_crispy_field }}
+        </div>
+    </div>
+        <h5>Endereço</h5>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.address|as_crispy_field }}
+        </div>
+        <div class="col-md-3">
+            {{ form.number|as_crispy_field }}
+        </div>
+        <div class="col-md-3">
+            {{ form.complement|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.states|as_crispy_field }}
+        </div>
+        <div class="col-md-6">
+            {{ form.city|as_crispy_field }}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Salvar
+    </button>
+</form>
+{% endblock conteudo_painel %}

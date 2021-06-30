@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+    Lista de Usuários
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+
+    <a id="add-link" href="{% url 'user_account:customuser-create' %}">
+        <div class="col-2 add-div">
+            <i class="fas fa-plus"></i> Adicionar Usuário
+        </div>
+    </a>
+    <br>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <table id="table_id" class="display" align="center" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>email</th>
+                            <th><center>Editar</center></th>
+                            <th><center>Excluir</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%for customuser in object_list %}
+                        <tr>
+                            <td>{{customuser.name}}</td>
+                            <td>{{customuser.email}}</td>
+                            <td><a href="{% url 'user_account:customuser-update' customuser.id %}"><center><i class="fas fa-edit"></i></center></a></td>
+                            <td><a href="{% url 'user_account:customuser-delete' customuser.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+                        </tr>
+                     {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+         <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
+    </form>
+
+{% endblock conteudo_painel %}
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+</script>
+{% endblock js %}
+

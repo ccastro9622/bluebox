@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastreeeeee-se</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {{ form.media }}
+    <script src="https://kit.fontawesome.com/5c66c91823.js" crossorigin="anonymous"></script>
+<!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">-->
+    <!--    <link rel="stylesheet" type="text/css" href="datatables/datatables.min.css"/>-->
+</head>
+<body>
+    <div class="form-container">
+        <div class="page-header">
+            <!--<h1 style="color:blue">Cadastre-se</h1> -->
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                {% block titulo_painel %}
+
+                {% endblock titulo_painel %}
+                </h3>
+            </div>
+            <div class="panel-body">
+                {% block conteudo_painel %}
+
+                {% endblock conteudo_painel %}
+            </div>
+        </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+<!--    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>-->
+<!--    <script type="text/javascript" src="datatables/datatables.min.js"></script>-->
+
+    {% block js %}
+
+    {% endblock js %}
+
+</body>
+</html>
