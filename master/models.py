@@ -17,7 +17,7 @@ class Diretoria(TenantAwareModel):
 
 class Area(TenantAwareModel):
 
-    name = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
+    name = models.CharField(max_length=255, verbose_name='Area', null=False, default="", unique=True)
     board = models.ForeignKey(Diretoria, on_delete=models.PROTECT, verbose_name='Diretoria')
 
     def __str__(self):
@@ -26,4 +26,3 @@ class Area(TenantAwareModel):
     class Meta:
         verbose_name = 'Area da Diretoria'
         verbose_name_plural = 'Area da Diretoria'
-

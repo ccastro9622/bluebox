@@ -42,5 +42,6 @@ urlpatterns = [
     url(r"diretoria/", include("master.urls")),
     url(r"area/", include("master.urls")),
     url(r"tenant/", include("tenants.urls")),
+    path('cadastrar_usuario', cadastrar_usuario, name="cadastrar_usuario"),
 ]
 

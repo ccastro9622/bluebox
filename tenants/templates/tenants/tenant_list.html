@@ -20,7 +20,8 @@
                 <table id="table_id" class="display" align="center" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Nome</th>
+                            <th>Empresa</th>
+<!--                            <th>CNPJ</th>-->
                             <th><center>Editar</center></th>
                             <th><center>Excluir</center></th>
                         </tr>
@@ -29,6 +30,7 @@
                     {%for tenants in object_list %}
                         <tr>
                             <td>{{tenants.name}}</td>
+<!--                            <td>{{tenants.cnpj}} </td>-->
                             <td><a href="{% url 'tenants:tenant-update' tenants.id %}"><center><i class="fas fa-edit"></i></center></a></td>
                             <td><a href="{% url 'tenants:tenant-delete' tenants.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
                         </tr>
@@ -46,6 +48,7 @@
 <script>
     $(document).ready( function () {
         $('#table_id').DataTable();
+        $('#cnpj').mask('00.000.000/0000-00');
     } );
 </script>
 {% endblock js %}

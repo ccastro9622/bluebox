@@ -22,7 +22,7 @@
                         <tr>
                             <th>Nome</th>
                             <th>email</th>
-                            <th><center>Editar</center></th>
+<!--                            <th><center>Editar</center></th>-->
                             <th><center>Excluir</center></th>
                         </tr>
                     </thead>
@@ -31,7 +31,7 @@
                         <tr>
                             <td>{{customuser.name}}</td>
                             <td>{{customuser.email}}</td>
-                            <td><a href="{% url 'user_account:customuser-update' customuser.id %}"><center><i class="fas fa-edit"></i></center></a></td>
+<!--                            <td><a href="{% url 'user_account:customuser-update' customuser.id %}"><center><i class="fas fa-edit"></i></center></a></td>-->
                             <td><a href="{% url 'user_account:customuser-delete' customuser.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
                         </tr>
                      {% endfor %}

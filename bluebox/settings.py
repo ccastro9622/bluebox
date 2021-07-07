@@ -138,7 +138,7 @@ DATETIME_FORMAT = 'd/m/Y H:i:s'
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-AUTH_USER_MODEL = 'user_account.customUser'
+AUTH_USER_MODEL = 'user_account.CustomUser'
 STATICFILES_DIRS = ['static']
 
 # Configurações de envio do e-mail

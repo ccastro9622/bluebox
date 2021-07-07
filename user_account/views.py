@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 # Create your views here.
@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from tenants.utils import tenant_from_request
 from .models import CustomUser
+from user_account.forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 class CustomuserDetailView(LoginRequiredMixin, DetailView):
@@ -33,17 +34,16 @@ class CustomuserDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("user_account:customuser-list")
 
 
-class CustomuserCreateView(LoginRequiredMixin, CreateView):
-    model = CustomUser
-    fields = ['name', 'email', 'default_tenant','person', 'password']  # preencher todos os da views.py
-    success_url = reverse_lazy("user_account:customuser-list")
+# class CustomuserCreateView(LoginRequiredMixin, CreateView):
+#     model = CustomUser
+#     fields = ['name', 'email', 'default_tenant','person', 'password']  # preencher todos os da views.py
+#     success_url = reverse_lazy("user_account:customuser-list")
 
 
-class CustomuserUpdateView(LoginRequiredMixin, UpdateView):
-    model = CustomUser
-    fields = ['name', 'email', 'default_tenant', 'person', 'password']  # preencher todos os da views.py
-    success_url = reverse_lazy("user_account:customuser-list")
-
+# class CustomuserUpdateView(LoginRequiredMixin, UpdateView):
+#     model = CustomUser
+#     fields = ['name', 'email', 'default_tenant','person', 'password']  # preencher todos os da views.py
+#     success_url = reverse_lazy("user_account:customuser-list")
 
 
 def logar_usuario(request):
@@ -61,9 +61,33 @@ def logar_usuario(request):
         form_login = AuthenticationForm()
     return render(request, 'login.html', {'form_login': form_login})
 
+
 def index(request):
     return render(request, 'index.html', {})
+
 
 def sair(request):
     logout(request)
     return redirect('login.html')
+
+
+def cadastrar_usuario(request):
+    if request.method == "POST":
+        form_usuario = CustomUserCreationForm(request.POST)
+        if form_usuario.is_valid():
+            form_usuario.save()
+            return redirect('/customuser/customuser_list/')
+    else:
+        form_usuario = CustomUserCreationForm()
+    return render(request, 'user_account/customuser_add.html', {'form_usuario': form_usuario})
+
+
+def alterar_usuario(request, pk):
+    if request.method == "POST":
+        form_usuario = CustomUserChangeForm(request.POST)
+        if form_usuario.is_valid():
+            form_usuario.save()
+            return redirect('/customuser/customuser_list/')
+    else:
+        form_usuario = CustomUserChangeForm()
+    return render(request, 'user_account/customuser_add.html', {'form_usuario': form_usuario})

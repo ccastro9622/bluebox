@@ -45,6 +45,7 @@ class PersonCreateView(LoginRequiredMixin, CreateView):
         # form.instance.user = user
         # return super(PersonCreateView, self).form_valid(form)
 
+
 class PersonUpdateView(LoginRequiredMixin, UpdateView):
     model = Person
     fields = ['name', 'cpf', 'birth_date', 'sex', 'civil_status', 'phone', 'address', 'number', 'complement','states', 'city', 'tenant']  # preencher todos os da views.py

@@ -10,9 +10,72 @@
             <div class="col-md-4">
                 {{ form.name|as_crispy_field }}
             </div>
+             <div class="col-md-4">
+                {{ form.cnpj|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.phone|as_crispy_field }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.address|as_crispy_field }}
+            </div>
+             <div class="col-md-4">
+                {{ form.number|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.complement|as_crispy_field }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.states|as_crispy_field }}
+            </div>
+             <div class="col-md-4">
+                {{ form.city|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.sector|as_crispy_field }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.annual_invoicing|as_crispy_field }}
+            </div>
+             <div class="col-md-4">
+                {{ form.employees|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.outsource|as_crispy_field }}
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.capital|as_crispy_field }}
+            </div>
+             <div class="col-md-4">
+                {{ form.type|as_crispy_field }}
+            </div>
         </div>
         <br>
         <button type="submit" class="btn btn-success">Salvar</button>
         <a href="{% url 'tenants:tenant-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
     </form>
 {% endblock %}
+
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+        $('#id_cnpj').mask('00.000.000/0000-00');
+        $('#id_phone').mask('(00)0000-0000');
+<!--        $('#id_annual_invoicing').mask('000.000.000,00')-->
+<!--        $('#id_annual_invoicing').mask('00.000.000/0000-00');-->
+    } );
+</script>
+{% endblock js %}
