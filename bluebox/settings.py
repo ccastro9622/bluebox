@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'cpf_field',
     'tenants',
+    'descricao',
     'master',
 ]
 

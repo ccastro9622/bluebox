@@ -73,6 +73,8 @@ class Descricoes(models.Model):
     title = models.CharField(max_length=255, verbose_name='Nome')
     cbo = models.CharField(max_length=255, verbose_name='CBO', blank=True, default="")
     summary = models.CharField(max_length=255, verbose_name='Sumario', blank=True, default="")
+    summary_goal = models.CharField(max_length=255, verbose_name='Objetivo do Cargo', blank=True, default="")
+    summary_coverage = models.CharField(max_length=255, verbose_name='Abrangência do Cargo', blank=True, default="")
     responsibility = models.CharField(max_length=255, verbose_name='Responsabilidades', blank=True, default="")
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formacao')
     areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Area')

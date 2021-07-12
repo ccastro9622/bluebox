@@ -2,6 +2,7 @@ from django import forms
 from .models import *
 from master.models import Diretoria
 
+
 class DiretoriaForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control', 'required': 'true'}), label="Nome")

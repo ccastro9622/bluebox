@@ -69,7 +69,6 @@ class AreaDeleteView(LoginRequiredMixin, DeleteView):
 class AreaCreateView(LoginRequiredMixin, CreateView):
     model = Area
     form_class = AreaForm
-    # fields = ['name', 'board']  # preencher todos os da views.py
     success_url = reverse_lazy("master:area-list")
 
 # Forçar o preencimento do tenant_id com o tenant_id do usuario logado
@@ -88,5 +87,12 @@ class AreaCreateView(LoginRequiredMixin, CreateView):
 
 class AreaUpdateView(LoginRequiredMixin, UpdateView):
     model = Area
-    fields = ['name', 'board', 'tenant']  # preencher todos os da views.py
+    form_class = AreaForm
     success_url = reverse_lazy("master:area-list")
+
+    # pegar o tenant do usuario logado para filtrar a dropdonw
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(AreaUpdateView, self).get_form_kwargs()
+        tenant_id = tenant_from_request(self.request)
+        kwargs['tenant_id'] = tenant_id
+        return kwargs
