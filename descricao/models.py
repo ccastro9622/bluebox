@@ -11,9 +11,9 @@ from tenants.models import TenantAwareModel
 class Descricao(TenantAwareModel):
 
     MANAGE_CHOICES = (
-        ("NT", "Não Tem"),
-        ("GE", "Gestor de Equipe"),
-        ("GG", "Gestor de Gestores"),
+        ("Não Tem", "Não Tem"),
+        ("Gestor de Equipe", "Gestor de Equipe"),
+        ("Gestor de Gestores", "Gestor de Gestores"),
     )
 
     title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)

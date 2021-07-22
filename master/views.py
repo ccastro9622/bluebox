@@ -34,6 +34,7 @@ class DiretoriaCreateView(LoginRequiredMixin, CreateView):
     fields = ['name']  # preencher todos os da views.py
     success_url = reverse_lazy("master:diretoria-list")
 
+    # Forçar o preencimento do tenant_id com o tenant_id do usuario logado
     def form_valid(self, form):
         tenant_id = tenant_from_request(self.request)
         form.instance.tenant_id = tenant_id

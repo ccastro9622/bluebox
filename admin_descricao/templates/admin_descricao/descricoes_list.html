@@ -1,19 +1,10 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-    Lista de Empresa
+    Lista de Descrições de Cargos - Modelo
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
-
-    <a id="add-link" href="{% url 'tenants:tenant-create' %}">
-        <div class="col-2 add-div">
-            <i class="fas fa-plus"></i> Adicionar Empresa
-        </div>
-    </a>
-
-    <br>
-
     <form method="post">
         {% csrf_token %}
         <div class="row">
@@ -21,25 +12,26 @@
                 <table id="table_id" class="display" align="center" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Empresa</th>
-<!--                            <th>CNPJ</th>-->
-                            <th><center>Editar</center></th>
-                            <th><center>Excluir</center></th>
+                            <th>Descrição</th>
+                            <th>CBO</th>
+                            <th><center>Visualizar</center></th>
+                            <th><center>Selecionar</center></th>
                         </tr>
                     </thead>
                     <tbody>
-                    {%for tenants in object_list %}
+                    {%for admin_descricao in object_list %}
                         <tr>
-                            <td>{{tenants.name}}</td>
-<!--                            <td>{{tenants.cnpj}} </td>-->
-                            <td><a href="{% url 'tenants:tenant-update' tenants.id %}"><center><i class="fas fa-edit"></i></center></a></td>
-                            <td><a href="{% url 'tenants:tenant-delete' tenants.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+                            <td>{{admin_descricao.title}}</td>
+                            <td>{{admin_descricao.cbo}}</td>
+                            <td><a href="{% url 'admin_descricao:admin_descricao-detail' admin_descricao.id %}"><center><i class="fas fa-eye"></i></center></a></td>
+                            <td><a href="{% url 'descricao:descricao-modelo-create' %}"><center><i class="far fa-check-circle"></i></i></center></a></td>
                         </tr>
                      {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
+        <br>
          <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
     </form>
 
@@ -49,7 +41,6 @@
 <script>
     $(document).ready( function () {
         $('#table_id').DataTable();
-        $('#cnpj').mask('00.000.000/0000-00');
     } );
 </script>
 {% endblock js %}

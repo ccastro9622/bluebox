@@ -42,5 +42,7 @@ urlpatterns = [
     url(r"diretoria/", include("master.urls")),
     url(r"area/", include("master.urls")),
     url(r"tenant/", include("tenants.urls")),
+    url(r"admin_descricao/", include("admin_descricao.urls")),
     url(r"descricao/", include("descricao.urls")),
+
 ]

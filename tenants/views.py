@@ -41,3 +41,4 @@ class TenantUpdateView(LoginRequiredMixin, UpdateView):
               'annual_invoicing', 'employees', 'outsource', 'capital', 'type']  # preencher todos os da views.py
     success_url = reverse_lazy("tenants:tenant-list")
 
+

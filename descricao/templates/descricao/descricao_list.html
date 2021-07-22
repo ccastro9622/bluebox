@@ -21,16 +21,20 @@
                     <thead>
                         <tr>
                             <th>Descrição</th>
+                            <th>CBO</th>
                             <th><center>Editar</center></th>
                             <th><center>Excluir</center></th>
+                            <th><center>Formulário</center></th>
                         </tr>
                     </thead>
                     <tbody>
                     {%for descricao in object_list %}
                         <tr>
                             <td>{{descricao.title}}</td>
+                            <td>{{descricao.cbo}}</td>
                             <td><a href="{% url 'descricao:descricao-update' descricao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
                             <td><a href="{% url 'descricao:descricao-delete' descricao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+                            <td><a href="{% url 'descricao:descricao-pdf' descricao.id %}"><center><i class="far fa-file-alt"></i></center></a></td>
                         </tr>
                      {% endfor %}
                     </tbody>

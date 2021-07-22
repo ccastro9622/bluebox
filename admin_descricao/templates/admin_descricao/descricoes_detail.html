@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+<form method="post" enctype="multipart/form-data">{% csrf_token %}
+
+    <table>
+        <tr>
+            <th style="height: 20px; font-size:100%" align="left" valign="bottom" >1.Identificação</th>
+        </tr>
+        <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Titulo do Cargo: {{descricoes.title}}</th>
+        </tr>
+        <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom" >CBO: {{descricoes.cbo}}</th>
+        </tr>
+    </table>
+    </br>
+    <table>
+        <tr>
+            <th style="height: 20px; font-size:100%" align="left" valign="bottom" >2.Sumário do Cargo</th>
+        </tr>
+        <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Atividade: {{descricoes.summary}}</th>
+        </tr>
+         <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Objetivo: {{descricoes.summary_goal}}</th>
+        </tr>
+         <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Abrangência: {{descricoes.summary_coverage}}</th>
+        </tr>
+    </table>
+    </br>
+    <table>
+        <tr>
+            <th style="height: 20px; font-size:100%" align="left" valign="bottom" >3. Principais Responsabilidades</th>
+        </tr>
+        <tr>
+            <th style="height: 40px; font-size:80%" align="left" valign="center">{{descricoes.responsibility}}</th>
+        </tr>
+    </table>
+    </br>
+    <table>
+        <tr>
+            <th colspan="2" style="height: 20px; font-size:100%" align="left" valign="bottom" >4. Requisitos do Cargo</th>
+        </tr>
+        <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Formação Obrigatório: {{descricoes.formation}}   </th>
+        </tr>
+        <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Area de Formação Obrigatório: {{descricoes.areas}}</th>
+        </tr>
+        <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Especialização: {{descricoes.specialization}}</th>
+        </tr>
+        <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Area de Especialização: {{descricoes.area_specialization}}</th>
+        </tr>
+        <tr>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Experiência: {{descricoes.experience}}</th>
+        </tr>
+
+        <tr>
+            <th colspan="2"  style="height: 20px; font-size:80%" align="left" valign="bottom">Habilitação / Certificação Obrigatoria: {{descricoes.qualification}}</th>
+        </tr>
+    </table>
+    </br>
+    <a href="{% url 'admin_descricao:admin_descricao-list' %}"><button type="button" class="btn btn-secondary">Voltar</button></a>
+</form>
+{% endblock %}
