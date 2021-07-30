@@ -16,8 +16,15 @@ class Descricao(TenantAwareModel):
         ("Gestor de Gestores", "Gestor de Gestores"),
     )
 
+    STATUS_CHOICES = (
+        ("Aberto", "Aberto"),
+        ("Finalizado", "Finalizado"),
+        ("Aprovado", "Aprovado"),
+    )
+
     title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
     cbo = models.CharField(null=True,max_length=255, verbose_name='CBO', blank=True, default="")
+    function = models.CharField(null=True,max_length=255, verbose_name='Função', blank=True, default="")
     summary = models.CharField(max_length=255, verbose_name='Atividades do Cargo', blank=True, null=True, default="")
     summary_goal = models.CharField(max_length=255, verbose_name='Objetivo do Cargo', blank=True, null=True, default="")
     summary_coverage = models.CharField(max_length=255, verbose_name='Abrangência do Cargo', blank=True, null=True, default="")
@@ -42,10 +49,11 @@ class Descricao(TenantAwareModel):
     knowledge = models.CharField(max_length=255, verbose_name='Conhecimento', blank=True, null=True, default="")
     supervision = models.ForeignKey(Fatores, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Supervisao Recebida')
     information = models.CharField(max_length=255, verbose_name='Informações', blank=True, null=True, default="")
-    approver = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Aprovador')
+    approver = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Aprovador', related_name='approver')
     date_approval = models.DateTimeField(null=True, blank=True, verbose_name='Data de Aprovação')
-
-
+    status = models.CharField(blank=True, verbose_name="Status", choices=STATUS_CHOICES, max_length=20, default="EP")
+    user_id = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Criador', related_name='user_id')
+    date_conclusion = models.DateTimeField(null=True, blank=True, verbose_name='Data de Conclusao')
 
     def __str__(self):
         return f"{self.name}"

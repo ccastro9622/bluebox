@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+<form method="post" enctype="multipart/form-data" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+
+     <table border="1" >
+        <thead>
+            <tr>
+                <th colspan="4" style="height: 80px; font-size:180%">Descrição de Cargo</th>
+            </tr>
+        </thead>
+    </table>
+    </br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="table_id" class="display" align="center" style="width:100%">
+                <thead>
+                    <tr>
+                        <th ALIGN=left>Descrição</th>
+                        <th ALIGN=left>Status</th>
+                        <th ALIGN=left>Criador</th>
+                        <th ALIGN=left>Aprovador</th>
+                        <th ALIGN=left>Data de Conclusão</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {%for descricao in object_list %}
+                    <tr>
+                        <td>{{descricao.title}}</td>
+                        <td>{{descricao.status}}</td>
+                        <td>{{descricao.user_id}}</td>
+                        <td>{{descricao.approver}}</td>
+                        <td>{{descricao.date_conclusion}}</td>
+                    </tr>
+                 {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</form>
+
+{% endblock conteudo_painel %}
+
+

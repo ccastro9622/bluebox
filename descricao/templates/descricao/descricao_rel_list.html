@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-    Lista de Descrições de Cargos - Modelo
+    Relatório de Descrições de Cargo
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
+
     <form method="post">
         {% csrf_token %}
         <div class="row">
@@ -13,18 +14,20 @@
                     <thead>
                         <tr>
                             <th>Descrição</th>
-                            <th>CBO</th>
-                            <th><center>Visualizar</center></th>
-                            <th><center>Selecionar</center></th>
+                            <th>Status</th>
+                            <th>Criador</th>
+                            <th>Aprovador</th>
+                            <th>Data de Conclusão</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {%for admin_descricao in object_list %}
+                    {%for descricao in object_list %}
                         <tr>
-                            <td>{{admin_descricao.title}}</td>
-                            <td>{{admin_descricao.cbo}}</td>
-                            <td><a href="{% url 'admin_descricao:admin_descricao-detail' admin_descricao.id %}"><center><i class="fas fa-eye"></i></center></a></td>
-                            <td><a href="{% url 'descricao:descricao-modelo-create' admin_descricao.id %}"><center><i class="far fa-check-circle"></i></i></center></a></td>
+                            <td>{{descricao.title}}</td>
+                            <td>{{descricao.status}}</td>
+                            <td>{{descricao.user_id}}</td>
+                            <td>{{descricao.approver}}</td>
+                            <td>{{descricao.date_conclusion}}</td>
                         </tr>
                      {% endfor %}
                     </tbody>
@@ -33,6 +36,7 @@
         </div>
         <br>
          <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
+         <a href="{% url 'descricao:descricao-pdf-list' 1 %}"><button type="button" class="btn btn-success">Gerar Relatório</button></a>
     </form>
 
 {% endblock conteudo_painel %}

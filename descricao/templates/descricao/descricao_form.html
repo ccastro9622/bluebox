@@ -5,13 +5,16 @@
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
-<form method="post" enctype="multipart/form-data" id="descricaoForm" data-areas-url="{% url 'descricao:ajax_load_areas' %}">{% csrf_token %}
+<form method="post" enctype="multipart/form-data" id="descricaoForm" data-areas-url="{% url 'descricao:ajax_load_areas' %}" data-sub_familias-url="{% url 'descricao:ajax_load_sub_familias' %}">{% csrf_token %}
     <div class="row">
         <div class="col-md-4">
             {{ form.title|as_crispy_field }}
         </div>
         <div class="col-md-4">
-            {{ form.cbo|as_crispy_field }}
+            {{ form.function|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.status|as_crispy_field }}
         </div>
     </div>
     <div class="row">
@@ -102,6 +105,15 @@
             {{ form.approver|as_crispy_field }}
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.date_conclusion|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.cbo|as_crispy_field }}
+        </div>
+    </div>
     <br>
     <button type="submit" class="btn btn-success">Salvar</button>
     <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
@@ -121,6 +133,22 @@ $("#id_board").change(function () {
     },
     success: function (data) {   // `data` is the return of the `load_cities` view function
       $("#id_area").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+
+});
+
+$("#id_family").change(function () {
+  var url = $("#descricaoForm").attr("data-sub_familias-url");  // get the url of the `load_cities` view
+  var familyId = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'family': familyId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_sub_familia").html(data);  // replace the contents of the city input with the data that came from the server
     }
   });
 
