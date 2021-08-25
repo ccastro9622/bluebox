@@ -7,34 +7,41 @@ from import_export.admin import ImportExportModelAdmin
 
 @admin.register(Formacao)
 class FormacaoAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     pass
 
 
 @admin.register(Areas)
 class AreasAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     pass
 
 
 @admin.register(Idiomas)
 class IdiomasAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     pass
 
 
 @admin.register(Habilitacoes)
 class HabilitacoesAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     pass
 
 
 @admin.register(Especializacoes)
 class EspecializacoesAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     pass
 
 
 @admin.register(Experiencias)
 class ExperienciasAdmin(admin.ModelAdmin):
+    ordering = ('name',)
     pass
 
 
+# excell
 class DescricoesResource(resources.ModelResource):
     class Meta:
         model = Descricoes

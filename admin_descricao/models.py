@@ -3,18 +3,20 @@ from django.db import models
 
 class Formacao(models.Model):
 
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
         return f"{self.name}"
 
     class Meta:
         verbose_name = 'Formação'
-        verbose_name_plural = 'Formação'
+        verbose_name_plural = 'Formações'
 
 
 class Areas(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
         return f"{self.name}"
@@ -25,7 +27,8 @@ class Areas(models.Model):
 
 
 class Idiomas(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
         return f"{self.name}"
@@ -36,8 +39,8 @@ class Idiomas(models.Model):
 
 
 class Habilitacoes(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
-    detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
         return f"{self.name}"
@@ -48,7 +51,8 @@ class Habilitacoes(models.Model):
 
 
 class Especializacoes(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    name = models.CharField(max_length=255, verbose_name='Nome',unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
         return f"{self.name}"
@@ -59,7 +63,7 @@ class Especializacoes(models.Model):
 
 
 class Experiencias(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -70,22 +74,22 @@ class Experiencias(models.Model):
 
 
 class Descricoes(models.Model):
-    title = models.CharField(max_length=255, verbose_name='Nome')
-    cbo = models.CharField(max_length=255, verbose_name='CBO', blank=True, default="")
-    summary = models.CharField(max_length=255, verbose_name='Sumario', blank=True, default="")
-    summary_goal = models.CharField(max_length=255, verbose_name='Objetivo do Cargo', blank=True, default="")
-    summary_coverage = models.CharField(max_length=255, verbose_name='Abrangência do Cargo', blank=True, default="")
-    responsibility = models.CharField(max_length=255, verbose_name='Responsabilidades', blank=True, default="")
-    formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formacao')
-    areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Area')
-    specialization = models.ForeignKey(Especializacoes, on_delete=models.PROTECT, verbose_name='Especializacoes')
-    area_specialization = models.CharField(max_length=255, verbose_name='Area Especializacao', blank=True, default="")
-    experience = models.ForeignKey(Experiencias, on_delete=models.PROTECT, verbose_name='Experiencia')
-    qualification = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, verbose_name='Habilitacao')
+    title = models.CharField(max_length=255, verbose_name='Título do Cargo', unique=True)
+    cbo = models.CharField(max_length=255, verbose_name='CBO', default="")
+    summary = models.CharField(max_length=255, verbose_name='Sumário do Cargo', default="")
+    summary_goal = models.CharField(max_length=255, verbose_name='Objetivo do Cargo', default="")
+    summary_coverage = models.CharField(max_length=255, verbose_name='Abrangência do Cargo', default="")
+    responsibility = models.CharField(max_length=255, verbose_name='Responsabilidades', default="")
+    formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formação')
+    areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação')
+    specialization = models.ForeignKey(Especializacoes, on_delete=models.PROTECT, verbose_name='Especializações')
+    area_specialization = models.CharField(max_length=255, verbose_name='Área de Especialização', default="")
+    experience = models.ForeignKey(Experiencias, on_delete=models.PROTECT, verbose_name='Experiência')
+    qualification = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, verbose_name='Habilitação')
 
     def __str__(self):
         return f"{self.title}"
 
     class Meta:
-        verbose_name = ' Modelo de Descricao'
-        verbose_name_plural = 'Modelo de Descricoes'
+        verbose_name = ' Modelo de Descrição'
+        verbose_name_plural = 'Modelo de Descrições'

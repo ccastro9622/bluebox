@@ -35,17 +35,17 @@ ALLOWED_HOSTS = ["person.local", ".person.local"]
 # Application definition
 
 INSTALLED_APPS = [
+    'user_account',
+    'person',
+    'admin_geral',
+    'admin_descricao',
+    'admin_avaliacao',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user_account',
-    'person',
-    'admin_geral',
-    'admin_descricao',
-    'admin_avaliacao',
     'import_export',
     'crispy_forms',
     'cpf_field',
@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'descricao',
     'master',
     'report',
+    'rest_framework',
+    'avaliacao',
 ]
 
 MIDDLEWARE = [

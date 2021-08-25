@@ -44,5 +44,5 @@ urlpatterns = [
     url(r"tenant/", include("tenants.urls")),
     url(r"admin_descricao/", include("admin_descricao.urls")),
     url(r"descricao/", include("descricao.urls")),
-
+    # url(r"avaliacao/", include("avaliacao.urls")),
 ]

@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -11,6 +10,23 @@ from .forms import DescricaoForm, DescricaoModeloForm
 from .models import Descricao, Area, SubFamilias
 from admin_descricao.models import Descricoes
 
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from django.db.models import Q
+from django.shortcuts import render
+from api.serializers import DocumentSerializer
+
+DOCUMENT_COLUMNS = (
+    (0, 'id'),
+    (1, 'name'),
+    # (2, 'interview'),
+    # (3, 'school'),
+    # (4, 'created_date'),
+    # (5, 'altered_date'),
+    # (6, 'status'),
+    # (7, 'submit_to_esignature'),
+    # (8, 'send_email'),
+)
 
 class DescricaoDetailView(LoginRequiredMixin, DetailView):
     model = Descricao
@@ -148,4 +164,39 @@ def load_sub_familias(request):
     family_id = request.GET.get('family')
     sub_familias = SubFamilias.objects.filter(family_id=family_id).order_by('name')
     return render(request, 'descricao/sub_familia_dropdown_list_options.html', {'sub_familias': sub_familias})
+
+
+# Relatorio personalizado
+def query_documents_by_args(pk=None, **kwargs):
+    draw = int(kwargs.get('draw', None)[0])
+    length = int(kwargs.get('length', None)[0])
+    start = int(kwargs.get('start', None)[0])
+    search_value = kwargs.get('search[value]', None)[0]
+    order_column = int(kwargs.get('order[0][column]', None)[0])
+    order = kwargs.get('order[0][dir]', None)[0]
+
+    order_column = DOCUMENT_COLUMNS[order_column]
+    # django orm '-' -> desc
+    if order == 'desc':
+        order_column = '-' + order_column[1]
+    else:
+        order_column = order_column[1]
+
+    queryset = Descricao.objects.filter(tenant=1)
+    total = queryset.count()
+
+    if search_value:
+        queryset = queryset.filter(Q(status_icontains=search_value))
+        
+    count = queryset.count()
+    queryset = queryset.order_by(order_column)[start:start + length]
+    data = {
+        'items': queryset,
+        'count': count,
+        'total': total,
+        'draw': draw,
+    }
+    return data
+
+
 

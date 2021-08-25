@@ -56,7 +56,7 @@ class Descricao(TenantAwareModel):
     date_conclusion = models.DateTimeField(null=True, blank=True, verbose_name='Data de Conclusao')
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.title}"
 
     class Meta:
         verbose_name = 'Descricao'

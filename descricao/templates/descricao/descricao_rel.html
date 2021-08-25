@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% block titulo_painel %}
+        <h2>Descrição de Cargos</h2>
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+
+    <table id="data_table" class="dataTable cell-border hover order-column row-border stripe">
+        <thead>
+        <tr>
+            <th data-data="title">Title</th>
+            <th data-data="status">Status</th>
+        </tr>
+        </thead>
+    </table>
+
+{% endblock %}
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            const table_data_url = "/descricao_rel/descricao/?format=datatables"
+            $("#data_table").DataTable({
+                serverSide: true,
+                processing: true,
+                order: [[ 1, "asc" ]],
+                lengthMenu: [ 10, 50, 100, 500, 1000],
+                ajax: {
+                    url: table_data_url,
+                    method: "GET",
+                },
+                info: true,
+                dom: 'Blfrtip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        title: 'documentos_lista'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: 'documentos_lista'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: 'documentos_lista'
+                    },
+                ],
+                columns: [
+                    {data: "title"},
+
+                ],
+
+                columnDefs: [
+
+                ],
+                language: {% include "locale/data_tables_pt_br.json" %}
+            });
+        });
+    </script>
+{% endblock %}
