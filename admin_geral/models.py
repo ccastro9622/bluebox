@@ -27,3 +27,15 @@ class Sector(models.Model):
     class Meta:
         verbose_name = 'Setor de Atuação'
         verbose_name_plural = 'Setores de Atuação'
+
+
+class Nivelcargo(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome')
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Nivel do Cargo'
+        verbose_name_plural = 'Niveis do Cargo'

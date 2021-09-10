@@ -8,6 +8,12 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+
+    USER_CHOICES = (
+        ("M", "Master"),
+        ("C", "Comum"),
+    )
+
     email = models.EmailField(unique=True, verbose_name='E-mail')
     name = models.CharField(max_length=255, verbose_name='Nome')
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='Data de inscrição')
@@ -16,6 +22,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     person = models.OneToOneField(Person, on_delete=models.PROTECT, blank=True, null=True, verbose_name='Pessoa')
     tenants = models.ManyToManyField(Tenant)
     default_tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name='default_tenant', default=1, verbose_name='Empresa')
+    kind = models.CharField(verbose_name="Tipo de Usuário", choices=USER_CHOICES, max_length=20, default="C")
 
     objects = CustomUserManager()
 

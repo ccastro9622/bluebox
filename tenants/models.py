@@ -49,8 +49,8 @@ class Tenant(models.Model):
     city = models.CharField(null=True, blank=True, max_length=40, verbose_name="Cidade", default="")
     sector = models.ForeignKey(Sector, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Setor de Atuação')
     annual_invoicing = models.DecimalField(max_digits=19, decimal_places=2, blank=True, null=True, verbose_name='Faturamento')
-    employees = models.IntegerField(blank=True, null=True, verbose_name='Empregados')
-    outsource = models.IntegerField(blank=True, null=True, verbose_name='Terceirizados')
+    employees = models.IntegerField(blank=True, null=True, verbose_name='Colaboradores Próprios')
+    outsource = models.IntegerField(blank=True, null=True, verbose_name='Colaboradores Terceirizados')
     capital = models.CharField(default="", null=True, blank=True, max_length=150, verbose_name="Origem do Capital")
     type = models.CharField(null=True, verbose_name="Tipo de Empresa", choices=EMPRESA_CHOICES, max_length=15, default="")
 
@@ -58,6 +58,10 @@ class Tenant(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = 'Empresa'
+        verbose_name_plural = 'Empresas'
 
 
 class TenantAwareModel(models.Model):

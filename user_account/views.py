@@ -75,6 +75,9 @@ def cadastrar_usuario(request):
     if request.method == "POST":
         form_usuario = CustomUserCreationForm(request.POST)
         if form_usuario.is_valid():
+            # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
+            tenant_id = tenant_from_request(request)
+            form_usuario.instance.default_tenant_id = tenant_id
             form_usuario.save()
             return redirect('/customuser/customuser_list/')
     else:

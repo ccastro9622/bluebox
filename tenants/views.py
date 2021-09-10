@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, CreateView, UpdateView
+from django.views.generic import DeleteView, CreateView, UpdateView, RedirectView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -39,6 +39,24 @@ class TenantUpdateView(LoginRequiredMixin, UpdateView):
     model = Tenant
     fields = ['name', 'cnpj', 'phone', 'address', 'number', 'complement', 'states', 'city', 'sector',
               'annual_invoicing', 'employees', 'outsource', 'capital', 'type']  # preencher todos os da views.py
+
+    # def get_queryset(self):
+    #     tenant_id = tenant_from_request(self.request)
+    #     return super().get_queryset().filter(id=tenant_id).all()
+
     success_url = reverse_lazy("tenants:tenant-list")
 
 
+class RedirectSomewhere(RedirectView):
+    def get_redirect_url(self, param):
+        tenant_id = tenant_from_request(self.request)
+        return reverse_lazy('tenant-update',
+                            kwargs={'param': tenant_id},
+                            current_app='bluebox')
+
+# def alterar_empresa(request):
+#     tenant_id = tenant_from_request(request)
+#     reverse_lazy(href="{% url 'tenants:tenant-update' tenant_id %}")
+#     # href = "{% url 'tenants:tenant-update' tenants.id %}
+#     # return render(request, 'user_account/customuser_add.html', {'form_usuario': form_usuario})
+#     # href="{% url 'tenants:tenant-update' tenants.id %}
