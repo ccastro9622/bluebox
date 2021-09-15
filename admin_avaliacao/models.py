@@ -30,7 +30,7 @@ class SubFamilias(models.Model):
 
 class Fatores(models.Model):
     name = models.CharField(max_length=255, verbose_name='Nome',unique=True)
-    detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
+    detail = models.TextField(max_length=255, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
@@ -44,14 +44,14 @@ class Fatores(models.Model):
 class Niveis(models.Model):
     factor = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fator')
     name = models.CharField(max_length=255, verbose_name='Nome')
-    detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
+    detail = models.TextField(max_length=255, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
-        return f"{self.name}"
+        return  f"{self.factor}" f" -----> {self.name}"
 
     class Meta:
-        verbose_name = 'Nivel'
+        verbose_name = 'Fator / Nivel'
         verbose_name_plural = '   Niveis de Avaliação'
 
 
