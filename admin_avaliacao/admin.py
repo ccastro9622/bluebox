@@ -27,7 +27,7 @@ class FatoresAdmin(admin.ModelAdmin):
 
 @admin.register(Niveis)
 class NiveisAdmin(admin.ModelAdmin):
-    ordering = ('factor','name')
+    ordering = ('name', 'factor')
     pass
 
 
