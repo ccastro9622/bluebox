@@ -4,6 +4,17 @@ from .models import *
 
 class DescricaoForm(forms.ModelForm):
 
+    #Verifica se o campo aprovador foi marcado quando status = a em aprovação e aprovado.
+    def clean_approver(self):
+        status = int(self.data.get('status'))
+        approver = self.cleaned_data['approver']
+        if status ==2:
+            if not approver:
+                raise forms.ValidationError('O campo Arovador é obrigatório para o Status: Em Aprovação')
+        return approver
+
+
+
     class Meta:
         model = Descricao
         fields = ['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',

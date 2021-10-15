@@ -48,9 +48,10 @@ class GradesAdmin(admin.ModelAdmin):
 
 
 class NiveisAdmin(admin.ModelAdmin):
-    ordering = ('factor', 'name')
+    ordering = ('factor', 'name',)
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'82'})},
     }
+
 
 admin.site.register(Niveis, NiveisAdmin)

@@ -1,6 +1,6 @@
 from django.db import models
 
-from admin_descricao.models import Formacao, Areas, Especializacoes, Experiencias, Habilitacoes, Idiomas
+from admin_descricao.models import Formacao, Areas, Especializacoes, Experiencias, Habilitacoes, Idiomas, Status
 from master.models import Diretoria, Area
 from admin_avaliacao.models import Familias, SubFamilias, Fatores
 from user_account.models import CustomUser
@@ -16,11 +16,6 @@ class Descricao(TenantAwareModel):
         ("Gestor de Gestores", "Gestor de Gestores"),
     )
 
-    STATUS_CHOICES = (
-        ("Aberto", "Aberto"),
-        ("Finalizado", "Finalizado"),
-        ("Aprovado", "Aprovado"),
-    )
 
     title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
     cbo = models.CharField(null=True,max_length=255, verbose_name='CBO', blank=True, default="")
@@ -51,7 +46,7 @@ class Descricao(TenantAwareModel):
     information = models.CharField(max_length=255, verbose_name='Informações', blank=True, null=True, default="")
     approver = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Aprovador', related_name='approver')
     date_approval = models.DateTimeField(null=True, blank=True, verbose_name='Data de Aprovação')
-    status = models.CharField(blank=True, verbose_name="Status", choices=STATUS_CHOICES, max_length=20, default="EP")
+    status = models.ForeignKey(Status, on_delete=models.PROTECT, verbose_name='Status', related_name='status')
     user_id = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Criador', related_name='user_id')
     date_conclusion = models.DateTimeField(null=True, blank=True, verbose_name='Data de Conclusao')
 

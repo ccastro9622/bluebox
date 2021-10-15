@@ -3,7 +3,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Formacao, Areas, Idiomas, Habilitacoes, Descricoes, Especializacoes, Experiencias
+from .models import Formacao, Areas, Idiomas, Habilitacoes, Descricoes, Especializacoes, Experiencias, Status
 
 
 class FormacaoDetailView(LoginRequiredMixin, DetailView):
@@ -44,6 +44,11 @@ class DescricoesDetailView(LoginRequiredMixin, DetailView):
 class DescricoesListView(LoginRequiredMixin, ListView):
     model = Descricoes
     context_object_name = "descricoes"
+
+
+class StatusDetailView(LoginRequiredMixin, DetailView):
+        model = Status
+        context_object_name = "Situacao"
 
 
 # class DescricaoDetailView(LoginRequiredMixin, DetailView):

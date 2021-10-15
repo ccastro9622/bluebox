@@ -44,6 +44,7 @@ class Fatores(models.Model):
 class Niveis(models.Model):
     factor = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fator')
     name = models.CharField(max_length=255, verbose_name='Nome')
+    # order = models.IntegerField(verbose_name='Ordem')
     detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 

@@ -16,6 +16,9 @@ from django.db.models import Q
 from django.shortcuts import render
 from api.serializers import DocumentSerializer
 
+from django.http import FileResponse
+import os
+
 DOCUMENT_COLUMNS = (
     (0, 'id'),
     (1, 'name'),
@@ -27,6 +30,7 @@ DOCUMENT_COLUMNS = (
     # (7, 'submit_to_esignature'),
     # (8, 'send_email'),
 )
+
 
 class DescricaoDetailView(LoginRequiredMixin, DetailView):
     model = Descricao
@@ -199,4 +203,6 @@ def query_documents_by_args(pk=None, **kwargs):
     return data
 
 
-
+def mostra_pdf(request):
+    filepath = os.path.join('static', '/home/cristiano/bluebox/staticfiles/pdf/manual_cargos.pdf')
+    return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
