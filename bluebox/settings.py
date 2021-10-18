@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'import_export',
     'crispy_forms',
     'cpf_field',
@@ -53,7 +54,6 @@ INSTALLED_APPS = [
     'descricao',
     'master',
     'report',
-    'rest_framework',
     'avaliacao',
 ]
 

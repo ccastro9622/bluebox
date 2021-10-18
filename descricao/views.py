@@ -20,8 +20,8 @@ from django.http import FileResponse
 import os
 
 DOCUMENT_COLUMNS = (
-    (0, 'id'),
-    (1, 'name'),
+    (0, 'title'),
+    (1, 'status'),
     # (2, 'interview'),
     # (3, 'school'),
     # (4, 'created_date'),
@@ -171,29 +171,32 @@ def load_sub_familias(request):
 
 
 # Relatorio personalizado
-def query_documents_by_args(pk=None, **kwargs):
+def query_documents_by_args(pk=1, **kwargs):
     draw = int(kwargs.get('draw', None)[0])
-    length = int(kwargs.get('length', None)[0])
-    start = int(kwargs.get('start', None)[0])
-    search_value = kwargs.get('search[value]', None)[0]
-    order_column = int(kwargs.get('order[0][column]', None)[0])
-    order = kwargs.get('order[0][dir]', None)[0]
+    # length = int(kwargs.get('length', None)[0])
+    # start = int(kwargs.get('start', None)[0])
+    # search_value = kwargs.get('search[value]', None)[0]
+    # order_column = int(kwargs.get('order[0][column]', None)[0])
+    # order = kwargs.get('order[0][dir]', None)[0]
 
-    order_column = DOCUMENT_COLUMNS[order_column]
-    # django orm '-' -> desc
-    if order == 'desc':
-        order_column = '-' + order_column[1]
-    else:
-        order_column = order_column[1]
+    # order_column = DOCUMENT_COLUMNS[order_column]
+    # # django orm '-' -> desc
+    # if order == 'desc':
+    #     order_column = '-' + order_column[1]
+    # else:
+    #     order_column = order_column[1]
 
-    queryset = Descricao.objects.filter(tenant=1)
+    queryset = Descricao.objects.all() #filter(tenant=1)
+
     total = queryset.count()
 
-    if search_value:
-        queryset = queryset.filter(Q(status_icontains=search_value))
-        
+    # if search_value:
+    #     queryset = queryset.filter(Q(status_icontains=search_value))
+
     count = queryset.count()
-    queryset = queryset.order_by(order_column)[start:start + length]
+
+
+    # queryset = queryset.order_by(order_column)[start:start + length]
     data = {
         'items': queryset,
         'count': count,

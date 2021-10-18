@@ -14,7 +14,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Descricao
         ref_name = "Descricao v1"
-        fields = "_all_"
+        fields = "__all__"
 
     # def get_interview_name(self, obj):
     #     return obj.interview.name if obj.interview else ''

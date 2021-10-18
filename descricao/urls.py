@@ -1,8 +1,7 @@
 from django.urls import path
 
-from api.views import TenantDocumentViewSet
+from api.views import TenantDocumentViewSet, DescricaoList
 from .views import *
-
 
 app_name = "descricao"
 
@@ -18,8 +17,10 @@ urlpatterns = [
     path("descricao/<int:pk>", DescricaoPdfDetailView.as_view(), name="descricao-pdf"),
     path("descricao_rel_list/", DescricaoRelListView.as_view(), name="descricao-rel-list"),
     path("descricao_pdf/<int:pk>", DescricaoPdfListView.as_view(), name="descricao-pdf-list"),
-    path("descricao_rel/descricao", TenantDocumentViewSet.as_view({"get": "list"}), name="descricao-rel"),
+    # path("descricao_rel/descricao", TenantDocumentViewSet.as_view({"get": "list"}), name="descricao-rel"),
     path("descricao-manual", mostra_pdf, name="descricao-manual"),
+    # path("descricao_rel/descricao", TenantDocumentViewSet, name="descricao-rel"),
+    path("descricao_rel/descricao", DescricaoList.as_view({"get": "list"}), name="descricao-rel"),
 
     # path("tenants/<int:pk>/documents/", TenantDocumentViewSet.as_view({"get": "list"})),
     # path("document/", DocumentListView.as_view(), name="document-list"),

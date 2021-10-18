@@ -28,6 +28,7 @@ admin.site.site_header = " "
 admin.site.index_title = "Administração BlueBox21"
 #admin.site.site_title = "BlueBox21"-->
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', logar_usuario, name="logar_usuario"),
@@ -45,4 +46,5 @@ urlpatterns = [
     url(r"admin_descricao/", include("admin_descricao.urls")),
     url(r"descricao/", include("descricao.urls")),
     # url(r"avaliacao/", include("avaliacao.urls")),
+    url(r"api/", include("api.urls")),
 ]
