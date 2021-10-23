@@ -15,11 +15,14 @@ urlpatterns = [
     path('ajax/load-areas/', load_areas, name='ajax_load_areas'),
     path('ajax/load-sub_familias/', load_sub_familias, name='ajax_load_sub_familias'),
     path("descricao/<int:pk>", DescricaoPdfDetailView.as_view(), name="descricao-pdf"),
+
+    path("descricao/email/<str:title>/<str:email>", envia_email, name="descricao-email"),
+
     path("descricao_rel_list/", DescricaoRelListView.as_view(), name="descricao-rel-list"),
     path("descricao_pdf/<int:pk>", DescricaoPdfListView.as_view(), name="descricao-pdf-list"),
+    path("descricao_excel/", export_users_csv, name="descricao-excel-list"),
     # path("descricao_rel/descricao", TenantDocumentViewSet.as_view({"get": "list"}), name="descricao-rel"),
     path("descricao-manual", mostra_pdf, name="descricao-manual"),
-    # path("descricao_rel/descricao", TenantDocumentViewSet, name="descricao-rel"),
     path("descricao_rel/descricao", DescricaoList.as_view({"get": "list"}), name="descricao-rel"),
 
     # path("tenants/<int:pk>/documents/", TenantDocumentViewSet.as_view({"get": "list"})),

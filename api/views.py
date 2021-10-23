@@ -12,10 +12,8 @@ from api import serializers
 
 # Relatorio personalizado
 class TenantDocumentViewSet(viewsets.ViewSet):
-    template_name = '../descricao/templates/descricao/descricao_rel.html'
-    # serializer_class = serializers.DocumentSerializer
-    #
-    # queryset = models.Descricao.objects.all()
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'descricao/descricao_rel.html'
 
     def list(self, request):
         try:
@@ -33,8 +31,8 @@ class TenantDocumentViewSet(viewsets.ViewSet):
 
 
 class DescricaoList(viewsets.ViewSet):
-    renderer_classes = [TemplateHTMLRenderer]
-    template_name = '/descricao/templates/descricao/descricao_rel.html'
+    # renderer_classes = [TemplateHTMLRenderer]
+    # template_name = 'descricao/descricao_rel.html' # '/descricao/templates/descricao/descricao_rel.html'
 
     def list(self, request):
         try:

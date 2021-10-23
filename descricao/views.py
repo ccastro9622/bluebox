@@ -1,3 +1,5 @@
+import csv
+
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -16,7 +18,9 @@ from django.db.models import Q
 from django.shortcuts import render
 from api.serializers import DocumentSerializer
 
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
+
+
 import os
 
 DOCUMENT_COLUMNS = (
@@ -56,6 +60,7 @@ class DescricaoRelListView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(tenant_id=tenant_id).all()
 
 
+# Chamado no batao de gerar pdf do relatorio de acompanhamento
 class DescricaoPdfListView(PdfResponseMixin, ListView):
     template_name = 'descricao/descricao_pdf_list.html'
     model = Descricao
@@ -65,6 +70,28 @@ class DescricaoPdfListView(PdfResponseMixin, ListView):
         tenant_id = tenant_from_request(self.request)
         return self.model.objects.filter(tenant_id=tenant_id).all()
 
+
+# Chamado no batao de gerar excel do relatorio de acompanhamento
+def export_users_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="descricoes.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Titulo', 'Status', 'Usuário', 'Aprovador', 'Data'])
+
+    # tenant_id = tenant_from_request(request)
+    descricoes = Descricao.objects.all() #filter(tenant_id=tenant_id).all()
+
+
+    # Descricoes = Descricao.objects.filter(tenant_id=tenant_id).all().values_list('username', 'first_name', 'last_name', 'email')
+    # Descricao.objects.filter
+
+    # users = User.objects.all().values_list('username', 'first_name', 'last_name', 'email')
+
+    # for descricao in descricoes:
+    writer.writerows((descricao.title, descricao.status, descricao.user_id, descricao.approver,descricao.date_conclusion) for descricao in descricoes)
+
+    return response
 
 class DescricaoDeleteView(LoginRequiredMixin, DeleteView):
     model = Descricao
@@ -173,30 +200,30 @@ def load_sub_familias(request):
 # Relatorio personalizado
 def query_documents_by_args(pk=1, **kwargs):
     draw = int(kwargs.get('draw', None)[0])
-    # length = int(kwargs.get('length', None)[0])
-    # start = int(kwargs.get('start', None)[0])
-    # search_value = kwargs.get('search[value]', None)[0]
-    # order_column = int(kwargs.get('order[0][column]', None)[0])
-    # order = kwargs.get('order[0][dir]', None)[0]
+    length = int(kwargs.get('length', None)[0])
+    start = int(kwargs.get('start', None)[0])
+    search_value = kwargs.get('search[value]', None)[0]
+    order_column = int(kwargs.get('order[0][column]', None)[0])
+    order = kwargs.get('order[0][dir]', None)[0]
 
-    # order_column = DOCUMENT_COLUMNS[order_column]
-    # # django orm '-' -> desc
-    # if order == 'desc':
-    #     order_column = '-' + order_column[1]
-    # else:
-    #     order_column = order_column[1]
+    order_column = DOCUMENT_COLUMNS[order_column]
+    # django orm '-' -> desc
+    if order == 'desc':
+        order_column = '-' + order_column[1]
+    else:
+        order_column = order_column[1]
 
     queryset = Descricao.objects.all() #filter(tenant=1)
 
     total = queryset.count()
 
-    # if search_value:
-    #     queryset = queryset.filter(Q(status_icontains=search_value))
+    if search_value:
+        queryset = queryset.filter(Q(status_icontains=search_value))
 
     count = queryset.count()
 
+    queryset = queryset.order_by(order_column)[start:start + length]
 
-    # queryset = queryset.order_by(order_column)[start:start + length]
     data = {
         'items': queryset,
         'count': count,
@@ -209,3 +236,26 @@ def query_documents_by_args(pk=1, **kwargs):
 def mostra_pdf(request):
     filepath = os.path.join('static', '/home/cristiano/bluebox/staticfiles/pdf/manual_cargos.pdf')
     return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
+
+
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
+
+
+def envia_email(request, title, email):
+
+    subject = 'Aprovação Pendente - BlueBox21' #request.POST.get('subject', '')
+    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ')'
+    from_email = 'pclinecomputadores@gmail.com' # request.POST.get('title', '')
+    to_email = [email]
+
+    if subject and message and from_email and to_email and to_email != None:
+        try:
+            send_mail(subject, message, from_email, to_email)
+        except BadHeaderError:
+            return HttpResponse('Dados do e-mail inválidos')
+        return HttpResponseRedirect("/descricao/descricao_rel_list/") #HttpResponseRedirect('../descricao-rel-list')
+    else:
+        # In reality we'd use a form class
+        # to get proper validation errors.
+        return HttpResponse('Verifique os campos de envio.')
