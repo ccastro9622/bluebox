@@ -84,6 +84,17 @@ class Status(models.Model):
         verbose_name_plural = 'Status'
 
 
+class Gerencia(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Gerencia'
+        verbose_name_plural = 'Gerencias'
+
+
 class Descricoes(models.Model):
     title = models.CharField(max_length=255, verbose_name='Título do Cargo', unique=True)
     cbo = models.CharField(max_length=255, verbose_name='CBO', default="")

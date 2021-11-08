@@ -1,7 +1,7 @@
 from django.db import models
 from django_cpf_cnpj.fields import CNPJField
 
-from admin_geral.models import Sector
+from admin_geral.models import Sector, Origemcapital, Tipoempresa, Governanca, Dimensao
 
 
 class Tenant(models.Model):
@@ -34,10 +34,6 @@ class Tenant(models.Model):
         ("SE", "Sergipe"),
         ("TO", "Tocantins")
     )
-    EMPRESA_CHOICES = (
-        ("PB", "Publica"),
-        ("PV", "Privada"),
-    )
 
     name = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
     cnpj = CNPJField(masked=True, null=True, blank=True)
@@ -48,11 +44,12 @@ class Tenant(models.Model):
     states = models.CharField(null=True, blank=True, verbose_name="Estado", choices=ESTADO_CHOICES, max_length=15, default="")
     city = models.CharField(null=True, blank=True, max_length=40, verbose_name="Cidade", default="")
     sector = models.ForeignKey(Sector, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Setor de Atuação')
-    annual_invoicing = models.DecimalField(max_digits=19, decimal_places=2, blank=True, null=True, verbose_name='Faturamento')
     employees = models.IntegerField(blank=True, null=True, verbose_name='Colaboradores Próprios')
     outsource = models.IntegerField(blank=True, null=True, verbose_name='Colaboradores Terceirizados')
-    capital = models.CharField(default="", null=True, blank=True, max_length=150, verbose_name="Origem do Capital")
-    type = models.CharField(null=True, verbose_name="Tipo de Empresa", choices=EMPRESA_CHOICES, max_length=15, default="")
+    origin = models.ForeignKey(Origemcapital, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Origem de Capital')
+    company = models.ForeignKey(Tipoempresa, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Tipo de Empresa')
+    governanca = models.ForeignKey(Governanca, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Governança')
+    size = models.ForeignKey(Dimensao, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Dimensão')
 
     # name = models.CharField(max_length=100)
 

@@ -31,14 +31,14 @@ class TenantDeleteView(LoginRequiredMixin, DeleteView):
 class TenantCreateView(LoginRequiredMixin, CreateView):
     model = Tenant
     fields = ['name', 'cnpj', 'phone', 'address', 'number', 'complement', 'states', 'city', 'sector',
-              'annual_invoicing', 'employees', 'outsource', 'capital', 'type']  # preencher todos os da views.py
+              'employees', 'outsource','origin', 'company', 'governanca', 'size']  # preencher todos os da views.py
     success_url = reverse_lazy("tenants:tenant-list")
 
 
 class TenantUpdateView(LoginRequiredMixin, UpdateView):
     model = Tenant
     fields = ['name', 'cnpj', 'phone', 'address', 'number', 'complement', 'states', 'city', 'sector',
-              'annual_invoicing', 'employees', 'outsource', 'capital', 'type']  # preencher todos os da views.py
+              'employees', 'outsource', 'origin', 'company', 'governanca', 'size' ]  # preencher todos os da views.py
 
     # def get_queryset(self):
     #     tenant_id = tenant_from_request(self.request)

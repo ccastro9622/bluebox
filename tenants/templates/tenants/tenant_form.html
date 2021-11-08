@@ -44,22 +44,25 @@
         <br>
         <div class="row">
             <div class="col-md-4">
-                {{ form.annual_invoicing|as_crispy_field }}
-            </div>
-             <div class="col-md-4">
                 {{ form.employees|as_crispy_field }}
             </div>
             <div class="col-md-4">
                 {{ form.outsource|as_crispy_field }}
             </div>
+            <div class="col-md-4">
+                {{ form.origin|as_crispy_field }}
+            </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-4">
-                {{ form.capital|as_crispy_field }}
+                {{ form.company|as_crispy_field }}
             </div>
              <div class="col-md-4">
-                {{ form.type|as_crispy_field }}
+                {{ form.governanca|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.size|as_crispy_field }}
             </div>
         </div>
         <br>

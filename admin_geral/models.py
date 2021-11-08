@@ -39,3 +39,47 @@ class Nivelcargo(models.Model):
     class Meta:
         verbose_name = 'Nivel do Cargo'
         verbose_name_plural = 'Niveis do Cargo'
+
+
+class Origemcapital(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Origem do Capital'
+        verbose_name_plural = ' Origens do Capital'
+
+
+class Tipoempresa(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome')
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Tipo de Empresa'
+        verbose_name_plural = '  Tipos de Empresa'
+
+
+class Governanca(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Governança'
+        verbose_name_plural = 'Governanças'
+
+
+class Dimensao(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome')
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Dimensão'
+        verbose_name_plural = 'Dimensões'

@@ -1,6 +1,6 @@
 from django.db import models
 
-from admin_descricao.models import Formacao, Areas, Especializacoes, Experiencias, Habilitacoes, Idiomas, Status
+from admin_descricao.models import Formacao, Areas, Especializacoes, Experiencias, Habilitacoes, Idiomas, Status, Gerencia
 from master.models import Diretoria, Area
 from admin_avaliacao.models import Familias, SubFamilias, Fatores
 from user_account.models import CustomUser
@@ -9,13 +9,6 @@ from tenants.models import TenantAwareModel
 
 
 class Descricao(TenantAwareModel):
-
-    MANAGE_CHOICES = (
-        ("Não Tem", "Não Tem"),
-        ("Gestor de Equipe", "Gestor de Equipe"),
-        ("Gestor de Gestores", "Gestor de Gestores"),
-    )
-
 
     title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
     cbo = models.CharField(null=True,max_length=255, verbose_name='CBO', blank=True, default="")
@@ -37,7 +30,7 @@ class Descricao(TenantAwareModel):
     title_super = models.CharField(max_length=255, verbose_name='Cargo do Superior', blank=True, null=True, default="")
     family = models.ForeignKey(Familias, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Familia')
     sub_familia = models.ForeignKey(SubFamilias, null=True, blank=True, on_delete=models.PROTECT, verbose_name='SubFamilia')
-    manage_team = models.CharField(null=True, blank=True, verbose_name="Gerencia", choices=MANAGE_CHOICES, max_length=20, default="")
+    manage_team = models.ForeignKey(Gerencia, on_delete=models.PROTECT, verbose_name='Gerencia', related_name='gerencia')
     position_team = models.CharField(max_length=255, verbose_name='Cargos da Equipe', blank=True, null=True, default="")
     idioma = models.ForeignKey(Idiomas, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Idioma')
     proficiency = models.CharField(max_length=255, verbose_name='Proficiência', blank=True, null=True, default="")

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Formacao, Areas, Idiomas, Habilitacoes, Especializacoes, Descricoes, Experiencias, Status
+from .models import Formacao, Areas, Idiomas, Habilitacoes, Especializacoes, Descricoes, Experiencias, Status, Gerencia
 
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
@@ -57,5 +57,11 @@ admin.site.register(Descricoes, DescricoesAdminImp)
 
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
+    ordering = ('id',)
+    pass
+
+
+@admin.register(Gerencia)
+class GerenciaAdmin(admin.ModelAdmin):
     ordering = ('id',)
     pass
