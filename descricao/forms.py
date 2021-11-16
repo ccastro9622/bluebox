@@ -23,7 +23,7 @@ class DescricaoForm(forms.ModelForm):
                   'position_team', 'idioma', 'proficiency', 'knowledge', 'supervision', 'information',
                   'approver', 'date_approval', 'status', 'date_conclusion']
 
-    # Filtrar a dropdow
+# Filtrar a dropdow
     def __init__(self, *args, **kwargs):
         tenant_id = kwargs.pop('tenant_id', None)
         super().__init__(*args, **kwargs)

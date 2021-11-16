@@ -7,7 +7,7 @@ from import_export.admin import ImportExportModelAdmin
 
 @admin.register(Formacao)
 class FormacaoAdmin(admin.ModelAdmin):
-    ordering = ('name',)
+    ordering = ('code', 'name' )
     pass
 
 

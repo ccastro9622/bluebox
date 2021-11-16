@@ -29,12 +29,13 @@ class SubFamilias(models.Model):
 
 
 class Fatores(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome',unique=True)
+    code = models.IntegerField(verbose_name='Código', default=1, unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome')
     detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.code}" f" - {self.name}"
 
     class Meta:
         verbose_name = 'Fator'
@@ -43,13 +44,13 @@ class Fatores(models.Model):
 
 class Niveis(models.Model):
     factor = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fator')
+    code = models.IntegerField(verbose_name='Código', default=1)
     name = models.CharField(max_length=255, verbose_name='Nome')
-    # order = models.IntegerField(verbose_name='Ordem')
     detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
-        return  f"{self.factor}" f" -----> {self.name}"
+        return  f"{self.factor}" f" ---> {self.code}" f" - {self.name}"
 
     class Meta:
         verbose_name = 'Fator / Nivel'

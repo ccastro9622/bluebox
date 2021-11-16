@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+   Cadastro/Alteração da Avaliação
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+<form method="post" enctype="multipart/form-data" id="avaliacaoForm"
+      data-areas-url="{% url 'avaliacao:ajax_load_areas' %}"
+      data-sub_familias-url="{% url 'avaliacao:ajax_load_sub_familias' %}"
+      data-levels1-url="{% url 'avaliacao:ajax_load_levels1' %}"
+      data-levels2-url="{% url 'avaliacao:ajax_load_levels2' %}"
+      data-levels3-url="{% url 'avaliacao:ajax_load_levels3' %}"
+      data-levels4-url="{% url 'avaliacao:ajax_load_levels4' %}"
+      data-levels5-url="{% url 'avaliacao:ajax_load_levels5' %}"
+      data-levels6-url="{% url 'avaliacao:ajax_load_levels6' %}"
+      data-levels7-url="{% url 'avaliacao:ajax_load_levels7' %}"
+      data-levels8-url="{% url 'avaliacao:ajax_load_levels8' %}">{% csrf_token %}
+
+    <div class="row">
+        <div class="col-sm-1">
+
+        </div>
+        <div class="col-md-2">
+              {{ form.ceo|as_crispy_field }}
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-md-4">
+            {{ form.title|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.manage_team|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.formation|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.board|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.area|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.title_super|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.family|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.sub_familia|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.origin|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.company|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.governanca|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.size|as_crispy_field }}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.factor1|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.level1|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.factor2|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.level2|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.factor3|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.level3|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.factor4|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.level4|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.factor5|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.level5|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.factor6|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.level6|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.factor7|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.level7|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.factor8|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.level8|as_crispy_field }}
+        </div>
+    </div>
+    <br>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a href="{% url 'avaliacao:avaliacao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+$("#id_board").change(function () {
+  var url = $("#avaliacaoForm").attr("data-areas-url");  // get the url of the `load_cities` view
+  var boardId = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'board': boardId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_area").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+
+});
+
+$("#id_family").change(function () {
+  var url = $("#avaliacaoForm").attr("data-sub_familias-url");  // get the url of the `load_cities` view
+  var familyId = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'family': familyId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_sub_familia").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+});
+
+$("#id_formation").change(function () {
+  var url = $("#avaliacaoForm").attr("data-levels1-url");// get the url of the `load_cities` view
+  var url1 = $("#avaliacaoForm").attr("data-levels2-url");
+  var formationId = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'formation': formationId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level1").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+
+  $.ajax({                       // initialize an AJAX request
+    url: url1,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'formation': formationId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level2").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+});
+
+$("#id_level2").change(function () {
+  var url = $("#avaliacaoForm").attr("data-levels3-url");  // get the url of the `load_cities` view
+  var level2Id = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'level2': level2Id       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level3").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+});
+
+$("#id_level3").change(function () {
+  var url = $("#avaliacaoForm").attr("data-levels4-url");  // get the url of the `load_cities` view
+  var level3Id = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'level3': level3Id       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level4").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+});
+
+
+$("#id_manage_team").change(function () {
+  var url = $("#avaliacaoForm").attr("data-levels5-url");// get the url of the `load_cities` view
+  var url1 = $("#avaliacaoForm").attr("data-levels6-url");
+  var manage_teamId = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'manage_team': manage_teamId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level5").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+
+  $.ajax({                       // initialize an AJAX request
+    url: url1,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'manage_team': manage_teamId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level6").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+});
+
+$("#id_ceo").change(function () {
+  var url = $("#avaliacaoForm").attr("data-levels7-url");// get the url of the `load_cities` view
+  var url1 = $("#avaliacaoForm").attr("data-levels8-url");
+  var ceoId = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'ceo': ceoId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level7").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+
+  $.ajax({                       // initialize an AJAX request
+    url: url1,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'ceo': ceoId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level8").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+});
+
+
+</script>
+{% endblock %}

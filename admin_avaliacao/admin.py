@@ -26,7 +26,7 @@ class SubFamiliasAdmin(admin.ModelAdmin):
 
 @admin.register(Fatores)
 class FatoresAdmin(admin.ModelAdmin):
-    ordering = ('name',)
+    ordering = ('code', 'name',)
     pass
 
 
@@ -48,7 +48,7 @@ class GradesAdmin(admin.ModelAdmin):
 
 
 class NiveisAdmin(admin.ModelAdmin):
-    ordering = ('factor', 'name',)
+    ordering = ('factor', 'code', 'name',)
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'82'})},
     }

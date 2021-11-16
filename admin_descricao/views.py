@@ -47,8 +47,9 @@ class DescricoesListView(LoginRequiredMixin, ListView):
 
 
 class StatusDetailView(LoginRequiredMixin, DetailView):
-        model = Status
-        context_object_name = "Situacao"
+    model = Status
+    context_object_name = "Situacao"
+
 
 class GerenciaDetailView(LoginRequiredMixin, DetailView):
     model = Gerencia

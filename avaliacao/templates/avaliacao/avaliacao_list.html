@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+    Lista de Avaliações
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+
+    <a id="add-link" href="{% url 'avaliacao:avaliacao-create' %}">
+        <div class="col-2 add-div">
+            <i class="fas fa-plus"></i> Adicionar Avaliação de Cargo
+        </div>
+    </a>
+    <br>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <table id="table_id" class="display" align="center" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Cargo</th>
+                            <th><center>Editar</center></th>
+                            <th><center>Excluir</center></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%for avaliacao in object_list %}
+                        <tr>
+                            <td>{{avaliacao.title}}</td>
+                            <td><a href="{% url 'avaliacao:avaliacao-update' avaliacao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
+                            <td><a href="{% url 'avaliacao:avaliacao-delete' avaliacao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+                        </tr>
+                     {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+         <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
+    </form>
+
+{% endblock conteudo_painel %}
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+
+
+</script>
+{% endblock js %}
+
