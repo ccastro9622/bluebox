@@ -9,7 +9,7 @@ app_name = "avaliacao"
 urlpatterns = [
     path("avaliacao_list/", AvaliacaoListView.as_view(), name="avaliacao-list"),
     path("avaliacao/create/", AvaliacaoCreateView.as_view(), name="avaliacao-create"),
-    # path("avaliacao/createmodelo/<int:pk>", AvaliacaoModeloCreateView.as_view(), name="avaliacao-modelo-create"),
+    path("avaliacao/createmodelo/<int:pk>", AvaliacaoModeloCreateView.as_view(), name="avaliacao-modelo-create"),
     path("avaliacao/update/<int:pk>", AvaliacaoUpdateView.as_view(), name="avaliacao-update"),
     path("avaliacao/delete/<int:pk>", AvaliacaoDeleteView.as_view(), name="avaliacao-delete"),
     path('ajax/load-areas/', load_areas, name='ajax_load_areas'),
@@ -22,5 +22,8 @@ urlpatterns = [
     path('ajax/load-levels6/', load_levels6, name='ajax_load_levels6'),
     path('ajax/load-levels7/', load_levels7, name='ajax_load_levels7'),
     path('ajax/load-levels8/', load_levels8, name='ajax_load_levels8'),
-
+    path("avaliacao-manual", mostra_pdf, name="avaliacao-manual"),
+    path("avaliacao_rel_list/", AvaliacaoRelListView.as_view(), name="avaliacao-rel-list"),
+    path("avaliacao_pdf/<int:pk>", AvaliacaoPdfListView.as_view(), name="avaliacao-pdf-list"),
+    path("avaliacao_excel/", export_users_csv, name="avaliacao-excel-list"),
 ]

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+    Relatório de Avaliações - Estrutural
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <table id="table_id" class="display" align="center" style="width:100%">
+
+                    <thead>
+                        <tr>
+                            <th><font size=1>Cargo</font></th>
+                            <th><font size=1>Diretoria</font></th>
+                            <th><font size=1>Area</font></th>
+                            <th><font size=1>Grade</font></th>
+                            <th><font size=1>Formação</font></th>
+                            <th><font size=1>Nivel</font></th>
+                            <th><font size=1>Escopo</font></th>
+                            <th><font size=1>Abrangência</font></th>
+                            <th><font size=1>Contribuição</font></th>
+                            <th><font size=1>Gestão</font></th>
+                            <th><font size=1>Liderança</font></th>
+                            <th><font size=1>Comunicação</font></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {%for avaliacao in object_list %}
+                        <tr align="center">
+
+                            <td><font size=1>{{avaliacao.title}}</font></td>
+                            <td><font size=1>{{avaliacao.board}}</font></td>
+                            <td><font size=1>{{avaliacao.area}}</font></td>
+                            <td><font size=1>{{avaliacao.grade}}</font></td>
+                            <td><font size=1>{{avaliacao.level1}}</font></td>
+                            <td><font size=1>{{avaliacao.level2}}</font></td>
+                            <td><font size=1>{{avaliacao.level3}}</font></td>
+                            <td><font size=1>{{avaliacao.level4}}</font></td>
+                            <td><font size=1>{{avaliacao.level5}}</font></td>
+                            <td><font size=1>{{avaliacao.level6}}</font></td>
+                            <td><font size=1>{{avaliacao.level7}}</font></td>
+                            <td><font size=1>{{avaliacao.level8}}</font></td>
+
+                        </tr>
+                     {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+         <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
+         <a href="{% url 'avaliacao:avaliacao-pdf-list' 1 %}"><button type="button" class="btn btn-success">Gerar PDF</button></a>
+         <a href="{% url 'avaliacao:avaliacao-excel-list' %}"><button type="button" class="btn btn-success">Gerar Excel</button></a>
+    </form>
+
+{% endblock conteudo_painel %}
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+</script>
+{% endblock js %}
+

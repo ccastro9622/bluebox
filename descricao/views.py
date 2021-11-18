@@ -50,6 +50,16 @@ class DescricaoListView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(tenant_id=tenant_id).all()
 
 
+class DescricaomodeloListView(LoginRequiredMixin, ListView):
+    template_name = 'descricao/descricaomodelo_list.html'
+    model = Descricao
+    context_object_name = "descricao"
+
+    def get_queryset(self):
+        tenant_id = tenant_from_request(self.request)
+        return super().get_queryset().filter(tenant_id=tenant_id).all()
+
+
 class DescricaoRelListView(LoginRequiredMixin, ListView):
     template_name = 'descricao/descricao_rel_list.html'
     model = Descricao

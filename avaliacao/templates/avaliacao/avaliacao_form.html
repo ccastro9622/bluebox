@@ -17,14 +17,18 @@
       data-levels7-url="{% url 'avaliacao:ajax_load_levels7' %}"
       data-levels8-url="{% url 'avaliacao:ajax_load_levels8' %}">{% csrf_token %}
 
-    <div class="row">
-        <div class="col-sm-1">
-
-        </div>
-        <div class="col-md-2">
+     <div class="row">
+        <div class="col-md-4">
               {{ form.ceo|as_crispy_field }}
         </div>
-    </div>
+        <div class="col-md-4">
+            {{ form.point|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.grade|as_crispy_field }}
+        </div>
+     </div>
+    <br>
      <div class="row">
         <div class="col-md-4">
             {{ form.title|as_crispy_field }}
@@ -174,7 +178,7 @@ $("#id_family").change(function () {
   });
 });
 
-$("#id_formation").change(function () {
+$("#id_formation").change(function () { // 1 - 2 - Formacao e Nivel
   var url = $("#avaliacaoForm").attr("data-levels1-url");// get the url of the `load_cities` view
   var url1 = $("#avaliacaoForm").attr("data-levels2-url");
   var formationId = $(this).val();  // get the selected country ID from the HTML input
@@ -200,7 +204,7 @@ $("#id_formation").change(function () {
   });
 });
 
-$("#id_level2").change(function () {
+$("#id_level2").change(function () { // 3 - Escopo
   var url = $("#avaliacaoForm").attr("data-levels3-url");  // get the url of the `load_cities` view
   var level2Id = $(this).val();  // get the selected country ID from the HTML input
 
@@ -215,8 +219,35 @@ $("#id_level2").change(function () {
   });
 });
 
-$("#id_level3").change(function () {
-  var url = $("#avaliacaoForm").attr("data-levels4-url");  // get the url of the `load_cities` view
+$("#id_ceo").change(function () { // 4 - 5 - Abrangencia e contribuicao
+  var url = $("#avaliacaoForm").attr("data-levels4-url");// get the url of the `load_cities` view
+  var url1 = $("#avaliacaoForm").attr("data-levels5-url");
+  var ceoId = $(this).val();  // get the selected country ID from the HTML input
+
+  $.ajax({                       // initialize an AJAX request
+    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+
+    data: {
+      'ceo': ceoId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level4").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+
+  $.ajax({                       // initialize an AJAX request
+    url: url1,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'ceo': ceoId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_level5").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+});
+
+$("#id_level3").change(function () { // 6-Gestao Recebida
+  var url = $("#avaliacaoForm").attr("data-levels6-url");  // get the url of the `load_cities` view
   var level3Id = $(this).val();  // get the selected country ID from the HTML input
 
   $.ajax({                       // initialize an AJAX request
@@ -225,47 +256,21 @@ $("#id_level3").change(function () {
       'level3': level3Id       // add the country id to the GET parameters
     },
     success: function (data) {   // `data` is the return of the `load_cities` view function
-      $("#id_level4").html(data);  // replace the contents of the city input with the data that came from the server
+      $("#id_level6").html(data);  // replace the contents of the city input with the data that came from the server
     }
   });
 });
 
 
 $("#id_manage_team").change(function () {
-  var url = $("#avaliacaoForm").attr("data-levels5-url");// get the url of the `load_cities` view
-  var url1 = $("#avaliacaoForm").attr("data-levels6-url");
+  var url = $("#avaliacaoForm").attr("data-levels7-url");// get the url of the `load_cities` view
+  var url1 = $("#avaliacaoForm").attr("data-levels8-url");
   var manage_teamId = $(this).val();  // get the selected country ID from the HTML input
 
   $.ajax({                       // initialize an AJAX request
     url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
     data: {
       'manage_team': manage_teamId       // add the country id to the GET parameters
-    },
-    success: function (data) {   // `data` is the return of the `load_cities` view function
-      $("#id_level5").html(data);  // replace the contents of the city input with the data that came from the server
-    }
-  });
-
-  $.ajax({                       // initialize an AJAX request
-    url: url1,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-    data: {
-      'manage_team': manage_teamId       // add the country id to the GET parameters
-    },
-    success: function (data) {   // `data` is the return of the `load_cities` view function
-      $("#id_level6").html(data);  // replace the contents of the city input with the data that came from the server
-    }
-  });
-});
-
-$("#id_ceo").change(function () {
-  var url = $("#avaliacaoForm").attr("data-levels7-url");// get the url of the `load_cities` view
-  var url1 = $("#avaliacaoForm").attr("data-levels8-url");
-  var ceoId = $(this).val();  // get the selected country ID from the HTML input
-
-  $.ajax({                       // initialize an AJAX request
-    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-    data: {
-      'ceo': ceoId       // add the country id to the GET parameters
     },
     success: function (data) {   // `data` is the return of the `load_cities` view function
       $("#id_level7").html(data);  // replace the contents of the city input with the data that came from the server
@@ -275,13 +280,14 @@ $("#id_ceo").change(function () {
   $.ajax({                       // initialize an AJAX request
     url: url1,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
     data: {
-      'ceo': ceoId       // add the country id to the GET parameters
+      'manage_team': manage_teamId       // add the country id to the GET parameters
     },
     success: function (data) {   // `data` is the return of the `load_cities` view function
       $("#id_level8").html(data);  // replace the contents of the city input with the data that came from the server
     }
   });
 });
+
 
 
 </script>

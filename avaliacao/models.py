@@ -26,7 +26,7 @@ class Avaliacao(TenantAwareModel):
     governanca = models.ForeignKey(Governanca, null=True, blank=True, on_delete=models.PROTECT,
                                    verbose_name='Governança')
     size = models.ForeignKey(Dimensao, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Dimensão')
-    ceo = models.BooleanField(default=False, verbose_name='1º Executivo')
+    ceo = models.BooleanField(default='false', verbose_name='1º Executivo', null=True)
 
     factor1 = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fatores', related_name='factor1', default = 1)
     level1 = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name='Níveis', related_name='level1')
@@ -44,6 +44,9 @@ class Avaliacao(TenantAwareModel):
     level7 = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name=' ', related_name='level7')
     factor8 = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name=' ', related_name='factor8', default = 8)
     level8 = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name=' ', related_name='level8')
+
+    point = models.IntegerField(verbose_name='Pontos', default=0)
+    grade = models.IntegerField(verbose_name='Grade', default=0)
 
     def __str__(self):
         return f"{self.title}"

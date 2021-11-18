@@ -65,8 +65,9 @@ class DescricaoModeloForm(forms.ModelForm):
                   'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
                   'qualification', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
                   'position_team', 'idioma', 'proficiency', 'knowledge', 'supervision', 'information',
-                  'approver', 'date_approval', 'status', 'date_conclusion'] # Filtrar a dropdow
+                  'approver', 'date_approval', 'status', 'date_conclusion']
 
+    # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
         tenant_id = kwargs.pop('tenant_id', None)
         super().__init__(*args, **kwargs)

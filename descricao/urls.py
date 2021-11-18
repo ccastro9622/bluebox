@@ -24,7 +24,7 @@ urlpatterns = [
     # path("descricao_rel/descricao", TenantDocumentViewSet.as_view({"get": "list"}), name="descricao-rel"),
     path("descricao-manual", mostra_pdf, name="descricao-manual"),
     path("descricao_rel/descricao", DescricaoList.as_view({"get": "list"}), name="descricao-rel"),
-
+    path("descricaomodelo_list/", DescricaomodeloListView.as_view(), name="descricaomodelo-list"),
     # path("tenants/<int:pk>/documents/", TenantDocumentViewSet.as_view({"get": "list"})),
     # path("document/", DocumentListView.as_view(), name="document-list"),
 ]

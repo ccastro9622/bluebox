@@ -48,10 +48,10 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Avaliação de Cargo <span class="sr-only">(current)</span></a></a>
                         <ul>
-                            <li><a href="{% url 'descricao:descricao-list' %}">Com Descrição</a></li>
+                            <li><a href="{% url 'descricao:descricaomodelo-list' %}">Com Descrição</a></li>
                             <li><a href="{% url 'avaliacao:avaliacao-list' %}">Sem Descrição</a></li>
-                            <li><a href="#">Relatórios</a></li>
-                            <li><a href="#">Manual Avaliação</a></li>
+                            <li><a href="{% url 'avaliacao:avaliacao-rel-list' %}">Visão Estruturada</a></li>
+                            <li><a href="{% url 'avaliacao:avaliacao-manual' %}">Manual Avaliação</a></li>
                         </ul>
                     </li>
                     <li class="nav-item active">
@@ -64,7 +64,7 @@
                         <a class="nav-link" href="#">Relatórios</a>
                     </li>
                     <li class="nav-item active">
-                       <a class="nav-link" href="logar_usuario">Logout <span class="sr-only">(current)</span></a>
+                       <a class="nav-link" href="logar_usuario">Sair <span class="sr-only">(current)</span></a>
                     </li>
 
                 </ul>

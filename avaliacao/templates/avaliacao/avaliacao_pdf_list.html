@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+<form method="post" enctype="multipart/form-data" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+
+     <table border="1" >
+        <thead>
+            <tr>
+                <th colspan="4" style="height: 80px; font-size:180%">Avaliacao de Cargo</th>
+            </tr>
+        </thead>
+    </table>
+    </br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table id="table_id" class="display" align="center" style="width:100%">
+                <thead>
+                    <tr align="left">
+                        <th align="left"><font size=2>Cargo</font></th>
+                        <th align="left"><font size=2>Diretoria</font></th>
+                        <th align="left"><font size=2>Area</font></th>
+                        <th align="left"><font size=2>Grade</font></th>
+                        <th align="left"><font size=2>Formação</font></th>
+                        <th align="left"><font size=2>Nivel</font></th>
+                        <th align="left"><font size=2>Escopo</font></th>
+                        <th align="left"><font size=2>Abrangência</font></th>
+                        <th align="left"><font size=2>Contribuição</font></th>
+                        <th align="left"><font size=2>Gestão</font></th>
+                        <th align="left"><font size=2>Liderança</font></th>
+                        <th align="left"><font size=2>Comunicação</font></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                {%for avaliacao in object_list %}
+                    <tr align="left">
+                        <td><font size=2>{{avaliacao.title}}</font></td>
+                        <td><font size=2>{{avaliacao.board}}</font></td>
+                        <td><font size=2>{{avaliacao.area}}</font></td>
+                        <td><font size=2>{{avaliacao.grade}}</font></td>
+                        <td><font size=2>{{avaliacao.level1}}</font></td>
+                        <td><font size=2>{{avaliacao.level2}}</font></td>
+                        <td><font size=2>{{avaliacao.level3}}</font></td>
+                        <td><font size=2>{{avaliacao.level4}}</font></td>
+                        <td><font size=2>{{avaliacao.level5}}</font></td>
+                        <td><font size=2>{{avaliacao.level6}}</font></td>
+                        <td><font size=2>{{avaliacao.level7}}</font></td>
+                        <td><font size=2>{{avaliacao.level8}}</font></td>
+                    </tr>
+                 {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</form>
+
+{% endblock conteudo_painel %}
+
+
