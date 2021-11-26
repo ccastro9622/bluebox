@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+    Relatório de Avaliações - Matriz
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <table id="table_id" class="display" align="left" style="width:100%">
+
+                    <thead>
+                        <tr>
+                            <th><font size=2>Grade</font></th>
+                            {%for d in diretorias %}
+                                <td><font size=2>{{d.name}}</font></td>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {%for avaliacoes in object_list %}
+                        <tr align="left">
+                            <td><font size=2>{{avaliacoes.grade}}</font></td>
+                            {%for d in diretorias %}
+                                {%if d.id == avaliacoes.board_id %}
+                                    <td><font size=2>{{avaliacoes.title}}</font></td>
+                                {% else %}
+                                    <td><font size=2></font></td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                     {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br>
+         <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
+<!--         <a href="{% url 'avaliacao:avaliacao-pdf-list' 1 %}"><button type="button" class="btn btn-success">Gerar PDF</button></a>-->
+<!--         <a href="{% url 'avaliacao:avaliacao-excel-list' %}"><button type="button" class="btn btn-success">Gerar Excel</button></a>-->
+    </form>
+
+{% endblock conteudo_painel %}
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+</script>
+{% endblock js %}
+

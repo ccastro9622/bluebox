@@ -26,4 +26,5 @@ urlpatterns = [
     path("avaliacao_rel_list/", AvaliacaoRelListView.as_view(), name="avaliacao-rel-list"),
     path("avaliacao_pdf/<int:pk>", AvaliacaoPdfListView.as_view(), name="avaliacao-pdf-list"),
     path("avaliacao_excel/", export_users_csv, name="avaliacao-excel-list"),
+    path("avaliacao_rel_list_matriz/", AvaliacaoRelMatrizListView.as_view(), name="avaliacao-rel-list-matriz"),
 ]

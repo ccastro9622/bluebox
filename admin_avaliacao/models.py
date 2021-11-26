@@ -81,7 +81,7 @@ class Grades(models.Model):
     detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
 
     def __str__(self):
-        return f"{self.number}"  f" --- {self.minimum}"  f" --- {self.average}" f" --- {self.maximum}"
+        return f"{self.number}" # f" --- {self.minimum}"  f" --- {self.average}" f" --- {self.maximum}"
 
     class Meta:
         verbose_name = 'Grade'

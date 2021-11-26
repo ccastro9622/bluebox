@@ -44,11 +44,14 @@ class MatrizesAdmin(admin.ModelAdmin):
 
 @admin.register(Grades)
 class GradesAdmin(admin.ModelAdmin):
+    ordering = ('number',)
+    list_display = ['number','minimum','average','maximum']
     pass
 
 
 class NiveisAdmin(admin.ModelAdmin):
     ordering = ('factor', 'code', 'name',)
+    list_display = ['factor', 'code', 'name']
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'82'})},
     }

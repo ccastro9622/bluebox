@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from admin_avaliacao.models import Niveis
 from descricao.models import Descricao
+from master.models import Diretoria
 from report.mixins import PdfResponseMixin
 from tenants.utils import tenant_from_request, user_from_request
 
@@ -138,6 +139,25 @@ class AvaliacaoRelListView(LoginRequiredMixin, ListView):
         tenant_id = tenant_from_request(self.request)
         return super().get_queryset().filter(tenant_id=tenant_id).all()
 
+
+class AvaliacaoRelMatrizListView(LoginRequiredMixin, ListView):
+    template_name = 'avaliacao/avaliacao_rel_list_matriz.html'
+    model = Avaliacao
+    context_object_name = "avaliacoes"
+    # ordering = ['-grade']
+
+    def get_context_data(self, **kwargs):
+        context = super(AvaliacaoRelMatrizListView, self).get_context_data(**kwargs)
+        tenant_id = tenant_from_request(self.request)
+        context['diretorias'] = Diretoria.objects.filter(tenant_id=tenant_id)
+        return context
+
+    # def get_ordering(self):
+    #     ordering = self.request.GET.get('ordering', '-grade')
+    #     # validate ordering here
+    #     return ordering
+
+
 def mostra_pdf(request):
     filepath = os.path.join('static', '/home/cristiano/bluebox/staticfiles/pdf/manual_avaliacao.pdf')
     return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
@@ -248,15 +268,16 @@ def load_levels5(request):
 
 # Carregar as nivel 6 Gestao Recebida de acordo com o nivel3
 def load_levels6(request):
-    level3_id = request.GET.get('level3')
-    if '16' <= level3_id <= '23':
-        levels = Niveis.objects.filter(factor_id=6, code__in=[1, 2, 3]).order_by('id')
-    elif '24' <= level3_id <= '25':
-        levels = Niveis.objects.filter(factor_id=6, code__in=[4]).order_by('id')
-    elif level3_id == '26':
-        levels = Niveis.objects.filter(factor_id=6, code__in=[5]).order_by('id')
-    elif level3_id == '27':
-        levels = Niveis.objects.filter(factor_id=6, code__in=[6]).order_by('id')
+    # level3_id = request.GET.get('level3')
+    levels = Niveis.objects.filter(factor_id=6).order_by('id')
+    # if '16' <= level3_id <= '23':
+    #     levels = Niveis.objects.filter(factor_id=6, code__in=[1, 2, 3]).order_by('id')
+    # elif '24' <= level3_id <= '25':
+    #     levels = Niveis.objects.filter(factor_id=6, code__in=[4]).order_by('id')
+    # elif level3_id == '26':
+    #     levels = Niveis.objects.filter(factor_id=6, code__in=[5]).order_by('id')
+    # elif level3_id == '27':
+    #     levels = Niveis.objects.filter(factor_id=6, code__in=[6]).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 

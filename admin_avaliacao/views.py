@@ -1,7 +1,12 @@
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from avaliacao.models import Avaliacao
+from master.models import Diretoria
+from tenants.utils import tenant_from_request
 from .models import Familias, SubFamilias, Fatores, Niveis, Matrizes, Grades
+
+from django.views.generic.list import ListView
 
 
 class FamiliasDetailView(LoginRequiredMixin, DetailView):
@@ -32,3 +37,4 @@ class MatrizesDetailView(LoginRequiredMixin, DetailView):
 class GradesDetailView(LoginRequiredMixin, DetailView):
     model = Grades
     context_object_name = "grades"
+
