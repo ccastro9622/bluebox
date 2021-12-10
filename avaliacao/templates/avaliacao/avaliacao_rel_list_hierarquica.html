@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+    Relatório de Avaliações - Matriz
+<!--    <style>-->
+<!--      table {-->
+<!--        border-collapse: collapse;-->
+<!--      }-->
+<!--      td{-->
+<!--        padding: 10px;-->
+<!--        border: 2px solid black;-->
+<!--        text-align: center;-->
+<!--      }-->
+<!--      th-->
+<!--    </style>-->
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+
+
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12">
+            <table id="table_id" class="display" align="left" style="width:100%">
+
+                <thead>
+                    <tr>
+                        <th><font size=2>Grade</font></th>
+                        <th><font size=2>Cargos</font></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {%for avaliacoes in object_list %}
+                    <tr align="left">
+                        <td><font size=2>{{avaliacoes.grade}}</font></td>
+                        <td><font size=2><span style='border:1px black solid; align=center'>{{avaliacoes.title}} </span></font></td>
+<!--                            {%if d.id == avaliacoes.board_id %}-->
+<!--                                <td><font size=2>{{avaliacoes.title}}</font></td>-->
+<!--                            {% else %}-->
+<!--                                <td><font size=2></font></td>-->
+<!--                            {% endif %}-->
+
+                    </tr>
+                 {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+     <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
+<!--         <a href="{% url 'avaliacao:avaliacao-pdf-list' 1 %}"><button type="button" class="btn btn-success">Gerar PDF</button></a>-->
+<!--         <a href="{% url 'avaliacao:avaliacao-excel-matriz' %}"><button type="button" class="btn btn-success">Gerar Excel</button></a>-->
+</form>
+
+{% endblock conteudo_painel %}
+
+{% block js %}
+<script>
+    $(document).ready( function () {
+        $('#table_id').DataTable();
+    } );
+    $('#table_id').DataTable({
+        "order": [[ 0, "desc" ]]
+    } );
+</script>
+{% endblock js %}
+

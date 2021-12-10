@@ -25,6 +25,8 @@ class AvaliacaoForm(forms.ModelForm):
                   'factor5', 'level5', 'factor6', 'level6', 'factor7', 'level7',
                   'factor8', 'level8', 'ceo', 'point', 'grade']
 
+        title_super = forms.ModelChoiceField(queryset=Avaliacao.objects.all())
+
     # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
         tenant_id = kwargs.pop('tenant_id', None)
@@ -32,6 +34,7 @@ class AvaliacaoForm(forms.ModelForm):
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
+        # self.fields['title_super'].queryset = Avaliacao.objects.filter(tenant_id=tenant_id)
 
         self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1)
         self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2)

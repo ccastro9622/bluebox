@@ -1,6 +1,6 @@
 from django.db import models
 
-from admin_descricao.models import Formacao, Gerencia
+from admin_descricao.models import Formacao, Gerencia, Descricoes
 from admin_geral.models import Dimensao, Governanca, Tipoempresa, Origemcapital
 from master.models import Diretoria, Area
 from admin_avaliacao.models import Fatores, Niveis, SubFamilias, Familias

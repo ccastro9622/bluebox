@@ -56,7 +56,12 @@ class AvaliacaoCreateView(LoginRequiredMixin, CreateView):
             initial['governanca'] = empresa.governanca
             initial['company'] = empresa.company
             initial['size'] = empresa.size
-        return initial
+        # return initial
+
+        # avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id).first()
+        # if avaliacao:
+        #     initial['title_super'] = avaliacao.title
+        # return initial
 
     # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
     def form_valid(self, form):
@@ -144,7 +149,10 @@ class AvaliacaoRelMatrizListView(LoginRequiredMixin, ListView):
     template_name = 'avaliacao/avaliacao_rel_list_matriz.html'
     model = Avaliacao
     context_object_name = "avaliacoes"
-    # ordering = ['-grade']
+
+    def get_queryset(self):
+        tenant_id = tenant_from_request(self.request)
+        return super().get_queryset().filter(tenant_id=tenant_id).all()
 
     def get_context_data(self, **kwargs):
         context = super(AvaliacaoRelMatrizListView, self).get_context_data(**kwargs)
@@ -152,10 +160,15 @@ class AvaliacaoRelMatrizListView(LoginRequiredMixin, ListView):
         context['diretorias'] = Diretoria.objects.filter(tenant_id=tenant_id)
         return context
 
-    # def get_ordering(self):
-    #     ordering = self.request.GET.get('ordering', '-grade')
-    #     # validate ordering here
-    #     return ordering
+
+class AvaliacaoRelHierarquicaListView(LoginRequiredMixin, ListView):
+    template_name = 'avaliacao/avaliacao_rel_list_hierarquica.html'
+    model = Avaliacao
+    context_object_name = "avaliacoes"
+
+    def get_queryset(self):
+        tenant_id = tenant_from_request(self.request)
+        return super().get_queryset().filter(tenant_id=tenant_id).all()
 
 
 def mostra_pdf(request):
@@ -191,6 +204,22 @@ def export_users_csv(request):
                       ) for avaliacao in avaliacoes)
 
     return response
+
+# Chamado no batao de gerar excel do relatorio de acompanhamento
+def export_matriz_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="avaliacoes_matriz.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Grade', 'Cargo', 'Diretoria', 'Area', ])
+
+    avaliacoes = Avaliacao.objects.all()
+
+    writer.writerows((avaliacao.grade, avaliacao.title, avaliacao.board, avaliacao.area
+                      ) for avaliacao in avaliacoes)
+
+    return response
+
 
 # Carregar as areas de acordo com os diretorias
 def load_areas(request):
