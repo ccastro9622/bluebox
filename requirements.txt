@@ -18,6 +18,7 @@ dj-database-url==0.5.0
 Django==3.2.1
 django-cpf==0.1.0
 django-crispy-forms==1.11.2
+django_heroku==0.3.1
 -e git+https://github.com/chrisglass/django-xhtml2pdf.git@d3d7dc527788953adf02a6d99e37dee225bd8c51#egg=django_xhtml2pdf
 djangorestframework==3.12.4
 entrypoints==0.3
