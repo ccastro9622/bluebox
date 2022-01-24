@@ -7,6 +7,17 @@ from admin_avaliacao.models import Fatores, Niveis, SubFamilias, Familias
 from tenants.models import TenantAwareModel
 
 
+class Superior(TenantAwareModel):
+    title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
+
+    def __str__(self):
+        return f"{self.title}"
+
+    class Meta:
+        verbose_name = 'Superior'
+        verbose_name_plural = 'Superior'
+
+
 class Avaliacao(TenantAwareModel):
     title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
     manage_team = models.ForeignKey(Gerencia, on_delete=models.PROTECT, verbose_name='Gerencia')
@@ -17,7 +28,9 @@ class Avaliacao(TenantAwareModel):
     family = models.ForeignKey(Familias, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Familia')
     sub_familia = models.ForeignKey(SubFamilias, null=True, blank=True, on_delete=models.PROTECT,
                                     verbose_name='SubFamilia')
-    title_super = models.CharField(max_length=255, verbose_name='Cargo do Superior', blank=True, null=True, default="")
+    title_super = models.ForeignKey(Superior, null=True, blank=True, on_delete=models.PROTECT,
+                                    verbose_name='Superior')
+    #models.CharField(max_length=255, verbose_name='Cargo do Superior', blank=True, null=True, default="")
 
     origin = models.ForeignKey(Origemcapital, null=True, blank=True, on_delete=models.PROTECT,
                                verbose_name='Origem de Capital')
