@@ -22,7 +22,6 @@ django-crispy-forms==1.11.2
 django-heroku==0.3.1
 django-import-export==2.5.0
 django-input-mask==2.0.2
-django-localflavor-br==1.0
 -e git+https://github.com/chrisglass/django-xhtml2pdf.git@d3d7dc527788953adf02a6d99e37dee225bd8c51#egg=django_xhtml2pdf
 djangorestframework==3.12.4
 entrypoints==0.3
