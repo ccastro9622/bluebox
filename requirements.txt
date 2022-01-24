@@ -17,6 +17,7 @@ distro==1.4.0
 dj-database-url==0.5.0
 Django==3.2.1
 django-cpf==0.1.0
+django-cpf-cnpj==1.0.0
 django-crispy-forms==1.11.2
 django_heroku==0.3.1
 django-import-export==2.5.0
