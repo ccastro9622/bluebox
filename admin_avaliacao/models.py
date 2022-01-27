@@ -3,7 +3,7 @@ from django.db import models
 
 class Familias(models.Model):
     name = models.CharField(max_length=255, verbose_name='Nome',unique=True)
-    detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
+    detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
@@ -17,7 +17,7 @@ class Familias(models.Model):
 class SubFamilias(models.Model):
     name = models.CharField(max_length=255, verbose_name='Nome')
     family = models.ForeignKey(Familias, on_delete=models.PROTECT, verbose_name='Familia')
-    detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
+    detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):

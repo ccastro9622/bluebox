@@ -4,6 +4,9 @@ from .models import Formacao, Areas, Idiomas, Habilitacoes, Especializacoes, Des
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
+from django.forms import TextInput, Textarea
+from django.db import models
+
 
 @admin.register(Formacao)
 class FormacaoAdmin(admin.ModelAdmin):
@@ -50,6 +53,9 @@ class DescricoesResource(resources.ModelResource):
 
 class DescricoesAdminImp(ImportExportModelAdmin):
     resource_class = DescricoesResource
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size': '82'})},
+    }
 
 
 admin.site.register(Descricoes, DescricoesAdminImp)

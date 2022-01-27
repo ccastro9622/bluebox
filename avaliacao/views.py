@@ -242,7 +242,7 @@ def load_levels1(request):
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 2 formação de acordo com a formação do cargo
+# Carregar as nivel 2 Nivel Organizacional de acordo com a formação do cargo
 def load_levels2(request):
     formation_id = request.GET.get('formation')
     if formation_id != '11':
@@ -253,7 +253,7 @@ def load_levels2(request):
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 3 formação de acordo com o nivel2
+# Carregar o nivel 3 Escopo com o nivel2 Nivel organizacional
 def load_levels3(request):
     level2_id = request.GET.get('level2')
     if level2_id == '12':
@@ -268,7 +268,7 @@ def load_levels3(request):
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 4  de acordo com 1 executivo
+# Carregar as nivel 4 Gestão Recebida de acordo com 1 executivo
 def load_levels4(request):
     ceo_id = request.GET.get('ceo')
     if ceo_id == 'true':
@@ -281,7 +281,7 @@ def load_levels4(request):
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 5  de acordo com 1 executivo
+# Carregar as nivel 5 liderança de acordo com 1 executivo
 def load_levels5(request):
     ceo_id = request.GET.get('ceo')
     if ceo_id == 'true':
@@ -292,7 +292,6 @@ def load_levels5(request):
         levels = Niveis.objects.filter(factor_id=5).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
-
 
 
 # Carregar as nivel 6 Gestao Recebida de acordo com o nivel3

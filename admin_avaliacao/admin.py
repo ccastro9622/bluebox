@@ -18,10 +18,17 @@ class FamiliasAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(SubFamilias)
+# @admin.register(SubFamilias)
+# class SubFamiliasAdmin(admin.ModelAdmin):
+#     ordering = ('name',)
+#     pass
+
 class SubFamiliasAdmin(admin.ModelAdmin):
-    ordering = ('name',)
-    pass
+    ordering = ('family', 'name',)
+    list_display = ['family', 'name']
+
+
+admin.site.register(SubFamilias, SubFamiliasAdmin)
 
 
 @admin.register(Fatores)

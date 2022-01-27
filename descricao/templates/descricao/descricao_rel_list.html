@@ -6,50 +6,50 @@
 
 {% block conteudo_painel %}
 
-    <form method="post">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-md-12">
-                <table id="table_id" class="display" align="center" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Cargo</th>
-                            <th>Status</th>
-                            <th>Criador</th>
-                            <th>Aprovador</th>
-                            <th>Data</th>
-                            <th>E-mail</th>
-                            <th>Envio</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {%for descricao in object_list %}
-                        <tr>
-                            <td>{{descricao.title}}</td>
-                            <td>{{descricao.status}}</td>
-                            <td>{{descricao.user_id}}</td>
-                            <td>{{descricao.approver}}</td>
-                            <td>{{descricao.date_conclusion}}</td>
-                            <td>{{descricao.approver.email}}</td>
-                            {% if descricao.approver.email == null %}
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12">
+            <table id="table_id" class="display" align="center" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Cargo</th>
+                        <th>Status</th>
+                        <th>Criador</th>
+                        <th>Aprovador</th>
+                        <th>Data</th>
+                        <th>E-mail</th>
+                        <th>Envio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {%for descricao in object_list %}
+                    <tr>
+                        <td>{{descricao.title}}</td>
+                        <td>{{descricao.status}}</td>
+                        <td>{{descricao.user_id}}</td>
+                        <td>{{descricao.approver}}</td>
+                        <td>{{descricao.date_conclusion}}</td>
+                        <td>{{descricao.approver.email}}</td>
+                        {% if descricao.approver.email == null %}
 
-                            {% else %}
-                                <td><a href="{% url 'descricao:descricao-email' descricao.title descricao.approver.email %}"> <center><i class="far fa-envelope"></i></center></a></td>
-                            {% endif %}
+                        {% else %}
+                            <td><a href="{% url 'descricao:descricao-email' descricao.title descricao.approver.email %}"> <center><i class="far fa-envelope"></i></center></a></td>
+                        {% endif %}
 
 
 
-                        </tr>
-                     {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                 {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <br>
-         <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
-         <a href="{% url 'descricao:descricao-pdf-list' 1 %}"><button type="button" class="btn btn-success">Gerar PDF</button></a>
-         <a href="{% url 'descricao:descricao-excel-list' %}"><button type="button" class="btn btn-success">Gerar Excel</button></a>
-    </form>
+    </div>
+    <br>
+     <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
+     <a href="{% url 'descricao:descricao-pdf-list' 1 %}"><button type="button" class="btn btn-success">Gerar PDF</button></a>
+     <a href="{% url 'descricao:descricao-excel-list' %}"><button type="button" class="btn btn-success">Gerar Excel</button></a>
+</form>
 
 {% endblock conteudo_painel %}
 

@@ -97,17 +97,17 @@ class Gerencia(models.Model):
 
 class Descricoes(models.Model):
     title = models.CharField(max_length=255, verbose_name='Título do Cargo', unique=True)
-    cbo = models.CharField(max_length=255, verbose_name='CBO', default="")
-    summary = models.CharField(max_length=255, verbose_name='Sumário do Cargo', default="")
-    summary_goal = models.CharField(max_length=255, verbose_name='Objetivo do Cargo', default="")
-    summary_coverage = models.CharField(max_length=255, verbose_name='Abrangência do Cargo', default="")
-    responsibility = models.CharField(max_length=255, verbose_name='Responsabilidades', default="")
+    cbo = models.TextField(max_length=1000, verbose_name='CBO', default="", blank=True, null=True)
+    summary = models.TextField(max_length=1000, verbose_name='Sumário do Cargo', default="")
+    summary_goal = models.TextField(max_length=1000, verbose_name='Objetivo do Cargo', default="")
+    summary_coverage = models.TextField(max_length=1000, verbose_name='Abrangência do Cargo', default="")
+    responsibility = models.TextField(max_length=1000, verbose_name='Principais Responsabilidades', default="")
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formação')
     areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação')
-    specialization = models.ForeignKey(Especializacoes, on_delete=models.PROTECT, verbose_name='Especializações')
+    specialization = models.ForeignKey(Especializacoes, on_delete=models.PROTECT, verbose_name='Especializações', blank=True, null=True)
     area_specialization = models.CharField(max_length=255, verbose_name='Área de Especialização', default="")
     experience = models.ForeignKey(Experiencias, on_delete=models.PROTECT, verbose_name='Experiência')
-    qualification = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, verbose_name='Habilitação')
+    qualification = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, verbose_name='Habilitação/Certificação Obrigatória', null=True, blank=True)
 
     def __str__(self):
         return f"{self.title}"

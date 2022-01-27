@@ -31,7 +31,7 @@ class DiretoriaDeleteView(LoginRequiredMixin, DeleteView):
 
 class DiretoriaCreateView(LoginRequiredMixin, CreateView):
     model = Diretoria
-    fields = ['name']  # preencher todos os da views.py
+    fields = ['name', 'is_active']  # preencher todos os da views.py
     success_url = reverse_lazy("master:diretoria-list")
 
     # Forçar o preencimento do tenant_id com o tenant_id do usuario logado
@@ -43,7 +43,7 @@ class DiretoriaCreateView(LoginRequiredMixin, CreateView):
 
 class DiretoriaUpdateView(LoginRequiredMixin, UpdateView):
     model = Diretoria
-    fields = ['name', 'tenant']  # preencher todos os da views.py
+    fields = ['name', 'tenant', 'is_active']  # preencher todos os da views.py
     success_url = reverse_lazy("master:diretoria-list")
 
 
