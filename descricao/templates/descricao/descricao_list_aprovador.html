@@ -1,17 +1,11 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-    Lista de Descrições de Cargo
+    Define Aprovador
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
 
-    <a id="add-link" href="{% url 'descricao:descricao-create' %}">
-        <div class="col-2 add-div">
-            <i class="fas fa-plus"></i> Adicionar Descrição de Cargo
-        </div>
-    </a>
-    <br>
 
     <form method="post">
         {% csrf_token %}
@@ -32,13 +26,8 @@
                         <tr>
                             <td>{{descricao.title}}</td>
                             <td>{{descricao.status}}</td>
-                            {% if descricao.status.id == 4 %}
-                                <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
-                                <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
-                            {% else %}
-                                <td><a href="{% url 'descricao:descricao-update' descricao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
-                                <td><a href="{% url 'descricao:descricao-delete' descricao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
-                            {% endif %}
+                            <td><a href="{% url 'descricao:descricao-update-aprovador' descricao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
+                            <td><a href="{% url 'descricao:descricao-delete' descricao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
                             <td><a href="{% url 'descricao:descricao-pdf' descricao.id %}"><center><i class="far fa-file-alt"></i></center></a></td>
                         </tr>
                      {% endfor %}

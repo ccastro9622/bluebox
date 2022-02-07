@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-   Cadastro/Alteração da Descrição
+   Define Aprovador
 {% endblock titulo_painel %}
 
 
@@ -108,9 +108,9 @@
             <div class="col-md-4">
                 {{ form.information|as_crispy_field }}
             </div>
-<!--            <div class="col-md-4">-->
-<!--                {{ form.approver|as_crispy_field }}-->
-<!--            </div>-->
+            <div class="col-md-4">
+                {{ form.approver|as_crispy_field }}
+            </div>
         </div>
 
 <!--        <div class="row">-->
@@ -125,7 +125,7 @@
 
     <br>
     <button type="submit" class="btn btn-success">Salvar</button>
-    <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+    <a href="{% url 'descricao:descricao-list-aprovador' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
 
 </form>
 

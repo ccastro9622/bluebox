@@ -74,7 +74,7 @@ class Experiencias(models.Model):
 
 
 class Status(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True, null=False, default="")
 
     def __str__(self):
         return f"{self.name}"
@@ -85,7 +85,7 @@ class Status(models.Model):
 
 
 class Gerencia(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome', unique=True, null=False, default="")
 
     def __str__(self):
         return f"{self.name}"

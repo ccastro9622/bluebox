@@ -27,4 +27,8 @@ urlpatterns = [
     path("descricaomodelo_list/", DescricaomodeloListView.as_view(), name="descricaomodelo-list"),
     # path("tenants/<int:pk>/documents/", TenantDocumentViewSet.as_view({"get": "list"})),
     # path("document/", DocumentListView.as_view(), name="document-list"),
+    path("descricao_list_aprovador/", DescricaoAprovadorListView.as_view(), name="descricao-list-aprovador"),
+    path("descricao/update/aprovador/<int:pk>", DescricaoAprovadorUpdateView.as_view(), name="descricao-update-aprovador"),
+    path("descricao_list_aprovacao/", DescricaoAprovacaoListView.as_view(), name="descricao-list-aprovacao"),
+    path("descricao/update/aprovacao/<int:pk>", DescricaoAprovacaoUpdateView.as_view(), name="descricao-update-aprovacao"),
 ]

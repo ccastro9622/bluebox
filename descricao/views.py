@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from tenants.utils import tenant_from_request, user_from_request
 from report.mixins import PdfResponseMixin
-from .forms import DescricaoForm, DescricaoModeloForm
+from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm
 from .models import Descricao, Area, SubFamilias
 from admin_descricao.models import Descricoes
 
@@ -50,6 +50,28 @@ class DescricaoListView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(tenant_id=tenant_id).all()
 
 
+class DescricaoAprovadorListView(LoginRequiredMixin, ListView):
+    template_name = 'descricao/descricao_list_aprovador.html'
+    model = Descricao
+    context_object_name = "descricao"
+
+    def get_queryset(self):
+        tenant_id = tenant_from_request(self.request)
+        return super().get_queryset().filter(tenant_id=tenant_id, status=2).all()
+
+
+class DescricaoAprovacaoListView(LoginRequiredMixin, ListView):
+    template_name = 'descricao/descricao_list_aprovacao.html'
+    model = Descricao
+    context_object_name = "descricao"
+
+    def get_queryset(self):
+        tenant_id = tenant_from_request(self.request)
+        user_id = user_from_request(self.request)
+        return super().get_queryset().filter(tenant_id=tenant_id, status=3, approver_id=user_id).all()
+
+
+# usado na avaliacao para buscar um modelo.
 class DescricaomodeloListView(LoginRequiredMixin, ListView):
     template_name = 'descricao/descricaomodelo_list.html'
     model = Descricao
@@ -57,7 +79,7 @@ class DescricaomodeloListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         tenant_id = tenant_from_request(self.request)
-        return super().get_queryset().filter(tenant_id=tenant_id, status=3).all()
+        return super().get_queryset().filter(tenant_id=tenant_id, status=4).all()
 
 
 class DescricaoRelListView(LoginRequiredMixin, ListView):
@@ -103,6 +125,7 @@ def export_users_csv(request):
 
     return response
 
+
 class DescricaoDeleteView(LoginRequiredMixin, DeleteView):
     model = Descricao
     context_object_name = "descricao"
@@ -116,7 +139,7 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(DescricaoCreateView, self).get_initial(**kwargs)
-        initial['status'] = "Aberto"
+        initial['status'] = 1
         return initial
 
     # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
@@ -156,7 +179,7 @@ class DescricaoModeloCreateView(LoginRequiredMixin, CreateView):
             initial['area_specialization'] = descricao_admin.area_specialization
             initial['experience'] = descricao_admin.experience
             initial['qualification'] = descricao_admin.qualification
-            initial['status'] = "Aberto"
+            initial['status'] = 1
         return initial
 
     # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
@@ -185,6 +208,46 @@ class DescricaoUpdateView(LoginRequiredMixin, UpdateView):
         kwargs = super(DescricaoUpdateView, self).get_form_kwargs()
         tenant_id = tenant_from_request(self.request)
         kwargs['tenant_id'] = tenant_id
+        return kwargs
+
+
+class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'descricao/descricao_form_aprovador.html'
+    model = Descricao
+    form_class = DescricaoAprovadorForm
+    success_url = reverse_lazy("descricao:descricao-list-aprovador")
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(DescricaoAprovadorUpdateView, self).get_initial(**kwargs)
+        initial['status'] = 3
+        return initial
+
+    # pegar o tenant do usuario logado para filtrar a dropdonw
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(DescricaoAprovadorUpdateView, self).get_form_kwargs()
+        tenant_id = tenant_from_request(self.request)
+        kwargs['tenant_id'] = tenant_id
+        return kwargs
+
+
+class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'descricao/descricao_form_aprovacao.html'
+    model = Descricao
+    form_class = DescricaoAprovacaoForm
+    success_url = reverse_lazy("descricao:descricao-list-aprovacao")
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(DescricaoAprovacaoUpdateView, self).get_initial(**kwargs)
+        initial['status'] = 4
+        return initial
+
+    # pegar o tenant do usuario logado para filtrar a dropdonw
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(DescricaoAprovacaoUpdateView, self).get_form_kwargs()
+        tenant_id = tenant_from_request(self.request)
+        user_id = user_from_request(self.request)
+        kwargs['tenant_id'] = tenant_id
+        kwargs['user_id'] = user_id
         return kwargs
 
 
