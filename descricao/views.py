@@ -215,7 +215,12 @@ class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'descricao/descricao_form_aprovador.html'
     model = Descricao
     form_class = DescricaoAprovadorForm
-    success_url = reverse_lazy("descricao:descricao-list-aprovador")
+    # success_url = reverse_lazy("descricao:descricao-list-aprovador")
+    # success_url = reverse_lazy("descricao:descricao-email",
+    #                            kwargs={'title':  , 'email: '})
+    # reverse_lazy('accounts:detail', kwargs={'id': 10})
+    # href = "{% url 'descricao:descricao-email' descricao.title descricao.approver.email %}"
+    # render(request, 'descricao/area_dropdown_list_options.html', {'areas': areas})
 
     def get_initial(self, *args, **kwargs):
         initial = super(DescricaoAprovadorUpdateView, self).get_initial(**kwargs)
@@ -228,6 +233,10 @@ class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
         tenant_id = tenant_from_request(self.request)
         kwargs['tenant_id'] = tenant_id
         return kwargs
+
+    def get_success_url(self):
+        descricao = self.get_object()
+        return reverse_lazy("descricao:descricao-email", kwargs={'title': descricao.title, 'email': descricao.approver.email})
 
 
 class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):

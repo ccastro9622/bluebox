@@ -31,13 +31,9 @@
                         <td>{{descricao.approver}}</td>
                         <td>{{descricao.date_conclusion}}</td>
                         <td>{{descricao.approver.email}}</td>
-                        {% if descricao.approver.email == null %}
-
-                        {% else %}
+                        {% if descricao.status.id == 3 %}
                             <td><a href="{% url 'descricao:descricao-email' descricao.title descricao.approver.email %}"> <center><i class="far fa-envelope"></i></center></a></td>
                         {% endif %}
-
-
 
                     </tr>
                  {% endfor %}

@@ -77,6 +77,7 @@ class DescricaoModeloForm(forms.ModelForm):
         self.fields['approver'].queryset = CustomUser.objects.filter(default_tenant=tenant_id)
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
+        self.fields['status'].queryset = Status.objects.filter(id__in=[1, 2])
 
         # Filtra a area pela diretoria
         if 'board' in self.data:
