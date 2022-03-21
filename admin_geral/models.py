@@ -59,8 +59,8 @@ class Tipoempresa(models.Model):
         return f"{self.name}"
 
     class Meta:
-        verbose_name = 'Tipo de Empresa'
-        verbose_name_plural = '  Tipos de Empresa'
+        verbose_name = 'Constituição do Capital'
+        verbose_name_plural = '  Constituição do Capital'
 
 
 class Governanca(models.Model):
@@ -81,5 +81,5 @@ class Dimensao(models.Model):
         return f"{self.name}"
 
     class Meta:
-        verbose_name = 'Dimensão'
-        verbose_name_plural = 'Dimensões'
+        verbose_name = 'Dimensão Financeira'
+        verbose_name_plural = 'Dimensões Financeiras'

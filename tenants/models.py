@@ -49,7 +49,7 @@ class Tenant(models.Model):
     origin = models.ForeignKey(Origemcapital, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Origem de Capital')
     company = models.ForeignKey(Tipoempresa, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Tipo de Empresa')
     governanca = models.ForeignKey(Governanca, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Governança')
-    size = models.ForeignKey(Dimensao, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Dimensão')
+    size = models.ForeignKey(Dimensao, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Dimensão Anual')
 
     # name = models.CharField(max_length=100)
 

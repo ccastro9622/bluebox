@@ -11,6 +11,7 @@ class PlansAdmin(admin.ModelAdmin):
 @admin.register(Sector)
 class Sectordmin(admin.ModelAdmin):
     ordering = ('name',)
+    list_display = ['name', 'is_active']
     pass
 
 
@@ -36,5 +37,5 @@ class Governancaadmin(admin.ModelAdmin):
 
 @admin.register(Dimensao)
 class Dimensaoadmin(admin.ModelAdmin):
-    ordering = ('name',)
+    ordering = ('id',)
     pass

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-    Relatório de Avaliações - Estrutural
+    Relatório - Avaliações Detalhadas
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
@@ -10,7 +10,7 @@
         {% csrf_token %}
         <div class="row">
             <div class="col-md-12">
-                <table id="table_id" class="display" align="center" style="width:100%">
+                <table id="table_id" class="display"  style="width:100%">
 
                     <thead>
                         <tr>
@@ -31,7 +31,7 @@
 
                     <tbody>
                     {%for avaliacao in object_list %}
-                        <tr align="center">
+                        <tr align="left">
 
                             <td><font size=1>{{avaliacao.title}}</font></td>
 <!--                            <td><font size=1>{{avaliacao.board}}</font></td>-->

@@ -19,8 +19,8 @@ class Superior(TenantAwareModel):
 
 
 class Avaliacao(TenantAwareModel):
-    title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
-    manage_team = models.ForeignKey(Gerencia, on_delete=models.PROTECT, verbose_name='Gerencia')
+    title = models.CharField(max_length=255, verbose_name='Título do Cargo', null=False, default="", unique=True)
+    manage_team = models.ForeignKey(Gerencia, on_delete=models.PROTECT, verbose_name='Gestão de Equipe')
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formacao',
                                   blank=True, null=True, default="")
     board = models.ForeignKey(Diretoria, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Diretoria')
@@ -29,7 +29,7 @@ class Avaliacao(TenantAwareModel):
     sub_familia = models.ForeignKey(SubFamilias, null=True, blank=True, on_delete=models.PROTECT,
                                     verbose_name='SubFamilia')
     title_super = models.ForeignKey(Superior, null=True, blank=True, on_delete=models.PROTECT,
-                                    verbose_name='Superior')
+                                    verbose_name='Cargo Superior Imediato')
     #models.CharField(max_length=255, verbose_name='Cargo do Superior', blank=True, null=True, default="")
 
     origin = models.ForeignKey(Origemcapital, null=True, blank=True, on_delete=models.PROTECT,
@@ -41,7 +41,7 @@ class Avaliacao(TenantAwareModel):
     size = models.ForeignKey(Dimensao, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Dimensão')
     ceo = models.BooleanField(default='false', verbose_name='1º Executivo', null=True)
 
-    factor1 = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fatores', related_name='factor1', default = 1)
+    factor1 = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fatores de Avaliação', related_name='factor1', default = 1)
     level1 = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name='Níveis', related_name='level1')
     factor2 = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name=' ', related_name='factor2', default = 2)
     level2 = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name=' ', related_name='level2')

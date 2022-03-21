@@ -15,17 +15,15 @@
       data-levels5-url="{% url 'avaliacao:ajax_load_levels5' %}"
       data-levels6-url="{% url 'avaliacao:ajax_load_levels6' %}"
       data-levels7-url="{% url 'avaliacao:ajax_load_levels7' %}"
-      data-levels8-url="{% url 'avaliacao:ajax_load_levels8' %}">{% csrf_token %}
+      data-levels8-url="{% url 'avaliacao:ajax_load_levels8' %}"
+      data-title-super-url="{% url 'avaliacao:ajax_load_title_super' %}">{% csrf_token %}
 
      <div class="row">
         <div class="col-md-4">
               {{ form.ceo|as_crispy_field }}
         </div>
-        <div class="col-md-4">
-            {{ form.point|as_crispy_field }}
-        </div>
-        <div class="col-md-4">
-            {{ form.grade|as_crispy_field }}
+         <div class="col-md-4">
+              {{ form.manage_team|as_crispy_field }}
         </div>
      </div>
     <br>
@@ -33,44 +31,22 @@
         <div class="col-md-4">
             {{ form.title|as_crispy_field }}
         </div>
-        <div class="col-md-4">
-            {{ form.manage_team|as_crispy_field }}
-        </div>
-        <div class="col-md-4">
-            {{ form.formation|as_crispy_field }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
+         <div class="col-md-4">
             {{ form.board|as_crispy_field }}
         </div>
         <div class="col-md-4">
             {{ form.area|as_crispy_field }}
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-4">
             {{ form.title_super|as_crispy_field }}
         </div>
-    </div>
-    <div class="row">
         <div class="col-md-4">
             {{ form.family|as_crispy_field }}
         </div>
         <div class="col-md-4">
             {{ form.sub_familia|as_crispy_field }}
-        </div>
-        <div class="col-md-4">
-            {{ form.origin|as_crispy_field }}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
-            {{ form.company|as_crispy_field }}
-        </div>
-        <div class="col-md-4">
-            {{ form.governanca|as_crispy_field }}
-        </div>
-        <div class="col-md-4">
-            {{ form.size|as_crispy_field }}
         </div>
     </div>
     <br>
@@ -139,6 +115,15 @@
         </div>
     </div>
     <br>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.point|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.grade|as_crispy_field }}
+        </div>
+    </div>
+    <br>
 
     <button type="submit" class="btn btn-success">Salvar</button>
     <a href="{% url 'avaliacao:avaliacao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
@@ -178,31 +163,21 @@ $("#id_family").change(function () {
   });
 });
 
-$("#id_formation").change(function () { // 1 - 2 - Formacao e Nivel
-  var url = $("#avaliacaoForm").attr("data-levels1-url");// get the url of the `load_cities` view
-  var url1 = $("#avaliacaoForm").attr("data-levels2-url");
-  var formationId = $(this).val();  // get the selected country ID from the HTML input
+$("#id_level1").change(function () { // 1 - 2 - Formacao e Nivel organizacional
+  var url = $("#avaliacaoForm").attr("data-levels2-url");
+  var id_level1Id = $(this).val();  // get the selected country ID from the HTML input
 
   $.ajax({                       // initialize an AJAX request
     url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
     data: {
-      'formation': formationId       // add the country id to the GET parameters
-    },
-    success: function (data) {   // `data` is the return of the `load_cities` view function
-      $("#id_level1").html(data);  // replace the contents of the city input with the data that came from the server
-    }
-  });
-
-  $.ajax({                       // initialize an AJAX request
-    url: url1,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-    data: {
-      'formation': formationId       // add the country id to the GET parameters
+      'level1': id_level1Id       // add the country id to the GET parameters
     },
     success: function (data) {   // `data` is the return of the `load_cities` view function
       $("#id_level2").html(data);  // replace the contents of the city input with the data that came from the server
     }
   });
 });
+
 
 $("#id_level2").change(function () { // 3 - Escopo
   var url = $("#avaliacaoForm").attr("data-levels3-url");  // get the url of the `load_cities` view
@@ -222,6 +197,7 @@ $("#id_level2").change(function () { // 3 - Escopo
 $("#id_ceo").change(function () { // 4 - 5 - Abrangencia e contribuicao
   var url = $("#avaliacaoForm").attr("data-levels4-url");// get the url of the `load_cities` view
   var url1 = $("#avaliacaoForm").attr("data-levels5-url");
+  var url2 = $("#avaliacaoForm").attr("data-title-super-url");
   var ceoId = $(this).val();  // get the selected country ID from the HTML input
 
   $.ajax({                       // initialize an AJAX request
@@ -242,6 +218,17 @@ $("#id_ceo").change(function () { // 4 - 5 - Abrangencia e contribuicao
     },
     success: function (data) {   // `data` is the return of the `load_cities` view function
       $("#id_level5").html(data);  // replace the contents of the city input with the data that came from the server
+    }
+  });
+
+
+  $.ajax({                       // initialize an AJAX request
+    url: url2,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+    data: {
+      'ceo': ceoId       // add the country id to the GET parameters
+    },
+    success: function (data) {   // `data` is the return of the `load_cities` view function
+      $("#id_title_super").html(data);  // replace the contents of the city input with the data that came from the server
     }
   });
 });

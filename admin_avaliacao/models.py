@@ -15,8 +15,8 @@ class Familias(models.Model):
 
 
 class SubFamilias(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
-    family = models.ForeignKey(Familias, on_delete=models.PROTECT, verbose_name='Familia')
+    name = models.CharField(max_length=255, verbose_name='SubFamília')
+    family = models.ForeignKey(Familias, on_delete=models.PROTECT, limit_choices_to={'is_active': True}, verbose_name='Familia')
     detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
@@ -24,6 +24,7 @@ class SubFamilias(models.Model):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["family"]
         verbose_name = ' SubFamilia'
         verbose_name_plural = '     Sub-Familias de Cargo'
 

@@ -36,6 +36,15 @@ class AvaliacaoForm(forms.ModelForm):
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         # self.fields['title_super'].queryset = Avaliacao.objects.filter(tenant_id=tenant_id)
 
+        self.fields['factor1'].queryset = Fatores.objects.filter(id=1)
+        self.fields['factor2'].queryset = Fatores.objects.filter(id=2)
+        self.fields['factor3'].queryset = Fatores.objects.filter(id=3)
+        self.fields['factor4'].queryset = Fatores.objects.filter(id=4)
+        self.fields['factor5'].queryset = Fatores.objects.filter(id=5)
+        self.fields['factor6'].queryset = Fatores.objects.filter(id=6)
+        self.fields['factor7'].queryset = Fatores.objects.filter(id=7)
+        self.fields['factor8'].queryset = Fatores.objects.filter(id=8)
+
         self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1)
         self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2)
         self.fields['level3'].queryset = Niveis.objects.filter(factor_id=3)
@@ -44,6 +53,8 @@ class AvaliacaoForm(forms.ModelForm):
         self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6)
         self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7)
         self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8)
+
+
 
 
 # Filtra a area pela diretoria
@@ -105,7 +116,16 @@ class AvaliacaoModeloForm(forms.ModelForm):
         # self.fields['area'].queryset = Area.objects.none()
         # self.fields['sub_familia'].queryset = SubFamilias.objects.none()
 
-        self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, name=formation[5:])
+        self.fields['factor1'].queryset = Fatores.objects.filter(id=1)
+        self.fields['factor2'].queryset = Fatores.objects.filter(id=2)
+        self.fields['factor3'].queryset = Fatores.objects.filter(id=3)
+        self.fields['factor4'].queryset = Fatores.objects.filter(id=4)
+        self.fields['factor5'].queryset = Fatores.objects.filter(id=5)
+        self.fields['factor6'].queryset = Fatores.objects.filter(id=6)
+        self.fields['factor7'].queryset = Fatores.objects.filter(id=7)
+        self.fields['factor8'].queryset = Fatores.objects.filter(id=8)
+
+        self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1) # , name=formation[5:])
         self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2)
         self.fields['level3'].queryset = Niveis.objects.filter(factor_id=3)
         self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4)

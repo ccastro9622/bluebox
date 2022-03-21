@@ -14,7 +14,7 @@ from master.models import Diretoria
 from report.mixins import PdfResponseMixin
 from tenants.utils import tenant_from_request, user_from_request
 
-from .models import Avaliacao, Area, SubFamilias
+from .models import Avaliacao, Area, SubFamilias, Superior
 from .forms import AvaliacaoForm, AvaliacaoModeloForm
 from tenants.models import Tenant
 
@@ -56,7 +56,7 @@ class AvaliacaoCreateView(LoginRequiredMixin, CreateView):
             initial['governanca'] = empresa.governanca
             initial['company'] = empresa.company
             initial['size'] = empresa.size
-        # return initial
+        return initial
 
         # avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id).first()
         # if avaliacao:
@@ -244,7 +244,7 @@ def load_levels1(request):
 
 # Carregar as nivel 2 Nivel Organizacional de acordo com a formação do cargo
 def load_levels2(request):
-    formation_id = request.GET.get('formation')
+    formation_id = request.GET.get('level1')
     if formation_id != '11':
         levels = Niveis.objects.filter(factor_id=2, code__in=[1, 2]).order_by('id')
     else:
@@ -292,6 +292,19 @@ def load_levels5(request):
         levels = Niveis.objects.filter(factor_id=5).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
+
+
+# Carregar as nivel 5 liderança de acordo com 1 executivo
+def load_title_super(request):
+    ceo_id = request.GET.get('ceo')
+    if ceo_id == 'true':
+        superiores = Superior.objects.filter(id=0).order_by('id')
+    elif ceo_id == 'false':
+        superiores = Superior.objects.filter().order_by('id')
+    else:
+        superiores = Superior.objects.filter().order_by('id')
+
+    return render(request, 'avaliacao/title_super_dropdown_list_options.html', {'superiores': superiores})
 
 
 # Carregar as nivel 6 Gestao Recebida de acordo com o nivel3

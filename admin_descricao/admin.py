@@ -11,12 +11,14 @@ from django.db import models
 @admin.register(Formacao)
 class FormacaoAdmin(admin.ModelAdmin):
     ordering = ('code', 'name' )
+    list_display = ['code','name', 'is_active']
     pass
 
 
 @admin.register(Areas)
 class AreasAdmin(admin.ModelAdmin):
     ordering = ('name',)
+    list_display = ['name', 'is_active']
     pass
 
 
@@ -29,12 +31,14 @@ class IdiomasAdmin(admin.ModelAdmin):
 @admin.register(Habilitacoes)
 class HabilitacoesAdmin(admin.ModelAdmin):
     ordering = ('name',)
+    list_display = ['name', 'is_active']
     pass
 
 
 @admin.register(Especializacoes)
 class EspecializacoesAdmin(admin.ModelAdmin):
     ordering = ('name',)
+    list_display = ['name', 'is_active']
     pass
 
 
