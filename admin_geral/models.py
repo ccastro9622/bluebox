@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Plans(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
     detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
     value = models.DecimalField(max_digits=8, decimal_places=2, default=0, verbose_name='Valor')
     discount = models.CharField(max_length=255, verbose_name='Cupom', blank=True, default="")
@@ -18,7 +18,7 @@ class Plans(models.Model):
 
 
 class Sector(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
@@ -30,7 +30,7 @@ class Sector(models.Model):
 
 
 class Nivelcargo(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    name = models.CharField(max_length=255, verbose_name='Nome*')
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
@@ -42,7 +42,7 @@ class Nivelcargo(models.Model):
 
 
 class Origemcapital(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -53,7 +53,7 @@ class Origemcapital(models.Model):
 
 
 class Tipoempresa(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    name = models.CharField(max_length=255, verbose_name='Nome*')
 
     def __str__(self):
         return f"{self.name}"
@@ -64,7 +64,7 @@ class Tipoempresa(models.Model):
 
 
 class Governanca(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -75,7 +75,7 @@ class Governanca(models.Model):
 
 
 class Dimensao(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    name = models.CharField(max_length=255, verbose_name='Nome*')
 
     def __str__(self):
         return f"{self.name}"
@@ -83,3 +83,14 @@ class Dimensao(models.Model):
     class Meta:
         verbose_name = 'Dimensão Financeira'
         verbose_name_plural = 'Dimensões Financeiras'
+
+
+class Core(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome*')
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Core da Empresa'
+        verbose_name_plural = 'Core da Empresa'

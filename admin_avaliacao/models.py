@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Familias(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome',unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome*',unique=True)
     detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
@@ -15,8 +15,8 @@ class Familias(models.Model):
 
 
 class SubFamilias(models.Model):
-    name = models.CharField(max_length=255, verbose_name='SubFamília')
-    family = models.ForeignKey(Familias, on_delete=models.PROTECT, limit_choices_to={'is_active': True}, verbose_name='Familia')
+    name = models.CharField(max_length=255, verbose_name='SubFamília*')
+    family = models.ForeignKey(Familias, on_delete=models.PROTECT, limit_choices_to={'is_active': True}, verbose_name='Familia*')
     detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
@@ -30,8 +30,8 @@ class SubFamilias(models.Model):
 
 
 class Fatores(models.Model):
-    code = models.IntegerField(verbose_name='Código', default=1, unique=True)
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    code = models.IntegerField(verbose_name='Código*', default=1, unique=True)
+    name = models.CharField(max_length=255, verbose_name='Nome*')
     detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
@@ -44,9 +44,9 @@ class Fatores(models.Model):
 
 
 class Niveis(models.Model):
-    factor = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fator')
-    code = models.IntegerField(verbose_name='Código', default=1)
-    name = models.CharField(max_length=255, verbose_name='Nome')
+    factor = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fator*')
+    code = models.IntegerField(verbose_name='Código*', default=1)
+    name = models.CharField(max_length=255, verbose_name='Nome*')
     detail = models.TextField(max_length=1000, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
@@ -59,9 +59,9 @@ class Niveis(models.Model):
 
 
 class Matrizes(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Nome', unique=True)
-    factor = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fator')
-    level = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name='Nivel')
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
+    factor = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fator*')
+    level = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name='Nivel*')
     score = models.IntegerField(blank=True, null=True, verbose_name='Pontos')
     detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
@@ -75,7 +75,7 @@ class Matrizes(models.Model):
 
 
 class Grades(models.Model):
-    number = models.IntegerField(verbose_name='Numero')
+    number = models.IntegerField(verbose_name='Numero*')
     minimum = models.IntegerField(blank=True, null=True, verbose_name='Minimo')
     average = models.IntegerField(blank=True, null=True,verbose_name='Media')
     maximum= models.IntegerField(blank=True, null=True, verbose_name='Maximo')

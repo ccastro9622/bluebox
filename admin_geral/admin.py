@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Plans, Sector, Nivelcargo, Origemcapital, Tipoempresa, Governanca, Dimensao
+from .models import Plans, Sector, Nivelcargo, Origemcapital, Tipoempresa, Governanca, Dimensao, Core
 
 
 @admin.register(Plans)
@@ -35,7 +35,14 @@ class Governancaadmin(admin.ModelAdmin):
     ordering = ('name',)
     pass
 
+
 @admin.register(Dimensao)
 class Dimensaoadmin(admin.ModelAdmin):
     ordering = ('id',)
+    pass
+
+
+@admin.register(Core)
+class Coreadmin(admin.ModelAdmin):
+    ordering = ('name',)
     pass

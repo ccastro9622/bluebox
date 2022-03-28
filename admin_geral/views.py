@@ -37,3 +37,8 @@ class GovernancaDetailView(LoginRequiredMixin, DetailView):
 class DimensaoDetailView(LoginRequiredMixin, DetailView):
     model = Dimensao
     context_object_name = "dimensao"
+
+
+class CoreDetailView(LoginRequiredMixin, DetailView):
+    model = Core
+    context_object_name = "core"

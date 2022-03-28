@@ -1,8 +1,12 @@
+from django.db.models import ProtectedError
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 from tenants.utils import tenant_from_request
 from .forms import AreaForm
@@ -27,6 +31,29 @@ class DiretoriaDeleteView(LoginRequiredMixin, DeleteView):
     model = Diretoria
     context_object_name = "diretoria"
     success_url = reverse_lazy("master:diretoria-list")
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Call the delete() method on the fetched object and then redirect to the
+        success URL. If the object is protected, send an error message.
+        """
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+
+        try:
+            self.object.delete()
+        except ProtectedError:
+            messages.add_message(request, messages.ERROR, 'Can not delete: this parent has a child!')
+            return  # The url of the delete view (or whatever you want)
+
+        return HttpResponseRedirect(reverse_lazy("master:diretoria-list"))
+
+    # def delete(self, request, *args, **kwargs):
+    #     object = self.get_object()
+    #     if object.children.count() > 0:
+    #         messages.add_message(request, messages.ERROR, "Can't be deleted, has childern")
+    #         return redirect('master:diretoria-list')
+    #     return super().delete(request, *args, **kwargs)
 
 
 class DiretoriaCreateView(LoginRequiredMixin, CreateView):

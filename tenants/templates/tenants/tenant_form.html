@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-    Cadastro/Alteração de Empresa
+    Cadastro de Empresa
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
@@ -37,10 +37,8 @@
              <div class="col-md-4">
                 {{ form.city|as_crispy_field }}
             </div>
-            <div class="col-md-4">
-                {{ form.sector|as_crispy_field }}
-            </div>
         </div>
+
         <br>
         <div class="row">
             <div class="col-md-4">
@@ -49,14 +47,23 @@
             <div class="col-md-4">
                 {{ form.outsource|as_crispy_field }}
             </div>
+        </div>
+        <br>
+        <div class="row">
             <div class="col-md-4">
                 {{ form.origin|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.sector|as_crispy_field }}
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-4">
                 {{ form.company|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.core|as_crispy_field }}
             </div>
         </div>
         <br>
