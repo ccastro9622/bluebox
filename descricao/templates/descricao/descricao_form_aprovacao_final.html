@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-   Aprovação
+   Aprovação Final
 {% endblock titulo_painel %}
 
 
@@ -102,7 +102,6 @@
             </div>
         </div>
          <div class="row">
-
             <div class="col-md-4">
                 {{ form.information|as_crispy_field }}
             </div>
@@ -122,10 +121,8 @@
     </font>
 
     <br>
-    <button type="submit" class="btn btn-success">Aprovar</button>
-
-    <a href="{% url 'descricao:descricao-reprovacao' descricao.id %}"><button type="button" class="btn btn-danger">Reprovar</button></a>
-    <a href="{% url 'descricao:descricao-list-aprovacao' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a href="{% url 'descricao:descricao-list-aprovador' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
 
 </form>
 

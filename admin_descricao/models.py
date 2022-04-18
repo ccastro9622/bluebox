@@ -22,8 +22,8 @@ class Areas(models.Model):
         return f"{self.name}"
 
     class Meta:
-        verbose_name = 'Area Formação'
-        verbose_name_plural = 'Areas de Formação'
+        verbose_name = 'Área Formação'
+        verbose_name_plural = 'Áreas de Formação'
 
 
 class Idiomas(models.Model):
@@ -69,8 +69,8 @@ class Experiencias(models.Model):
         return f"{self.name}"
 
     class Meta:
-        verbose_name = 'Experiencia'
-        verbose_name_plural = 'Experiencias'
+        verbose_name = 'Experiência'
+        verbose_name_plural = 'Experiências'
 
 
 class Status(models.Model):
@@ -97,9 +97,9 @@ class Gerencia(models.Model):
 
 class Descricoes(models.Model):
     title = models.CharField(max_length=255, verbose_name='Título do Cargo*', unique=True)
-    summary = models.TextField(max_length=1000, verbose_name='Sumário do Cargo', blank=True, null=True)
-    summary_goal = models.TextField(max_length=1000, verbose_name='Objetivo do Cargo', blank=True, null=True)
-    summary_coverage = models.TextField(max_length=1000, verbose_name='Abrangência do Cargo', blank=True, null=True)
+    summary = models.TextField(max_length=1500, verbose_name='Sumário do Cargo', blank=True, null=True)
+    summary_goal = models.TextField(max_length=1500, verbose_name='Objetivo do Cargo', blank=True, null=True)
+    summary_coverage = models.TextField(max_length=1500, verbose_name='Abrangência do Cargo', blank=True, null=True)
     responsibility = models.TextField(max_length=1500, verbose_name='Principais Responsabilidades', blank=True, null=True)
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formação', related_name='Formacao',blank=True, null=True)
     areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 1', related_name='Area', blank=True, null=True)
@@ -127,3 +127,15 @@ class Descricoes(models.Model):
     class Meta:
         verbose_name = ' Modelo de Descrição'
         verbose_name_plural = 'Modelos de Descrições'
+
+
+class Proficiencias(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Proficiencia'
+        verbose_name_plural = 'Proficiencia'

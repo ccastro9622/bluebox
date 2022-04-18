@@ -10,8 +10,8 @@ class Familias(models.Model):
         return f"{self.name}"
 
     class Meta:
-        verbose_name = 'Familia'
-        verbose_name_plural = '      Familias de Cargo'
+        verbose_name = 'Família'
+        verbose_name_plural = '      Famílias de Cargo'
 
 
 class SubFamilias(models.Model):
@@ -25,8 +25,8 @@ class SubFamilias(models.Model):
 
     class Meta:
         ordering = ["family"]
-        verbose_name = ' SubFamilia'
-        verbose_name_plural = '     Sub-Familias de Cargo'
+        verbose_name = ' SubFamília'
+        verbose_name_plural = '     SubFamílias de Cargo'
 
 
 class Fatores(models.Model):
@@ -54,14 +54,14 @@ class Niveis(models.Model):
         return f"{self.name} " #f"{self.factor}" f" ---> {self.code}" f" - {self.name}"
 
     class Meta:
-        verbose_name = 'Fator / Nivel'
-        verbose_name_plural = '   Niveis de Avaliação'
+        verbose_name = 'Fator / Nível'
+        verbose_name_plural = '   Níveis de Avaliação'
 
 
 class Matrizes(models.Model):
     name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
     factor = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fator*')
-    level = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name='Nivel*')
+    level = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name='Nível*')
     score = models.IntegerField(blank=True, null=True, verbose_name='Pontos')
     detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
@@ -75,10 +75,10 @@ class Matrizes(models.Model):
 
 
 class Grades(models.Model):
-    number = models.IntegerField(verbose_name='Numero*')
-    minimum = models.IntegerField(blank=True, null=True, verbose_name='Minimo')
-    average = models.IntegerField(blank=True, null=True,verbose_name='Media')
-    maximum= models.IntegerField(blank=True, null=True, verbose_name='Maximo')
+    number = models.IntegerField(verbose_name='Número*')
+    minimum = models.IntegerField(blank=True, null=True, verbose_name='Mínimo')
+    average = models.IntegerField(blank=True, null=True,verbose_name='Média')
+    maximum= models.IntegerField(blank=True, null=True, verbose_name='Máximo')
     detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
 
     def __str__(self):

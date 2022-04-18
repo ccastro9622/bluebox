@@ -37,8 +37,8 @@ class Nivelcargo(models.Model):
         return f"{self.name}"
 
     class Meta:
-        verbose_name = 'Nivel do Cargo'
-        verbose_name_plural = 'Niveis do Cargo'
+        verbose_name = 'Nível do Cargo'
+        verbose_name_plural = 'Níveis do Cargo'
 
 
 class Origemcapital(models.Model):
@@ -49,7 +49,7 @@ class Origemcapital(models.Model):
 
     class Meta:
         verbose_name = 'Origem do Capital'
-        verbose_name_plural = ' Origens do Capital'
+        verbose_name_plural = ' Origem do Capital'
 
 
 class Tipoempresa(models.Model):
@@ -71,7 +71,7 @@ class Governanca(models.Model):
 
     class Meta:
         verbose_name = 'Governança'
-        verbose_name_plural = 'Governanças'
+        verbose_name_plural = 'Governança'
 
 
 class Dimensao(models.Model):
@@ -92,5 +92,5 @@ class Core(models.Model):
         return f"{self.name}"
 
     class Meta:
-        verbose_name = 'Core da Empresa'
-        verbose_name_plural = 'Core da Empresa'
+        verbose_name = 'Processo Core da Empresa'
+        verbose_name_plural = 'Processos Core da Empresa'

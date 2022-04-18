@@ -28,10 +28,10 @@
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Função: {{descricao.function}} </th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Diretoria: {{descricao.board}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Área: {{descricao.board}}</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Área: {{descricao.area}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Subárea: {{descricao.area}}</th>
         </tr>
         <tr>
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Título do Cargo do Superior Imediato:: {{descricao.title_super}}</th>
@@ -49,34 +49,52 @@
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Cargos da Equipe: {{descricao.position_team}}</th>
         </tr>
     </table>
-    </br>
+<!--    </br>-->
+<!--    <table border=1>-->
+<!--        <tr>-->
+<!--            <th style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">2.Sumário do Cargo</th>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Atividade: {{descricao.summary}}</th>-->
+<!--        </tr>-->
+<!--         <tr>-->
+<!--            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Objetivo: {{descricao.summary_goal}}</th>-->
+<!--        </tr>-->
+<!--         <tr>-->
+<!--            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Abrangência: {{descricao.summary_coverage}}</th>-->
+<!--        </tr>-->
+<!--    </table>-->
+        </br>
     <table border=1>
         <tr>
-            <th style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">2.Sumário do Cargo</th>
+            <th style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">2. Objetivo do Cargo</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Atividade: {{descricao.summary}}</th>
-        </tr>
-         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Objetivo: {{descricao.summary_goal}}</th>
-        </tr>
-         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Abrangência: {{descricao.summary_coverage}}</th>
+            <th style="height: 40px; font-size:80%" align="left" valign="center">{{descricao.summary_goal}}</th>
         </tr>
     </table>
     </br>
     <table border=1>
         <tr>
-            <th style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">3. Principais Responsabilidades</th>
+            <th style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">3. Abrangência do Cargo</th>
         </tr>
         <tr>
-            <th style="height: 40px; font-size:80%" align="left" valign="center">Responsabilidades: {{descricao.responsibility}}</th>
+            <th style="height: 40px; font-size:80%" align="left" valign="center">{{descricao.summary_coverage}}</th>
         </tr>
     </table>
     </br>
     <table border=1>
         <tr>
-            <th colspan="2" style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">4. Requisitos do Cargo</th>
+            <th style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">4. Principais Responsabilidades</th>
+        </tr>
+        <tr>
+            <th style="height: 40px; font-size:80%" align="left" valign="center">{{descricao.responsibility}}</th>
+        </tr>
+    </table>
+    </br>
+    <table border=1>
+        <tr>
+            <th colspan="2" style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">5. Requisitos do Cargo</th>
         </tr>
         <tr>
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Formação Obrigatório: {{descricao.formation}}</th>
@@ -104,15 +122,12 @@
             <th colspan="2"  style="height: 20px; font-size:80%" align="left" valign="bottom">Conhecimentos Específicos: {{descricao.knowledge}}</th>
         </tr>
     </table>
-    </br>
-    <table border=1>
-        <tr>
-            <th style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">5. Supervisao Recebida</th>
-        </tr>
-        <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Supervisão: {{descricao.supervision}}</th>
-        </tr>
-    </table>
+<!--    </br>-->
+<!--    <table border=1>-->
+<!--        <tr>-->
+<!--            <th style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">5. Supervisao Recebida</th>-->
+<!--        </tr>-->
+<!--    </table>-->
     </br>
     <table border=1>
         <tr>

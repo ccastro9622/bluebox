@@ -31,4 +31,9 @@ urlpatterns = [
     path("descricao/update/aprovador/<int:pk>", DescricaoAprovadorUpdateView.as_view(), name="descricao-update-aprovador"),
     path("descricao_list_aprovacao/", DescricaoAprovacaoListView.as_view(), name="descricao-list-aprovacao"),
     path("descricao/update/aprovacao/<int:pk>", DescricaoAprovacaoUpdateView.as_view(), name="descricao-update-aprovacao"),
+    path("descricao_aprovacao/<int:pk>", envia_aprovacao, name="descricao-aprovacao"),
+    path("descricao_reprovacao/<int:pk>", envia_reprovacao, name="descricao-reprovacao"),
+    path("descricao_list_aprovacao_final/", DescricaoAprovacaoFinalListView.as_view(), name="descricao-list-aprovacao-final"),
+    path("descricao/update/aprovacao_final/<int:pk>", DescricaoAprovacaoFinalUpdateView.as_view(),
+         name="descricao-update-aprovacao-final"),
 ]

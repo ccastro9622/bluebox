@@ -32,7 +32,7 @@
                         <tr>
                             <td>{{descricao.title}}</td>
                             <td>{{descricao.status}}</td>
-                            {% if descricao.status.id == 4 %}
+                            {% if descricao.status.id != 1 %}
                                 <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
                                 <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
                             {% else %}

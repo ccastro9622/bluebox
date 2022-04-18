@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-   Cadastro da Diretoria
+   Cadastro da Área da Empresa
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
-<form method="post" enctype="multipart/form-data">{% csrf_token %}
+<form method="post" autocomplete="off" enctype="multipart/form-data">{% csrf_token %}
     <div class="row">
         <div class="col-md-4">
             {{ form.name|as_crispy_field }}

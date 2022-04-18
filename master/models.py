@@ -13,14 +13,14 @@ class Diretoria(TenantAwareModel):
 
     class Meta:
         unique_together = ('name', 'tenant_id',)
-        verbose_name = 'Diretoria'
-        verbose_name_plural = 'Diretorias'
+        verbose_name = 'Area da Empresa'
+        verbose_name_plural = 'Áreas da Empresa'
 
 
 class Area(TenantAwareModel):
 
-    board = models.ForeignKey(Diretoria, on_delete=models.PROTECT, verbose_name='Diretoria')
-    name = models.CharField(max_length=255, verbose_name='Area', null=False, default="")
+    board = models.ForeignKey(Diretoria, on_delete=models.PROTECT, verbose_name='Área da Empresa')
+    name = models.CharField(max_length=255, verbose_name='Subárea da Empresa', null=False, default="")
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
@@ -28,5 +28,5 @@ class Area(TenantAwareModel):
 
     class Meta:
         unique_together = ('name', 'tenant_id',)
-        verbose_name = 'Area da Diretoria'
-        verbose_name_plural = 'Areas da Diretoria'
+        verbose_name = 'Subárea da Empresa'
+        verbose_name_plural = 'Subáreas da Empresa'

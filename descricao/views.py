@@ -8,7 +8,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from tenants.utils import tenant_from_request, user_from_request
 from report.mixins import PdfResponseMixin
-from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm
+from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
+    DescricaoAprovacaoFinalForm
 from .models import Descricao, Area, SubFamilias
 from admin_descricao.models import Descricoes
 
@@ -18,8 +19,9 @@ from django.db.models import Q
 from django.shortcuts import render
 from api.serializers import DocumentSerializer
 
-from django.http import FileResponse, HttpResponse
-
+from django.http import FileResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from . import models, forms
 
 import os
 
@@ -47,7 +49,8 @@ class DescricaoListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         tenant_id = tenant_from_request(self.request)
-        return super().get_queryset().filter(tenant_id=tenant_id).all()
+        user_id = user_from_request(self.request)
+        return super().get_queryset().filter(tenant_id=tenant_id, user_id_id=user_id).all()
 
 
 class DescricaoAprovadorListView(LoginRequiredMixin, ListView):
@@ -57,7 +60,7 @@ class DescricaoAprovadorListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         tenant_id = tenant_from_request(self.request)
-        return super().get_queryset().filter(tenant_id=tenant_id, status=2).all()
+        return super().get_queryset().filter(tenant_id=tenant_id, status__in=[2,3]).all()
 
 
 class DescricaoAprovacaoListView(LoginRequiredMixin, ListView):
@@ -69,6 +72,16 @@ class DescricaoAprovacaoListView(LoginRequiredMixin, ListView):
         tenant_id = tenant_from_request(self.request)
         user_id = user_from_request(self.request)
         return super().get_queryset().filter(tenant_id=tenant_id, status=3, approver_id=user_id).all()
+
+
+class DescricaoAprovacaoFinalListView(LoginRequiredMixin, ListView):
+    template_name = 'descricao/descricao_list_aprovacao_final.html'
+    model = Descricao
+    context_object_name = "descricao"
+
+    def get_queryset(self):
+        tenant_id = tenant_from_request(self.request)
+        return super().get_queryset().filter(tenant_id=tenant_id, status=4).all()
 
 
 # usado na avaliacao para buscar um modelo.
@@ -140,6 +153,7 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
     def get_initial(self, *args, **kwargs):
         initial = super(DescricaoCreateView, self).get_initial(**kwargs)
         initial['status'] = 1
+        # initial['id'] = 50
         return initial
 
     # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
@@ -260,6 +274,27 @@ class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
         return kwargs
 
 
+class DescricaoAprovacaoFinalUpdateView(LoginRequiredMixin, UpdateView):
+    template_name = 'descricao/descricao_form_aprovacao_final.html'
+    model = Descricao
+    form_class = DescricaoAprovacaoFinalForm
+    success_url = reverse_lazy("descricao:descricao-list-aprovacao-final")
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(DescricaoAprovacaoFinalUpdateView, self).get_initial(**kwargs)
+        initial['status'] = 5
+        return initial
+
+    # pegar o tenant do usuario logado para filtrar a dropdonw
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(DescricaoAprovacaoFinalUpdateView, self).get_form_kwargs()
+        tenant_id = tenant_from_request(self.request)
+        user_id = user_from_request(self.request)
+        kwargs['tenant_id'] = tenant_id
+        kwargs['user_id'] = user_id
+        return kwargs
+
+
 class DescricaoPdfDetailView(PdfResponseMixin, DetailView):
     model = Descricao
     context_object_name = 'descricao'
@@ -336,8 +371,35 @@ def envia_email(request, title, email):
             send_mail(subject, message, from_email, to_email)
         except BadHeaderError:
             return HttpResponse('Dados do e-mail inválidos')
-        return HttpResponseRedirect("/descricao/descricao_rel_list/") #HttpResponseRedirect('../descricao-rel-list')
+        return HttpResponseRedirect("/descricao/descricao_list/") #HttpResponseRedirect('../descricao-rel-list')
     else:
         # In reality we'd use a form class
         # to get proper validation errors.
         return HttpResponse('Verifique os campos de envio.')
+
+
+def envia_aprovacao(request, pk):
+    aprovacao = get_object_or_404(models.Descricao, pk=pk)
+    form = forms.DescricaoForm(request.POST or None, request.FILES or None, instance=aprovacao)
+
+    #
+
+    form_ = form.save(commit=False)
+    form_.status_id = 2
+    form_.save()
+    return redirect("/descricao/descricao_list/")
+
+    # return render(request, 'descricao//descricao_list.html', {'form': form})
+
+
+def envia_reprovacao(request, pk):
+    reprovacao = get_object_or_404(models.Descricao, pk=pk)
+    form = forms.DescricaoForm(request.POST or None, request.FILES or None, instance=reprovacao)
+
+    # if form.is_valid():
+    form_ = form.save(commit=False)
+    form_.status_id = 1
+    form_.save()
+    return redirect("/descricao/descricao_list/")
+
+    # return render(request, 'descricao//descricao_list.html', {'form': form})

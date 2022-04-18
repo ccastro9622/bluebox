@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-   Cadastro da Descrição
+   Cadastro da Descrição de Cargo
 {% endblock titulo_painel %}
 
 
@@ -20,22 +20,49 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6" >
-                {{ form.summary|as_crispy_field }}
+            <div class="col-md-4">
+                {{ form.board|as_crispy_field }}
             </div>
+            <div class="col-md-4">
+                {{ form.area|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.title_super|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.family|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.sub_familia|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.manage_team|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.position_team|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-6">
-                {{ form.responsibility|as_crispy_field }}
+                {{ form.summary_goal|as_crispy_field }}
             </div>
-
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                {{ form.summary_coverage|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+               {{ form.responsibility|as_crispy_field }}
+            </div>
         </div>
         <br>
         <div class="row">
-            <div class="col-md-4">
-                {{ form.summary_goal|as_crispy_field }}
-            </div>
-            <div class="col-md-4">
-                {{ form.summary_coverage|as_crispy_field }}
-            </div>
             <div class="col-md-4">
                 {{ form.qualification|as_crispy_field }}
             </div>
@@ -68,17 +95,7 @@
             </div>
 
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                {{ form.board|as_crispy_field }}
-            </div>
-            <div class="col-md-4">
-                {{ form.area|as_crispy_field }}
-            </div>
-            <div class="col-md-4">
-                {{ form.title_super|as_crispy_field }}
-            </div>
-        </div>
+
         <div class="row">
             <div class="col-md-4">
                 {{ form.family|as_crispy_field }}
@@ -103,14 +120,8 @@
         </div>
          <div class="row">
             <div class="col-md-4">
-                {{ form.supervision|as_crispy_field }}
-            </div>
-            <div class="col-md-4">
                 {{ form.information|as_crispy_field }}
             </div>
-<!--            <div class="col-md-4">-->
-<!--                {{ form.approver|as_crispy_field }}-->
-<!--            </div>-->
         </div>
 
 <!--        <div class="row">-->
@@ -124,7 +135,14 @@
     </font>
 
     <br>
+
     <button type="submit" class="btn btn-success">Salvar</button>
+    {% if descricao.id != null %}
+        <a href="{% url 'descricao:descricao-aprovacao' descricao.id %}"><button type="button" class="btn btn-success">Finalizar/Aprovação</button></a>
+    {% else %}
+        <button type="submit" class="btn btn-success">Finalizar/Aprovação</button>
+    {% endif %}
+
     <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
 
 </form>

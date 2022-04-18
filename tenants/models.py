@@ -51,7 +51,7 @@ class Tenant(models.Model):
     governanca = models.ForeignKey(Governanca, null=False, default="",  on_delete=models.PROTECT, verbose_name='Governança')
     size = models.ForeignKey(Dimensao, null=False, default="",  on_delete=models.PROTECT, verbose_name='Dimensão Financeira Anual')
     core = models.ForeignKey(Core, null=True, default="", on_delete=models.PROTECT,
-                             verbose_name='Core da Empresa')
+                             verbose_name='Processos Core da Empresa')
 
     # name = models.CharField(max_length=100)
 

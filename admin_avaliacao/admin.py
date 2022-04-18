@@ -7,10 +7,6 @@ from .models import Familias, SubFamilias, Fatores, Niveis, Matrizes, Grades
 from django.forms import TextInput
 from django.db import models
 
-
-
-
-
 @admin.register(Familias)
 class FamiliasAdmin(admin.ModelAdmin):
     # self.message_user(request, "Sem Voltar")
@@ -18,15 +14,15 @@ class FamiliasAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_active']
     pass
 
-
 # @admin.register(SubFamilias)
 # class SubFamiliasAdmin(admin.ModelAdmin):
 #     ordering = ('name',)
 #     pass
 
+
 class SubFamiliasAdmin(admin.ModelAdmin):
     ordering = ('name','name',)
-    list_display = ['family', 'name', 'is_active']
+    list_display = ['name', 'family', 'is_active']
 
 
 admin.site.register(SubFamilias, SubFamiliasAdmin)

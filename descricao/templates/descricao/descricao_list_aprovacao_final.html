@@ -1,17 +1,11 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-    Lista de Áreas da Empresa
+    Aprovação Final
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
 
-    <a id="add-link" href="{% url 'master:diretoria-create' %}">
-        <div class="col-2 add-div">
-            <i class="fas fa-plus"></i> Adicionar Áreas da Empresa
-        </div>
-    </a>
-    <br>
 
     <form method="post">
         {% csrf_token %}
@@ -20,17 +14,21 @@
                 <table id="table_id" class="display" align="center" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Áreas da Empresa</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
                             <th><center>Editar</center></th>
                             <th><center>Excluir</center></th>
+                            <th><center>Formulário</center></th>
                         </tr>
                     </thead>
                     <tbody>
-                    {%for diretoria in object_list %}
+                    {%for descricao in object_list %}
                         <tr>
-                            <td>{{diretoria.name}}</td>
-                            <td><a href="{% url 'master:diretoria-update' diretoria.id %}"><center><i class="fas fa-edit"></i></center></a></td>
-                            <td><a href="{% url 'master:diretoria-delete' diretoria.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+                            <td>{{descricao.title}}</td>
+                            <td>{{descricao.status}}</td>
+                            <td><a href="{% url 'descricao:descricao-update-aprovacao-final' descricao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
+                            <td><a href="{% url 'descricao:descricao-delete' descricao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+                            <td><a href="{% url 'descricao:descricao-pdf' descricao.id %}"><center><i class="far fa-file-alt"></i></center></a></td>
                         </tr>
                      {% endfor %}
                     </tbody>
@@ -48,6 +46,8 @@
     $(document).ready( function () {
         $('#table_id').DataTable();
     } );
+
+
 </script>
 {% endblock js %}
 

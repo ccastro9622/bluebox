@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-    Lista de Áreas da Diretoria
+    Lista de Subáreas da Empresa
 {% endblock titulo_painel %}
 
 {% block conteudo_painel %}
 
     <a id="add-link" href="{% url 'master:area-create' %}">
         <div class="col-2 add-div">
-            <i class="fas fa-plus"></i> Adicionar Área da Diretoria
+            <i class="fas fa-plus"></i> Adicionar Subárea da Empresa
         </div>
     </a>
     <br>
@@ -20,8 +20,8 @@
                 <table id="table_id" class="display" align="center" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Diretoria</th>
-                            <th>Área da Diretoria</th>
+                            <th>Áreas da Empresa</th>
+                            <th>Subárea da Empresa</th>
                             <th><center>Editar</center></th>
                             <th><center>Excluir</center></th>
                         </tr>

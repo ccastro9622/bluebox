@@ -64,3 +64,7 @@ class GerenciaDetailView(LoginRequiredMixin, DetailView):
 # class DescricaoUpdateView(LoginRequiredMixin, UpdateView):
 #     model = Descricoes
 #     fields = ['name', 'tenant']  # preencher todos os da views.py
+
+class ProficienciaDetailView(LoginRequiredMixin, DetailView):
+    model = Idiomas
+    context_object_name = "Proficiencia"

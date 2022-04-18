@@ -33,18 +33,18 @@ class DiretoriaDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("master:diretoria-list")
 
     def delete(self, request, *args, **kwargs):
+
         """
         Call the delete() method on the fetched object and then redirect to the
         success URL. If the object is protected, send an error message.
         """
         self.object = self.get_object()
-        success_url = self.get_success_url()
 
         try:
             self.object.delete()
         except ProtectedError:
             messages.add_message(request, messages.ERROR, 'Can not delete: this parent has a child!')
-            return  # The url of the delete view (or whatever you want)
+            return redirect('master:diretoria-list') # The url of the delete view (or whatever you want)
 
         return HttpResponseRedirect(reverse_lazy("master:diretoria-list"))
 
