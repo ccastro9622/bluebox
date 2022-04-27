@@ -41,35 +41,41 @@
                 {{ form.manage_team|as_crispy_field }}
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col-md-4">
                 {{ form.position_team|as_crispy_field }}
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 {{ form.summary_goal|as_crispy_field }}
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                {{ form.summary_coverage|as_crispy_field }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                {{ form.responsibility|as_crispy_field }}
             </div>
         </div>
+<!--        <div class="row">-->
+<!--            <div class="col-md-6">-->
+<!--                {{ form.summary_goal|as_crispy_field }}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-6">-->
+<!--                {{ form.summary_coverage|as_crispy_field }}-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-6">-->
+<!--               {{ form.responsibility|as_crispy_field }}-->
+<!--            </div>-->
+<!--        </div>-->
         <br>
-        <div class="row">
-            <div class="col-md-4">
-                {{ form.qualification|as_crispy_field }}
-            </div>
-        </div>
+
         <div class="row">
             <div class="col-md-4">
                 {{ form.formation|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.formation_desired|as_crispy_field }}
             </div>
             <div class="col-md-4">
                 {{ form.areas|as_crispy_field }}
@@ -77,13 +83,13 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                {{ form.formation_desired|as_crispy_field }}
+                {{ form.areas2|as_crispy_field }}
             </div>
             <div class="col-md-4">
-                {{ form.areas_desired|as_crispy_field }}
+                {{ form.areas3|as_crispy_field }}
             </div>
             <div class="col-md-4">
-                {{ form.experience|as_crispy_field }}
+                {{ form.areas4|as_crispy_field }}
             </div>
         </div>
         <div class="row">
@@ -93,7 +99,20 @@
             <div class="col-md-4">
                 {{ form.area_specialization|as_crispy_field }}
             </div>
-
+            <div class="col-md-4">
+                {{ form.area_specialization2|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.area_specialization3|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.area_specialization4|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.experience|as_crispy_field }}
+            </div>
         </div>
 
         <div class="row">
@@ -109,21 +128,28 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                {{ form.position_team|as_crispy_field }}
-            </div>
-            <div class="col-md-4">
                 {{ form.idioma|as_crispy_field }}
             </div>
             <div class="col-md-4">
                 {{ form.proficiency|as_crispy_field }}
             </div>
         </div>
-         <div class="row">
+        <div class="row">
             <div class="col-md-4">
                 {{ form.information|as_crispy_field }}
             </div>
+            <div class="col-md-4">
+                {{ form.is_active|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.user_id|as_crispy_field }}
+            </div>
         </div>
-
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.qualification|as_crispy_field }}
+            </div>
+        </div>
 <!--        <div class="row">-->
 <!--            <div class="col-md-4">-->
 <!--                {{ form.date_conclusion|as_crispy_field }}-->

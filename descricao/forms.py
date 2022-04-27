@@ -17,11 +17,11 @@ class DescricaoForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',
-                  'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
-                  'qualification', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+        fields = ['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+                  'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience',
+                  'qualification', 'qualification2', 'qualification3', 'qualification4', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
                   'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
-                  'approver', 'date_approval', 'status', 'date_conclusion']
+                  'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
 # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
@@ -67,6 +67,7 @@ class DescricaoModeloForm(forms.ModelForm):
                   'qualification', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
                   'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
                   'approver', 'date_approval', 'status', 'date_conclusion']
+
 
     # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
@@ -185,7 +186,7 @@ class DescricaoAprovacaoForm(forms.ModelForm):
         self.fields['approver'].queryset = CustomUser.objects.filter(default_tenant=tenant_id, name=user_id)
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
-        self.fields['status'].queryset = Status.objects.filter(id__in=[4])
+        self.fields['status'].queryset = Status.objects.filter(id__in=[3])
 
 # Filtra a area pela diretoria
         if 'board' in self.data:

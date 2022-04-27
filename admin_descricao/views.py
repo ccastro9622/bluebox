@@ -3,7 +3,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Formacao, Areas, Idiomas, Habilitacoes, Descricoes, Especializacoes, Experiencias, Status, Gerencia
+from .models import Formacao, Areas, Idiomas, Habilitacoes, Descricoes, Especializacoes, Experiencias, Status, Gerencia, \
+    AreasEspecializacoes
 
 
 class FormacaoDetailView(LoginRequiredMixin, DetailView):
@@ -28,6 +29,11 @@ class HabilitacoesDetailView(LoginRequiredMixin, DetailView):
 
 class EspecializacoesDetailView(LoginRequiredMixin, DetailView):
     model = Especializacoes
+    context_object_name = "Especializacoes"
+
+
+class AreasEspecializacoesDetailView(LoginRequiredMixin, DetailView):
+    model = AreasEspecializacoes
     context_object_name = "Especializacoes"
 
 

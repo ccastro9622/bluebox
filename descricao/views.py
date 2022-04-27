@@ -122,10 +122,16 @@ def export_users_csv(request):
     response['Content-Disposition'] = 'attachment; filename="descricoes.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Titulo', 'Status', 'Usuário', 'Aprovador', 'Data'])
+    # writer.writerow(['Titulo', 'Status', 'Usuário', 'Aprovador', 'Data'])
 
-    # tenant_id = tenant_from_request(request)
-    descricoes = Descricao.objects.all() #filter(tenant_id=tenant_id).all()
+    writer.writerow(['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',
+     'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
+     'qualification', 'board', 'area', 'title_super', 'family', 'sub_familia', 'manage_team',
+     'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
+     'approver', 'date_approval', 'status', 'date_conclusion'])
+
+    tenant_id = tenant_from_request(request)
+    descricoes = Descricao.objects.filter(tenant_id=tenant_id).all()
 
 
     # Descricoes = Descricao.objects.filter(tenant_id=tenant_id).all().values_list('username', 'first_name', 'last_name', 'email')
@@ -134,7 +140,12 @@ def export_users_csv(request):
     # users = User.objects.all().values_list('username', 'first_name', 'last_name', 'email')
 
     # for descricao in descricoes:
-    writer.writerows((descricao.title, descricao.status, descricao.user_id, descricao.approver,descricao.date_conclusion) for descricao in descricoes)
+    writer.writerows((descricao.title, descricao.cbo, descricao.function, descricao.summary,descricao.summary_goal,
+                      descricao.summary_coverage , descricao.responsibility , descricao.formation , descricao.areas ,
+                      descricao.qualification , descricao.board , descricao.area , descricao.title_super ,
+                      descricao.family , descricao.sub_familia , descricao.manage_team , descricao.position_team, descricao.idioma,
+                      descricao.proficiency, descricao.knowledge, descricao.information, descricao.approver, descricao.date_approval,
+                      descricao.status, descricao.date_conclusion) for descricao in descricoes)
 
     return response
 
@@ -182,7 +193,6 @@ class DescricaoModeloCreateView(LoginRequiredMixin, CreateView):
         descricao_admin = Descricoes.objects.filter(id=self.kwargs.get("pk")).first()
         if descricao_admin:
             initial['title'] = descricao_admin.title
-            initial['cbo'] = descricao_admin.cbo
             initial['summary'] = descricao_admin.title
             initial['summary_goal'] = descricao_admin.summary_goal
             initial['summary_coverage'] = descricao_admin.summary_coverage
@@ -261,7 +271,7 @@ class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(DescricaoAprovacaoUpdateView, self).get_initial(**kwargs)
-        initial['status'] = 4
+        initial['status'] = 3
         return initial
 
     # pegar o tenant do usuario logado para filtrar a dropdonw
@@ -387,7 +397,7 @@ def envia_aprovacao(request, pk):
     form_ = form.save(commit=False)
     form_.status_id = 2
     form_.save()
-    return redirect("/descricao/descricao_list/")
+    return redirect("/descricao/descricao_list_aprovador/")
 
     # return render(request, 'descricao//descricao_list.html', {'form': form})
 
@@ -398,8 +408,8 @@ def envia_reprovacao(request, pk):
 
     # if form.is_valid():
     form_ = form.save(commit=False)
-    form_.status_id = 1
+    form_.status_id = 4
     form_.save()
-    return redirect("/descricao/descricao_list/")
+    return redirect("/descricao/descricao_list_aprovacao/")
 
     # return render(request, 'descricao//descricao_list.html', {'form': form})

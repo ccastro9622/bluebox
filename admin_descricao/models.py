@@ -62,6 +62,18 @@ class Especializacoes(models.Model):
         verbose_name_plural = 'Formações Complementares'
 
 
+class AreasEspecializacoes(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome*',unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        verbose_name = 'Area de Formação Complementar'
+        verbose_name_plural = 'Areas de Formações Complementares'
+
+
 class Experiencias(models.Model):
     name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
 
@@ -118,7 +130,6 @@ class Descricoes(models.Model):
     qualification4 = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, related_name='Habilitacao4',
                                       verbose_name='Habilitação/Certificação Obrigatória 4', null=True, blank=True)
     is_active = models.BooleanField(default=False, verbose_name='Ativo')
-
 
 
     def __str__(self):
