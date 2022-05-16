@@ -6,21 +6,58 @@ from .models import *
 
 
 class DescricaoForm(forms.ModelForm):
-    # #Verifica se o campo aprovador foi marcado quando status = a em aprovação e aprovado.
-    # def clean_approver(self):
-    #     status = int(self.data.get('status'))
-    #     approver = self.cleaned_data['approver']
-    #     if status ==3:
-    #         if not approver:
-    #             raise forms.ValidationError('O campo Arovador é obrigatório para o Status: Em Aprovação')
-    #     return approver
+    #Valida preenchimento area de formacao complementar
+    def clean_area_specialization(self):
+        specialization = self.cleaned_data['specialization']
+        area_specialization = self.cleaned_data['area_specialization']
+        if specialization:
+            if not area_specialization:
+                raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
+        return specialization
+
+    def clean_proficiency(self):
+        idioma = self.cleaned_data['idioma']
+        proficiency = self.cleaned_data['proficiency']
+        if idioma:
+            if not proficiency:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return idioma
+
+    def clean_proficiency2(self):
+        idioma2 = self.cleaned_data['idioma2']
+        proficiency2 = self.cleaned_data['proficiency2']
+        if idioma2:
+            if not proficiency2:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return idioma2
+
+    def clean_proficiency3(self):
+        idioma3 = self.cleaned_data['idioma3']
+        proficiency3 = self.cleaned_data['proficiency3']
+        if idioma3:
+            if not proficiency3:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return idioma3
+
+    def clean_areas_desired(self):
+        formation_desired = self.cleaned_data['formation_desired']
+        areas_desired = self.cleaned_data['areas_desired']
+        formation = int(self.data.get('formation_desired'))
+        if formation_desired:
+            # if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+            if not areas_desired:
+                raise forms.ValidationError('Informe pelo menos uma Área de Formação Desejada para o Grau de Escolaridade acima.')
+        return formation_desired
+
+
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
-                  'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience',
-                  'qualification', 'qualification2', 'qualification3', 'qualification4', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
-                  'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
+        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+                  'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
+                  'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
                   'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
 # Filtrar a dropdow
@@ -62,11 +99,18 @@ class DescricaoModeloForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function' ,'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',
-                  'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
-                  'qualification', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
-                  'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
-                  'approver', 'date_approval', 'status', 'date_conclusion']
+        # fields = ['title', 'cbo', 'function' ,'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',
+        #           'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
+        #           'qualification', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+        #           'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
+        #           'approver', 'date_approval', 'status', 'date_conclusion']
+
+        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+                  'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
+                  'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience',
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'position_team', 'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
+                  'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
 
     # Filtrar a dropdow
@@ -116,11 +160,12 @@ class DescricaoAprovadorForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',
-                  'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
-                  'qualification', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
-                  'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
-                  'approver', 'date_approval', 'status', 'date_conclusion']
+        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+                  'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
+                  'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
+                  'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
 # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
@@ -171,11 +216,12 @@ class DescricaoAprovacaoForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',
-                  'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
-                  'qualification', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
-                  'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
-                  'approver', 'date_approval', 'status', 'date_conclusion']
+        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+                  'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
+                  'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
+                  'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
 # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
@@ -228,11 +274,12 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',
-                  'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
-                  'qualification', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
-                  'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
-                  'approver', 'date_approval', 'status', 'date_conclusion']
+        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+                  'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
+                  'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
+                  'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
 # Filtrar a dropdow
     def __init__(self, *args, **kwargs):

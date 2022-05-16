@@ -29,10 +29,12 @@
                     <li class="nav-item active" >
                         <a class="nav-link"  href="#">Usuário Master <span class="sr-only">(current)</span></a>
                          <ul>
-                             <li><a href="{% url 'tenants:tenant-list' %}">Empresa</a></li>
-                             <li><a href="{% url 'user_account:customuser-list' %}">Usuários</a></li>
-	                         <li><a href="{% url 'master:diretoria-list' %}">Áreas da Empresa</a></li>
-                             <li><a href="{% url 'master:area-list' %}">Subáreas da Empresa</a></li>
+                             {% if request.user.kind == "Master" %}
+                                 <li><a href="{% url 'tenants:tenant-list' %}">Empresa</a></li>
+                                 <li><a href="{% url 'user_account:customuser-list' %}">Usuários</a></li>
+                                 <li><a href="{% url 'master:diretoria-list' %}">Áreas da Empresa</a></li>
+                                 <li><a href="{% url 'master:area-list' %}">Subáreas da Empresa</a></li>
+                             {% endif %}
 	       		         </ul>
                     </li>
                     <li class="nav-item active">
@@ -40,9 +42,13 @@
                         <ul>
                             <li><a href="{% url 'admin_descricao:admin_descricao-list' %}">Modelos</a></li>
                             <li><a href="{% url 'descricao:descricao-list' %}">Descrição de Cargos</a></li>
-                            <li><a href="{% url 'descricao:descricao-list-aprovador' %}">Define Aprovador</a></li>
+                            {% if request.user.kind == "Master" %}
+                                <li><a href="{% url 'descricao:descricao-list-aprovador' %}">Define Aprovador</a></li>
+                            {% endif %}
                             <li><a href="{% url 'descricao:descricao-list-aprovacao' %}">Aprovação Pendente</a></li>
-                            <li><a href="{% url 'descricao:descricao-list-aprovacao-final' %}">Aprovação Final</a></li>
+                            {% if request.user.kind == "Master" %}
+                                <li><a href="{% url 'descricao:descricao-list-aprovacao-final' %}">Aprovação Final</a></li>
+                            {% endif %}
                             <li><a href="{% url 'descricao:descricao-rel-list' %}">Acompanhamento</a></li>
 <!--                            <li><a href="{% url 'descricao:descricao-rel' %}">Relatório2</a></li>-->
                             <li><a href="{% url 'descricao:descricao-manual' %}">Manual Elaboração</a></li>
@@ -72,7 +78,7 @@
                        <a class="nav-link" href="logar_usuario"><font size="1"><u>Sair </u></font><span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="#"><font size="1"><u>{{ request.user.name }}</u></font></a>
+                        <a class="nav-link" href="#"><font size="1"><u>{{ request.user.name }} - {{request.user.kind}}</u></font></a>
                     </li>
 
 

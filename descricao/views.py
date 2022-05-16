@@ -6,7 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from tenants.utils import tenant_from_request, user_from_request
+from tenants.utils import tenant_from_request, user_from_request, userkind_from_request
 from report.mixins import PdfResponseMixin
 from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
     DescricaoAprovacaoFinalForm
@@ -50,7 +50,11 @@ class DescricaoListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         tenant_id = tenant_from_request(self.request)
         user_id = user_from_request(self.request)
-        return super().get_queryset().filter(tenant_id=tenant_id, user_id_id=user_id).all()
+        user_kind = userkind_from_request(self.request)
+        if user_kind == "Master":
+            return super().get_queryset().filter(tenant_id=tenant_id).all()
+        else:
+            return super().get_queryset().filter(tenant_id=tenant_id, user_id_id=user_id).all()
 
 
 class DescricaoAprovadorListView(LoginRequiredMixin, ListView):
@@ -124,7 +128,7 @@ def export_users_csv(request):
     writer = csv.writer(response)
     # writer.writerow(['Titulo', 'Status', 'Usuário', 'Aprovador', 'Data'])
 
-    writer.writerow(['title', 'cbo', 'function', 'summary', 'summary_goal', 'summary_coverage', 'responsibility', 'formation', 'areas',
+    writer.writerow(['title', 'cbo', 'function',  'summary_goal', 'responsibility', 'formation', 'areas',
      'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
      'qualification', 'board', 'area', 'title_super', 'family', 'sub_familia', 'manage_team',
      'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
@@ -140,8 +144,8 @@ def export_users_csv(request):
     # users = User.objects.all().values_list('username', 'first_name', 'last_name', 'email')
 
     # for descricao in descricoes:
-    writer.writerows((descricao.title, descricao.cbo, descricao.function, descricao.summary,descricao.summary_goal,
-                      descricao.summary_coverage , descricao.responsibility , descricao.formation , descricao.areas ,
+    writer.writerows((descricao.title, descricao.cbo, descricao.function, descricao.summary_goal,
+                      descricao.responsibility , descricao.formation , descricao.areas ,
                       descricao.qualification , descricao.board , descricao.area , descricao.title_super ,
                       descricao.family , descricao.sub_familia , descricao.manage_team , descricao.position_team, descricao.idioma,
                       descricao.proficiency, descricao.knowledge, descricao.information, descricao.approver, descricao.date_approval,
@@ -193,16 +197,30 @@ class DescricaoModeloCreateView(LoginRequiredMixin, CreateView):
         descricao_admin = Descricoes.objects.filter(id=self.kwargs.get("pk")).first()
         if descricao_admin:
             initial['title'] = descricao_admin.title
-            initial['summary'] = descricao_admin.title
+            initial['family'] = descricao_admin.family
+            initial['sub_familia'] = descricao_admin.sub_familia
+            initial['manage_team'] = descricao_admin.manage_team
             initial['summary_goal'] = descricao_admin.summary_goal
-            initial['summary_coverage'] = descricao_admin.summary_coverage
             initial['responsibility'] = descricao_admin.responsibility
             initial['formation'] = descricao_admin.formation
             initial['areas'] = descricao_admin.areas
+            initial['areas2'] = descricao_admin.areas2
+            initial['areas3'] = descricao_admin.areas3
+            initial['areas4'] = descricao_admin.areas4
+            initial['formation_desired'] = descricao_admin.formation_desired
+            initial['areas_desired'] = descricao_admin.areas_desired
+            initial['areas_desired2'] = descricao_admin.areas_desired2
+            initial['areas_desired3'] = descricao_admin.areas_desired3
+            initial['areas_desired4'] = descricao_admin.areas_desired4
             initial['specialization'] = descricao_admin.specialization
             initial['area_specialization'] = descricao_admin.area_specialization
+            initial['area_specialization2'] = descricao_admin.area_specialization2
+            initial['area_specialization3'] = descricao_admin.area_specialization3
+            initial['area_specialization4'] = descricao_admin.area_specialization4
             initial['experience'] = descricao_admin.experience
             initial['qualification'] = descricao_admin.qualification
+            initial['qualification2'] = descricao_admin.qualification2
+            initial['qualification3'] = descricao_admin.qualification3
             initial['status'] = 1
         return initial
 
