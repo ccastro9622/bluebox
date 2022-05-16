@@ -15,6 +15,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='tenant',
             name='core',
-            field=models.ForeignKey(default='', on_delete=django.db.models.deletion.PROTECT, to='admin_geral.core', verbose_name='Core da Empresa'),
+            field=models.ForeignKey(default='', null=True, on_delete=django.db.models.deletion.PROTECT, to='admin_geral.core', verbose_name='Core da Empresa'),
         ),
     ]
