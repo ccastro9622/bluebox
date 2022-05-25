@@ -23,8 +23,8 @@ class Avaliacao(TenantAwareModel):
     manage_team = models.ForeignKey(Gerencia, on_delete=models.PROTECT, verbose_name='Gestão de Equipe')
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formacao',
                                   blank=True, null=True, default="")
-    board = models.ForeignKey(Diretoria, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Diretoria')
-    area = models.ForeignKey(Area, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Area')
+    board = models.ForeignKey(Diretoria, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Área')
+    area = models.ForeignKey(Area, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Subárea')
     family = models.ForeignKey(Familias, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Familia')
     sub_familia = models.ForeignKey(SubFamilias, null=True, blank=True, on_delete=models.PROTECT,
                                     verbose_name='SubFamilia')
@@ -39,7 +39,7 @@ class Avaliacao(TenantAwareModel):
     governanca = models.ForeignKey(Governanca, null=True, blank=True, on_delete=models.PROTECT,
                                    verbose_name='Governança')
     size = models.ForeignKey(Dimensao, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Dimensão')
-    ceo = models.BooleanField(default='false', verbose_name='1º Executivo', null=True)
+    ceo = models.BooleanField(default=False, blank=False, verbose_name='1º Executivo', null=False)
 
     factor1 = models.ForeignKey(Fatores, on_delete=models.PROTECT, verbose_name='Fatores de Avaliação', related_name='factor1', default = 1)
     level1 = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name='Níveis', related_name='level1')

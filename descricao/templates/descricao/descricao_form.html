@@ -26,8 +26,7 @@
             </div>
             <div class="col-md-4">
                 {{ form.area|as_crispy_field }}
-            </div>
-            <div class="col-md-4">
+            </div><div class="col-md-4">
                 {{ form.title_super|as_crispy_field }}
             </div>
         </div>
@@ -43,13 +42,14 @@
             </div>
         </div>
         <br>
+        {{ form.position_team|as_crispy_field }}
+
         <div class="row">
-            <div class="col-md-4">
-                {{ form.position_team|as_crispy_field }}
-            </div>
             <div class="col-md-4">
                 {{ form.summary_goal|as_crispy_field }}
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-4">
                {{ form.responsibility|as_crispy_field }}
             </div>
@@ -147,11 +147,10 @@
         <br>
         <div class="row">
             <div class="col-md-4">
-                {{ form.experience|as_crispy_field }}
-            </div>
-            <div class="col-md-4">
                 {{ form.knowledge|as_crispy_field }}
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-4">
                 {{ form.information|as_crispy_field }}
             </div>
@@ -168,6 +167,9 @@
             </div>
         </div>
         <div class="row">
+            <div class="col-md-4">
+                {{ form.experience|as_crispy_field }}
+            </div>
             <div class="col-md-4">
                 {{ form.user_id|as_crispy_field }}
             </div>
