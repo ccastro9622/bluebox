@@ -18,9 +18,12 @@
       data-levels8-url="{% url 'avaliacao:ajax_load_levels8' %}"
       data-title-super-url="{% url 'avaliacao:ajax_load_title_super' %}">{% csrf_token %}
 
-     <div class="row">
+     <div class="row" aling="center">
         <div class="col-md-4">
-              {{ form.ceo|as_crispy_field }}
+            {{ form.title|as_crispy_field }}
+        </div>
+        <div class="col-md-4" >
+              {{form.ceo|as_crispy_field }}
         </div>
          <div class="col-md-4">
               {{ form.manage_team|as_crispy_field }}
@@ -28,20 +31,19 @@
      </div>
     <br>
      <div class="row">
-        <div class="col-md-4">
-            {{ form.title|as_crispy_field }}
-        </div>
          <div class="col-md-4">
             {{ form.board|as_crispy_field }}
         </div>
         <div class="col-md-4">
             {{ form.area|as_crispy_field }}
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
+         <div class="col-md-4">
             {{ form.title_super|as_crispy_field }}
         </div>
+    </div>
+    <br>
+    <div class="row">
+
         <div class="col-md-4">
             {{ form.family|as_crispy_field }}
         </div>

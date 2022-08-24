@@ -10,8 +10,8 @@ from .managers import CustomUserManager
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     USER_CHOICES = (
-        ("M", "Master"),
-        ("C", "Comum"),
+        ("Master", "Master"),
+        ("Comum", "Comum"),
     )
 
     email = models.EmailField(unique=True, verbose_name='E-mail')

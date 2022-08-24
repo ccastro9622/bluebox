@@ -48,7 +48,7 @@ class AvaliacaoCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(AvaliacaoCreateView, self).get_initial(**kwargs)
-        initial['ceo'] = 'Desconhecido'
+        initial['ceo'] = False
         tenant_id = tenant_from_request(self.request)
         empresa = Tenant.objects.filter(id=tenant_id).first()
         if empresa:
@@ -86,7 +86,7 @@ class AvaliacaoModeloCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(AvaliacaoModeloCreateView, self).get_initial(**kwargs)
-        initial['ceo'] = 'Desconhecido'
+        initial['ceo'] = False
         tenant_id = tenant_from_request(self.request)
         empresa = Tenant.objects.filter(id=tenant_id).first()
         if empresa:
