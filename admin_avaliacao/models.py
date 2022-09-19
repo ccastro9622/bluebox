@@ -87,3 +87,16 @@ class Grades(models.Model):
     class Meta:
         verbose_name = 'Grade'
         verbose_name_plural = '  Grades'
+
+
+class Conhecimentos(models.Model):
+    code = models.IntegerField(verbose_name='Código*', unique=True, default=1)
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
+
+    def __str__(self):
+        return f"{self.code}" f" - {self.name}"
+
+    class Meta:
+        verbose_name = 'Conhecimento'
+        verbose_name_plural = 'Conhecimentos'

@@ -48,14 +48,21 @@ class AvaliacaoCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(AvaliacaoCreateView, self).get_initial(**kwargs)
-        initial['ceo'] = False
         tenant_id = tenant_from_request(self.request)
+
         empresa = Tenant.objects.filter(id=tenant_id).first()
         if empresa:
             initial['origin'] = empresa.origin
             initial['governanca'] = empresa.governanca
             initial['company'] = empresa.company
-            initial['size'] = empresa.size
+            initial['size'] = empresa.size_id
+
+        # avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
+        # if avaliacao:
+        #     initial['ceo'] = False
+        # else:
+        #     initial['ceo'] = True
+
         return initial
 
         # avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id).first()
@@ -69,6 +76,16 @@ class AvaliacaoCreateView(LoginRequiredMixin, CreateView):
         form.instance.tenant_id = tenant_id
         user_id = user_from_request(self.request)
         form.instance.user_id = user_id
+        avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
+        if avaliacao:
+            form.instance.ceo = False
+        else:
+            form.instance.ceo = True
+
+        form.save()
+
+        Superior.objects.create(title=form.instance.title, tenant_id=tenant_id, evaluation_id=form.instance.id)
+
         return super(AvaliacaoCreateView, self).form_valid(form)
 
     # pegar o tenant do usuario logado para filtrar a dropdonw
@@ -86,8 +103,8 @@ class AvaliacaoModeloCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(AvaliacaoModeloCreateView, self).get_initial(**kwargs)
-        initial['ceo'] = False
         tenant_id = tenant_from_request(self.request)
+
         empresa = Tenant.objects.filter(id=tenant_id).first()
         if empresa:
             initial['origin'] = empresa.origin
@@ -104,6 +121,13 @@ class AvaliacaoModeloCreateView(LoginRequiredMixin, CreateView):
             initial['sub_familia'] = descricao.sub_familia
             initial['formation'] = descricao.formation
             initial['manage_team'] = descricao.manage_team
+
+        # avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
+        # if avaliacao:
+        #     initial['ceo'] = False
+        # else:
+        #     initial['ceo'] = True
+
         return initial
 
     # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
@@ -112,6 +136,12 @@ class AvaliacaoModeloCreateView(LoginRequiredMixin, CreateView):
         form.instance.tenant_id = tenant_id
         user_id = user_from_request(self.request)
         form.instance.user_id = user_id
+        avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
+        if avaliacao:
+            form.instance.ceo = False
+        else:
+            form.instance.ceo = True
+
         return super(AvaliacaoModeloCreateView, self).form_valid(form)
 
     # pegar o tenant do usuario logado para filtrar a dropdonw
@@ -228,11 +258,88 @@ def load_areas(request):
     return render(request, 'avaliacao/area_dropdown_list_options.html', {'areas': areas})
 
 
-# Carregar as areas de acordo com os diretorias
+# Carregar as sub familias de acordo com as familias
 def load_sub_familias(request):
     family_id = request.GET.get('family')
     sub_familias = SubFamilias.objects.filter(family_id=family_id).order_by('name')
     return render(request, 'avaliacao/sub_familia_dropdown_list_options.html', {'sub_familias': sub_familias})
+
+
+# Carregar as nivel 1 Conhecimento de acordo com 1 Executivo
+def load1_levels1(request):
+    ceo_id = request.GET.get('ceo')
+    size_id = request.GET.get('size')
+
+    if ceo_id == '0': #não é CEO
+        levels = Niveis.objects.filter(factor_id=1).order_by('id')
+    elif size_id == '1':
+        levels = Niveis.objects.filter(factor_id=1, code__in=[1]).order_by('id')
+    elif size_id == '2':
+        levels = Niveis.objects.filter(factor_id=1, code__in=[2]).order_by('id')
+    else:
+        levels = Niveis.objects.filter(factor_id=1, code__in=[4]).order_by('id')
+
+    return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
+
+
+# Carregar as nivel 2 Nivel Organizacional de acordo com 1 Executivo
+def load1_levels2(request):
+    ceo_id = request.GET.get('ceo')
+
+    if ceo_id == '1':
+        levels = Niveis.objects.filter(factor_id=2, code__in=[4]).order_by('id')
+    elif ceo_id == '0':
+        levels = Niveis.objects.filter(factor_id=2).order_by('id')
+
+    return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
+
+
+# Carregar o nivel 3 Escopo de acordo com 1 Executivo
+def load1_levels3(request):
+    ceo_id = request.GET.get('ceo')
+
+    if ceo_id == '1':
+        levels = Niveis.objects.filter(factor_id=3, code__in=[11, 12]).order_by('id')
+    elif ceo_id == '0':
+        levels = Niveis.objects.filter(factor_id=3).order_by('id')
+
+    return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
+
+
+# Carregar o nivel 5 Contribuição de acordo com 1 Executivo
+def load1_levels5(request):
+    ceo_id = request.GET.get('ceo')
+
+    if ceo_id == '1':
+        levels = Niveis.objects.filter(factor_id=5, code__in=[6]).order_by('id')
+    elif ceo_id == '0':
+        levels = Niveis.objects.filter(factor_id=5).order_by('id')
+
+    return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
+
+
+# Carregar o nivel 7 Liderança de acordo com 1 Executivo
+def load1_levels7(request):
+    ceo_id = request.GET.get('ceo')
+
+    if ceo_id == '1':
+        levels = Niveis.objects.filter(factor_id=7, code__in=[2, 3]).order_by('id')
+    elif ceo_id == '0':
+        levels = Niveis.objects.filter(factor_id=7).order_by('id')
+
+    return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
+
+
+# Carregar o nivel 8 comunicacao de acordo com 1 Executivo
+def load1_levels8(request):
+    ceo_id = request.GET.get('ceo')
+
+    if ceo_id == '1':
+        levels = Niveis.objects.filter(factor_id=8, code__in=[3]).order_by('id')
+    elif ceo_id == '0':
+        levels = Niveis.objects.filter(factor_id=8).order_by('id')
+
+    return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
 # Carregar as nivel 1 formação de acordo com a formação do cargo
@@ -242,13 +349,29 @@ def load_levels1(request):
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 2 Nivel Organizacional de acordo com a formação do cargo
+# Carregar as nivel 2 Nivel Organizacional de acordo com 1 Executivo ou formação do cargo
 def load_levels2(request):
+
     formation_id = request.GET.get('level1')
+
     if formation_id != '11':
         levels = Niveis.objects.filter(factor_id=2, code__in=[1, 2]).order_by('id')
     else:
         levels = Niveis.objects.filter(factor_id=2, code__in=[2, 3, 4]).order_by('id')
+
+    return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
+
+
+# Carregar as nivel 4 Gestão Recebida de acordo com 1 executivo
+def load_levels4(request):
+    ceo_id = request.GET.get('ceo')
+
+    if ceo_id == '1':
+        levels = Niveis.objects.filter(factor_id=4, code__in=[7,8]).order_by('id')
+    elif ceo_id == '0':
+        levels = Niveis.objects.filter(factor_id=4, code__in=[1,2,3,4,5,6]).order_by('id')
+    else:
+        levels = Niveis.objects.filter(factor_id=4, code__in=[1]).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
@@ -264,19 +387,6 @@ def load_levels3(request):
         levels = Niveis.objects.filter(factor_id=3, code__in=[7, 8]).order_by('id')
     elif level2_id == '15':
         levels = Niveis.objects.filter(factor_id=3, code__in=[9, 10, 11, 12]).order_by('id')
-
-    return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
-
-
-# Carregar as nivel 4 Gestão Recebida de acordo com 1 executivo
-def load_levels4(request):
-    ceo_id = request.GET.get('ceo')
-    if ceo_id == 'true':
-        levels = Niveis.objects.filter(factor_id=4, code__in=[7,8]).order_by('id')
-    elif ceo_id == 'false':
-        levels = Niveis.objects.filter(factor_id=4, code__in=[1,2,3,4,5,6]).order_by('id')
-    else:
-        levels = Niveis.objects.filter(factor_id=4).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 

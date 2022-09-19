@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 
-from .models import Familias, SubFamilias, Fatores, Niveis, Matrizes, Grades
+from .models import Familias, SubFamilias, Fatores, Niveis, Matrizes, Grades, Conhecimentos
 
 from django.forms import TextInput
 from django.db import models
@@ -52,6 +52,13 @@ class MatrizesAdmin(admin.ModelAdmin):
 class GradesAdmin(admin.ModelAdmin):
     ordering = ('number',)
     list_display = ['number','minimum','average','maximum']
+    pass
+
+
+@admin.register(Conhecimentos)
+class ConhecimentosAdmin(admin.ModelAdmin):
+    ordering = ('code',)
+    list_display = ['code','name']
     pass
 
 

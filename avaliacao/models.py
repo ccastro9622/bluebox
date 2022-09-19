@@ -9,6 +9,7 @@ from tenants.models import TenantAwareModel
 
 class Superior(TenantAwareModel):
     title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
+    evaluation_id = models.IntegerField(verbose_name='Avaliacao', default=0)
 
     def __str__(self):
         return f"{self.title}"
