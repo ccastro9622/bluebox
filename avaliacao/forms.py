@@ -52,7 +52,6 @@ class AvaliacaoForm(forms.ModelForm):
         # Torna o campo ceo readonly
         self.fields['ceo'].widget.attrs['disabled'] = 'disabled'
 
-
         avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
         #Não é o primeiro cargo a ser avaliado.
         if avaliacao:
