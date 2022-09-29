@@ -1,7 +1,7 @@
 import csv
 import os
 
-from django.http import FileResponse, HttpResponse
+from django.http import FileResponse, HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -41,6 +41,18 @@ class AvaliacaoDeleteView(LoginRequiredMixin, DeleteView):
     model = Avaliacao
     context_object_name = "avaliacao"
     success_url = reverse_lazy("avaliacao:avaliacao-list")
+
+    def delete(self, request, *args, **kwargs):
+
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+
+        # Deleta da tabela de superior imediato
+        super = Superior.objects.filter(evaluation_id=self.object.id)
+        super.delete()
+
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
 
 
 class AvaliacaoCreateView(LoginRequiredMixin, CreateView):
@@ -511,11 +523,21 @@ def load_levels6(request):
 # Carregar as nivel 7 Liderança  de acordo com o 2 Nivel Organizacional
 def load_levels7(request):
     level2_id = int(request.GET.get('level2')) #nivel organizacional
+    # manage_team_id = int(request.GET.get('manage_team')) # Gestão de Equipe
+    # level3_id = int(request.GET.get('level3'))  # escopo
 
-    if 16 <= level2_id <= 17:
-        levels = Niveis.objects.filter(factor_id=7, code__in=[1, 2]).order_by('id')
-    else:
+    if 18 <= level2_id <= 19:
         levels = Niveis.objects.filter(factor_id=7, code__in=[2, 3]).order_by('id')
+    else:
+        levels = Niveis.objects.filter(factor_id=7, code__in=[1, 2]).order_by('id')
+        # if level2_id == 17 and manage_team_id == 2:
+        #     levels = Niveis.objects.filter(factor_id=7, code__in=[2]).order_by('id')
+        # elif manage_team_id == 1:
+        #     levels = Niveis.objects.filter(factor_id=7, code__in=[1]).order_by('id')
+        # elif level2_id == 16 and manage_team_id == 2 and 22 <= level3_id <= 23:
+        #     levels = Niveis.objects.filter(factor_id=7, code__in=[2]).order_by('id')
+        # elif level2_id == 16 and manage_team_id == 2 and 20 <= level3_id <= 21:
+        #     levels = Niveis.objects.filter(factor_id=7, code__in=[1]).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 

@@ -51,7 +51,7 @@ class Niveis(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
-        return f"{self.name} " #f"{self.factor}" f" ---> {self.code}" f" - {self.name}"
+        return f"{self.code}" f" - {self.name}"
 
     class Meta:
         verbose_name = 'Fator / Nível'
