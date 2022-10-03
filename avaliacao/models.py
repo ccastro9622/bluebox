@@ -3,7 +3,7 @@ from django.db import models
 from admin_descricao.models import Formacao, Gerencia, Descricoes
 from admin_geral.models import Dimensao, Governanca, Tipoempresa, Origemcapital
 from master.models import Diretoria, Area
-from admin_avaliacao.models import Fatores, Niveis, SubFamilias, Familias
+from admin_avaliacao.models import Fatores, Niveis, SubFamilias, Familias, Combinacoes
 from tenants.models import TenantAwareModel
 
 
@@ -60,7 +60,7 @@ class Avaliacao(TenantAwareModel):
     level8 = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name=' ', related_name='level8')
 
     point = models.IntegerField(verbose_name='Pontos', default=0)
-    grade = models.IntegerField(verbose_name='Grade', default=0)
+    grade = models.ForeignKey(Combinacoes, on_delete=models.PROTECT, verbose_name='Grade', related_name='Grade')
 
     def __str__(self):
         return f"{self.title}"

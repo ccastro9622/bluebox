@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from admin_avaliacao.models import Niveis
+from admin_avaliacao.models import Niveis, Combinacoes
 from descricao.models import Descricao
 from master.models import Diretoria
 from report.mixins import PdfResponseMixin
@@ -559,5 +559,26 @@ def load_levels8(request):
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
+
+# Carregar as nivel 8 - Comunicação  de acordo com a gerencia
+def load_grade(request):
+
+    level1_id = request.GET.get('level1') # conhecimento
+    level2_id = str(int(request.GET.get('level2')) - 15) # Nivel organizacional
+    level3_id = str(int(request.GET.get('level3')) - 19) # escopo
+    level4_id = str(int(request.GET.get('level4')) - 31) # abrangencia
+    level5_id = str(int(request.GET.get('level5')) - 39) # gestão recebida
+    level6_id = str(int(request.GET.get('level6')) - 45) # liderança
+    level7_id = str(int(request.GET.get('level7')) - 51) # comunicação
+    level8_id = str(int(request.GET.get('level8')) - 54) # Liderança
+
+    niveis = level1_id + ';' + level2_id + ';' + level3_id + ';' + level4_id + ';' + level5_id + ';' + level6_id + ';' + level7_id + ';' + level8_id
+
+    # Combinacoes.objects.create(name=niveis, grade='teste') # só para teste.
+
+    combinacoes = Combinacoes.objects.filter(name=niveis).order_by('id')
+    # grade = "BX22" #combinacao.grade
+
+    return render(request, 'avaliacao/grade_list_options.html', {'combinacoes': combinacoes})
 
 

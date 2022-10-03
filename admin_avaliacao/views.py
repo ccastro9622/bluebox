@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from avaliacao.models import Avaliacao
 from master.models import Diretoria
 from tenants.utils import tenant_from_request
-from .models import Familias, SubFamilias, Fatores, Niveis, Matrizes, Grades, Conhecimentos
+from .models import Familias, SubFamilias, Fatores, Niveis, Matrizes, Grades, Conhecimentos, Combinacoes
 
 from django.views.generic.list import ListView
 
@@ -42,4 +42,9 @@ class GradesDetailView(LoginRequiredMixin, DetailView):
 class ConhecimentosDetailView(LoginRequiredMixin, DetailView):
     model = Conhecimentos
     context_object_name = "conhecimentos"
+
+
+class CombinacoesDetailView(LoginRequiredMixin, DetailView):
+    model = Combinacoes
+    context_object_name = "Combinações"
 

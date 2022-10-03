@@ -2,7 +2,10 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 
-from .models import Familias, SubFamilias, Fatores, Niveis, Matrizes, Grades, Conhecimentos
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
+from .models import Familias, SubFamilias, Fatores, Niveis, Matrizes, Grades, Conhecimentos, Combinacoes
 
 from django.forms import TextInput
 from django.db import models
@@ -60,6 +63,32 @@ class ConhecimentosAdmin(admin.ModelAdmin):
     ordering = ('code',)
     list_display = ['code','name']
     pass
+
+
+# @admin.register(Combinacoes)
+# class CombinacoesAdmin(admin.ModelAdmin):
+#     ordering = ('name',)
+#     list_display = ['name','grade']
+#     pass
+
+
+# excell
+class CombinacoesResource(resources.ModelResource):
+    class Meta:
+        model = Combinacoes
+        skip_unchanged = True
+
+
+class CombinacoesAdminImp(ImportExportModelAdmin):
+    ordering = ('id',)
+    list_display = ['name','grade']
+    resource_class = CombinacoesResource
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size': '82'})},
+    }
+
+
+admin.site.register(Combinacoes, CombinacoesAdminImp)
 
 
 class NiveisAdmin(admin.ModelAdmin):

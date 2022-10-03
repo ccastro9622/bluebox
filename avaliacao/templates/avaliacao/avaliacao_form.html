@@ -21,7 +21,8 @@
           data-levels5-url="{% url 'avaliacao:ajax_load_levels5' %}"
           data-levels6-url="{% url 'avaliacao:ajax_load_levels6' %}"
           data-levels7-url="{% url 'avaliacao:ajax_load_levels7' %}"
-          data-levels8-url="{% url 'avaliacao:ajax_load_levels8' %}">{% csrf_token %}
+          data-levels8-url="{% url 'avaliacao:ajax_load_levels8' %}"
+          data-grade-url="{% url 'avaliacao:ajax_load_grade' %}">{% csrf_token %}
 
          <div class="row" aling="center">
             <div class="col-md-4">
@@ -64,9 +65,9 @@
             <div class="col-md-4">
                 {{ form.level1|as_crispy_field }}
             </div>
-            <div>
-                <td><a href="#"><left><i class="fas fa-edit"></i></left></a></td>
-            </div>
+<!--            <div>-->
+<!--                <td><a href="#"><left><i class="fas fa-edit"></i></left></a></td>-->
+<!--            </div>-->
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -74,9 +75,6 @@
             </div>
             <div class="col-md-4">
                 {{ form.level2|as_crispy_field }}
-            </div>
-            <div>
-                <td><a href="#"><left><i class="fas fa-edit"></i></left></a></td>
             </div>
         </div>
         <div class="row">
@@ -177,6 +175,39 @@
           });
         });
 
+        $("#id_level8").change(function ()  { // 8 - Comunicacao -> grade
+          var url = $("#avaliacaoForm").attr("data-grade-url");
+          var level8Id = $(this).val();  // get the selected country ID from the HTML input
+          var level1Id = $("#id_level1").val(); // Conhecimento
+          var level2Id = $("#id_level2").val(); // Conhecimento
+          var level3Id = $("#id_level3").val(); // Conhecimento
+          var level4Id = $("#id_level4").val(); // Conhecimento
+          var level5Id = $("#id_level5").val(); // Conhecimento
+          var level6Id = $("#id_level6").val(); // Conhecimento
+          var level7Id = $("#id_level7").val(); // Conhecimento
+
+<!--          alert(level8Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level8': level8Id,      // add the country id to the GET parameters
+                      'level1': level1Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level2': level2Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level3': level3Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level4': level4Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level5': level5Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level6': level6Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level7': level7Id        // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                  $("#id_grade").html(data);  // replace the contents of the city input with the data that came from the server
+                  $("#id_level8").val() = 1;
+                }
+           });
+        });
+
+
         if(!$(id_ceo).is(":checked")) {
             $("#id_title_super").change(function () { // Superior Imediato e Conhecimento
               var url = $("#avaliacaoForm").attr("data-levels1-url");  // get the url of the `load_cities` view
@@ -198,9 +229,8 @@
             $("#id_level1").change(function () { // 1 - 2 - Conhecimento e Nivel organizacional
               var url = $("#avaliacaoForm").attr("data-levels2-url");
               var level1Id = $(this).val();  // get the selected country ID from the HTML input
-              var teste = $("#id_level1").val();
 
-              alert(teste)
+<!--              alert(teste)-->
 
               $.ajax({                       // initialize an AJAX request
                 url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
@@ -316,8 +346,6 @@
                     }
                });
             });
-
-
 
             <!--$("#id_ceo").change(function () { // 1 Conhecimento - 2 Nivel Organizacional - 3 Escopo - 5 Contribuição - 7 Liderança - 8 Comunicação-->
 

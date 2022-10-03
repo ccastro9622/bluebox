@@ -100,3 +100,16 @@ class Conhecimentos(models.Model):
     class Meta:
         verbose_name = 'Conhecimento'
         verbose_name_plural = 'Conhecimentos'
+
+
+class Combinacoes(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome*',unique=True)
+    grade = models.TextField(max_length=255, verbose_name='Grade')
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
+
+    def __str__(self):
+        return f"{self.grade}"
+
+    class Meta:
+        verbose_name = 'Combinação de Fatores e Niveis'
+        verbose_name_plural = '      Combinações de Fatores e Niveis'
