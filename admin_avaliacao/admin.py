@@ -91,7 +91,13 @@ class CombinacoesAdminImp(ImportExportModelAdmin):
 admin.site.register(Combinacoes, CombinacoesAdminImp)
 
 
-class NiveisAdmin(admin.ModelAdmin):
+class NiveisResource(resources.ModelResource):
+    class Meta:
+        model = Niveis
+        skip_unchanged = True
+
+
+class NiveisAdminImp(ImportExportModelAdmin):
     ordering = ('factor', 'code', 'name',)
     list_display = ['factor', 'code', 'name']
     formfield_overrides = {
@@ -99,4 +105,4 @@ class NiveisAdmin(admin.ModelAdmin):
     }
 
 
-admin.site.register(Niveis, NiveisAdmin)
+admin.site.register(Niveis, NiveisAdminImp)

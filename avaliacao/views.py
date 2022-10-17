@@ -560,7 +560,7 @@ def load_levels8(request):
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 8 - Comunicação  de acordo com a gerencia
+# Carregar o grade
 def load_grade(request):
 
     level1_id = request.GET.get('level1') # conhecimento
@@ -582,3 +582,15 @@ def load_grade(request):
     return render(request, 'avaliacao/grade_list_options.html', {'combinacoes': combinacoes})
 
 
+# Carregar o detalhe do nivel
+def load_detalhe(request):
+
+    level_id = request.GET.get('level')
+
+    detalhes = Niveis.objects.filter(id=level_id).order_by('id')
+
+    # detalhe = niveis.detail
+    #
+    # # grade = "BX22" #combinacao.grade
+
+    return render(request, 'avaliacao/niveis_detalhe.html', {'detalhes': detalhes})

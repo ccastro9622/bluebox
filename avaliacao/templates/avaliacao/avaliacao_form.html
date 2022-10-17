@@ -22,11 +22,15 @@
           data-levels6-url="{% url 'avaliacao:ajax_load_levels6' %}"
           data-levels7-url="{% url 'avaliacao:ajax_load_levels7' %}"
           data-levels8-url="{% url 'avaliacao:ajax_load_levels8' %}"
-          data-grade-url="{% url 'avaliacao:ajax_load_grade' %}">{% csrf_token %}
+          data-grade-url="{% url 'avaliacao:ajax_load_grade' %}"
+          data-detalhe-url="{% url 'avaliacao:ajax_load_detalhe' %}">{% csrf_token %}
 
          <div class="row" aling="center">
             <div class="col-md-4">
                 {{ form.title|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+                {{ form.title_super|as_crispy_field }}
             </div>
             <div class="col-md-4" >
                   {{form.ceo|as_crispy_field }}
@@ -42,9 +46,6 @@
             </div>
             <div class="col-md-4">
                 {{ form.area|as_crispy_field }}
-            </div>
-             <div class="col-md-4">
-                {{ form.title_super|as_crispy_field }}
             </div>
         </div>
         <br>
@@ -65,9 +66,10 @@
             <div class="col-md-4">
                 {{ form.level1|as_crispy_field }}
             </div>
-<!--            <div>-->
-<!--                <td><a href="#"><left><i class="fas fa-edit"></i></left></a></td>-->
-<!--            </div>-->
+            <div>
+                <br>
+                <button onclick="DescricaoNivel1()" type="button" class="btn btn-primary">?</button>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -75,6 +77,10 @@
             </div>
             <div class="col-md-4">
                 {{ form.level2|as_crispy_field }}
+            </div>
+            <div>
+                <br>
+                <button onclick="DescricaoNivel2()" type="button" class="btn btn-primary">?</button>
             </div>
         </div>
         <div class="row">
@@ -84,6 +90,10 @@
             <div class="col-md-4">
                 {{ form.level3|as_crispy_field }}
             </div>
+            <div>
+                <br>
+                <button onclick="DescricaoNivel3()" type="button" class="btn btn-primary">?</button>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -91,6 +101,10 @@
             </div>
             <div class="col-md-4">
                 {{ form.level4|as_crispy_field }}
+            </div>
+            <div>
+                <br>
+                <button onclick="DescricaoNivel4()" type="button" class="btn btn-primary">?</button>
             </div>
         </div>
         <div class="row">
@@ -100,6 +114,10 @@
             <div class="col-md-4">
                 {{ form.level5|as_crispy_field }}
             </div>
+            <div>
+                <br>
+                <button onclick="DescricaoNivel5()" type="button" class="btn btn-primary">?</button>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -107,6 +125,10 @@
             </div>
             <div class="col-md-4">
                 {{ form.level6|as_crispy_field }}
+            </div>
+            <div>
+                <br>
+                <button onclick="DescricaoNivel6()" type="button" class="btn btn-primary">?</button>
             </div>
         </div>
         <div class="row">
@@ -116,6 +138,10 @@
             <div class="col-md-4">
                 {{ form.level7|as_crispy_field }}
             </div>
+            <div>
+                <br>
+                <button onclick="DescricaoNivel7()" type="button" class="btn btn-primary">?</button>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -124,11 +150,15 @@
             <div class="col-md-4">
                 {{ form.level8|as_crispy_field }}
             </div>
+            <div>
+                <br>
+                <button onclick="DescricaoNivel8()" type="button" class="btn btn-primary">?</button>
+            </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-4">
-                {{ form.point|as_crispy_field }}
+<!--                {{ form.point|as_crispy_field }}-->
             </div>
             <div class="col-md-4">
                 {{ form.grade|as_crispy_field }}
@@ -138,12 +168,182 @@
 
         <button type="submit" class="btn btn-success">Salvar</button>
         <a href="{% url 'avaliacao:avaliacao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
-
+        <button onclick="CalculaGrade()" type="button" class="btn btn-primary">Calcular Grade</button>
     </form>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
     <script>
+
+        function DescricaoNivel1() { // Mostra descrição do nivel 1
+            var url = $("#avaliacaoForm").attr("data-detalhe-url");
+            var levelId = $("#id_level1").val(); // Conhecimento
+<!--            alert(level1Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(data);
+
+                }
+           });
+        }
+
+        function DescricaoNivel2() { // Mostra descrição do nivel 2
+            var url = $("#avaliacaoForm").attr("data-detalhe-url");
+            var levelId = $("#id_level2").val(); // Nivel Organizacional
+<!--            alert(level1Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(data);
+
+                }
+           });
+        }
+
+        function DescricaoNivel3() { // Mostra descrição do nivel 3
+            var url = $("#avaliacaoForm").attr("data-detalhe-url");
+            var levelId = $("#id_level3").val(); // Escopo
+<!--            alert(level1Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(data);
+
+                }
+           });
+        }
+
+        function DescricaoNivel4() { // Mostra descrição do nivel 4
+            var url = $("#avaliacaoForm").attr("data-detalhe-url");
+            var levelId = $("#id_level4").val(); // Abrangencia
+<!--            alert(level1Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(data);
+
+                }
+           });
+        }
+
+        function DescricaoNivel5() { // Mostra descrição do nivel 5
+            var url = $("#avaliacaoForm").attr("data-detalhe-url");
+            var levelId = $("#id_level5").val(); // Contribuição
+<!--            alert(level1Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(data);
+
+                }
+           });
+        }
+
+        function DescricaoNivel6() { // Mostra descrição do nivel 6
+            var url = $("#avaliacaoForm").attr("data-detalhe-url");
+            var levelId = $("#id_level6").val(); // Gestao
+<!--            alert(level1Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(data);
+
+                }
+           });
+        }
+
+        function DescricaoNivel7() { // Mostra descrição do nivel 7
+            var url = $("#avaliacaoForm").attr("data-detalhe-url");
+            var levelId = $("#id_level7").val(); // Liderança
+<!--            alert(level1Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(data);
+
+                }
+           });
+        }
+
+        function DescricaoNivel8() { // Mostra descrição do nivel 8
+            var url = $("#avaliacaoForm").attr("data-detalhe-url");
+            var levelId = $("#id_level8").val(); // Comunicação
+<!--            alert(level1Id)-->
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(data);
+
+                }
+           });
+        }
+
+        function CalculaGrade() { // 8 - Comunicacao -> grade
+          var url = $("#avaliacaoForm").attr("data-grade-url");
+          var level8Id = $("#id_level8").val();  // get the selected country ID from the HTML input
+          var level1Id = $("#id_level1").val(); // Conhecimento
+          var level2Id = $("#id_level2").val(); // Conhecimento
+          var level3Id = $("#id_level3").val(); // Conhecimento
+          var level4Id = $("#id_level4").val(); // Conhecimento
+          var level5Id = $("#id_level5").val(); // Conhecimento
+          var level6Id = $("#id_level6").val(); // Conhecimento
+          var level7Id = $("#id_level7").val(); // Conhecimento
+
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'level8': level8Id,      // add the country id to the GET parameters
+                      'level1': level1Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level2': level2Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level3': level3Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level4': level4Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level5': level5Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level6': level6Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+                      'level7': level7Id        // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                  $("#id_grade").html(data);  // replace the contents of the city input with the data that came from the server
+                  $("#id_grade").val() = 410;
+
+                }
+           });
+        }
+
+
         $("#id_board").change(function () {
           var url = $("#avaliacaoForm").attr("data-areas-url");  // get the url of the `load_cities` view
           var boardId = $(this).val();  // get the selected country ID from the HTML input
@@ -175,37 +375,37 @@
           });
         });
 
-        $("#id_level8").change(function ()  { // 8 - Comunicacao -> grade
-          var url = $("#avaliacaoForm").attr("data-grade-url");
-          var level8Id = $(this).val();  // get the selected country ID from the HTML input
-          var level1Id = $("#id_level1").val(); // Conhecimento
-          var level2Id = $("#id_level2").val(); // Conhecimento
-          var level3Id = $("#id_level3").val(); // Conhecimento
-          var level4Id = $("#id_level4").val(); // Conhecimento
-          var level5Id = $("#id_level5").val(); // Conhecimento
-          var level6Id = $("#id_level6").val(); // Conhecimento
-          var level7Id = $("#id_level7").val(); // Conhecimento
+<!--        $("#id_level8").change(function ()  { // 8 - Comunicacao -> grade-->
+<!--          var url = $("#avaliacaoForm").attr("data-grade-url");-->
+<!--          var level8Id = $(this).val();  // get the selected country ID from the HTML input-->
+<!--          var level1Id = $("#id_level1").val(); // Conhecimento-->
+<!--          var level2Id = $("#id_level2").val(); // Conhecimento-->
+<!--          var level3Id = $("#id_level3").val(); // Conhecimento-->
+<!--          var level4Id = $("#id_level4").val(); // Conhecimento-->
+<!--          var level5Id = $("#id_level5").val(); // Conhecimento-->
+<!--          var level6Id = $("#id_level6").val(); // Conhecimento-->
+<!--          var level7Id = $("#id_level7").val(); // Conhecimento-->
 
-<!--          alert(level8Id)-->
+<!--&lt;!&ndash;          alert(level8Id)&ndash;&gt;-->
 
-            $.ajax({                       // initialize an AJAX request
-                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-                data: {
-                      'level8': level8Id,      // add the country id to the GET parameters
-                      'level1': level1Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
-                      'level2': level2Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
-                      'level3': level3Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
-                      'level4': level4Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
-                      'level5': level5Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
-                      'level6': level6Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters
-                      'level7': level7Id        // add the country id to the GET parameters
-                },
-                success: function (data) {   // `data` is the return of the `load_cities` view function
-                  $("#id_grade").html(data);  // replace the contents of the city input with the data that came from the server
-                  $("#id_level8").val() = 1;
-                }
-           });
-        });
+<!--            $.ajax({                       // initialize an AJAX request-->
+<!--                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)-->
+<!--                data: {-->
+<!--                      'level8': level8Id,      // add the country id to the GET parameters-->
+<!--                      'level1': level1Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters-->
+<!--                      'level2': level2Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters-->
+<!--                      'level3': level3Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters-->
+<!--                      'level4': level4Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters-->
+<!--                      'level5': level5Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters-->
+<!--                      'level6': level6Id,        // add the country id to the GET parameters,      // add the country id to the GET parameters-->
+<!--                      'level7': level7Id        // add the country id to the GET parameters-->
+<!--                },-->
+<!--                success: function (data) {   // `data` is the return of the `load_cities` view function-->
+<!--                  $("#id_grade").html(data);  // replace the contents of the city input with the data that came from the server-->
+<!--                  $("#id_level8").val() = 1;-->
+<!--                }-->
+<!--           });-->
+<!--        });-->
 
 
         if(!$(id_ceo).is(":checked")) {

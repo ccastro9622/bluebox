@@ -1,4 +1,4 @@
 <option value="">---------</option>
 {% for level in levels %}
-<option value="{{ level.id }}">{{ level.name }}</option>
+    <option value="{{ level.id }}" value="{{ level.name }}">{{ level.code }} - {{ level.name }}</option>
 {% endfor %}

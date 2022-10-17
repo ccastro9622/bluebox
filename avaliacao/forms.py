@@ -47,10 +47,12 @@ class AvaliacaoForm(forms.ModelForm):
         self.fields['factor6'].queryset = Fatores.objects.filter(id=6)
         self.fields['factor7'].queryset = Fatores.objects.filter(id=7)
         self.fields['factor8'].queryset = Fatores.objects.filter(id=8)
+        # self.fields['grade'].queryset = Combinacoes.objects.filter(id=0)
 
 
         # Torna o campo  readonly
         self.fields['ceo'].widget.attrs['disabled'] = 'disabled'
+        # self.fields['grade'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor1'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor2'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor3'].widget.attrs['disabled'] = 'disabled'
@@ -189,6 +191,7 @@ class AvaliacaoModeloForm(forms.ModelForm):
 
         # Torna o campo  readonly
         self.fields['ceo'].widget.attrs['disabled'] = 'disabled'
+        # self.fields['grade'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor1'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor2'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor3'].widget.attrs['disabled'] = 'disabled'
