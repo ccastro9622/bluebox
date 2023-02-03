@@ -14,6 +14,7 @@ import os
 import django_heroku
 
 from pathlib import Path
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -96,9 +97,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'bluebox',
         'USER': 'cristiano',
-        'PASSWORD' : 'sbdt03pc',
-        'HOST' : '127.0.0.1',
-        'PORT' : 5432
+        'PASSWORD': 'sbdt03pc',
+        'HOST': '127.0.0.1',
+        'PORT': 5432
     }
 }
 
