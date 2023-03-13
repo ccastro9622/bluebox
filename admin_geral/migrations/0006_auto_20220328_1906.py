@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='dimensao',
-            options={'verbose_name': 'Dimensão Financeira', 'verbose_name_plural': 'Dimensões Financeiras'},
+            options={'verbose_name': 'Faturamento Bruto', 'verbose_name_plural': 'Faturamento Bruto'},
         ),
         migrations.AlterModelOptions(
             name='tipoempresa',

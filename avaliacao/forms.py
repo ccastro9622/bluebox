@@ -33,6 +33,8 @@ class AvaliacaoForm(forms.ModelForm):
         tenant_id = kwargs.pop('tenant_id', None)
         empresa = Tenant.objects.filter(id=tenant_id).first()
 
+        id = kwargs.pop('id', None)
+
         super().__init__(*args, **kwargs)
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
         self.fields['area'].queryset = Area.objects.none()
@@ -64,6 +66,8 @@ class AvaliacaoForm(forms.ModelForm):
 
         avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
         #Não é o primeiro cargo a ser avaliado.
+        self.fields['ceo'].initial = False
+
         if avaliacao:
             self.fields['ceo'].initial = False
             self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1).order_by('code')

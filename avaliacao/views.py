@@ -249,6 +249,7 @@ class AvaliacaoUpdateView(LoginRequiredMixin, UpdateView):
         kwargs = super(AvaliacaoUpdateView, self).get_form_kwargs()
         tenant_id = tenant_from_request(self.request)
         kwargs['tenant_id'] = tenant_id
+        kwargs['id'] = self.request.GET.get('pk')
         return kwargs
 
 

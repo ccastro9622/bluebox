@@ -24,6 +24,7 @@ class Areas(models.Model):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Área Formação'
         verbose_name_plural = 'Áreas de Formação'
 
@@ -60,6 +61,7 @@ class Especializacoes(models.Model):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Formação Complementar'
         verbose_name_plural = 'Formações Complementares'
 
@@ -72,6 +74,7 @@ class AreasEspecializacoes(models.Model):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Area de Formação Complementar'
         verbose_name_plural = 'Areas de Formações Complementares'
 

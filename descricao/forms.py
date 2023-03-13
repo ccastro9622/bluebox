@@ -7,19 +7,19 @@ from .models import *
 
 class DescricaoForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe",
-                                   widget=forms.Textarea(attrs={'rows': 3, 'cols': 150, 'id': 'position_team'}))
+                                   widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
-                                   widget=forms.Textarea(attrs={'cols': 150, 'id': 'summary_goal'}))
+                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'summary_goal'}))
 
     responsibility = forms.CharField(label="Principais Responsabilidades",
-                                   widget=forms.Textarea(attrs={'cols': 150, 'id': 'responsibility'}))
+                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
-    knowledge = forms.CharField(label="Conhecimentos Específicos",
-                                   widget=forms.Textarea(attrs={'cols': 150, 'id': 'knowledge'}))
+    knowledge = forms.CharField(label="Conhecimentos Específicos", required=False,
+                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
-    information = forms.CharField(label="Outras Informações",
-                                   widget=forms.Textarea(attrs={'cols': 150, 'id': 'information'}))
+    information = forms.CharField(label="Outras Informações", required=False,
+                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
     #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
@@ -77,6 +77,7 @@ class DescricaoForm(forms.ModelForm):
 
 # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
+
         tenant_id = kwargs.pop('tenant_id', None)
         super().__init__(*args, **kwargs)
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
@@ -84,6 +85,7 @@ class DescricaoForm(forms.ModelForm):
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         self.fields['status'].queryset = Status.objects.filter(id__in=[1])
+        self.fields['status'].widget.attrs['disabled'] = 'disabled'
 
 # Filtra a area pela diretoria
         if 'board' in self.data:
@@ -112,19 +114,19 @@ class DescricaoForm(forms.ModelForm):
 
 class DescricaoModeloForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe",
-                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 150, 'id': 'position_team'}))
+                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
-                                   widget=forms.Textarea(attrs={'cols': 150, 'id': 'summary_goal'}))
+                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'summary_goal'}))
 
     responsibility = forms.CharField(label="Principais Responsabilidades",
-                                     widget=forms.Textarea(attrs={'cols': 150, 'id': 'responsibility'}))
+                                     widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
     knowledge = forms.CharField(label="Conhecimentos Específicos",
-                                widget=forms.Textarea(attrs={'cols': 150, 'id': 'knowledge'}))
+                                widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
     information = forms.CharField(label="Outras Informações",
-                                  widget=forms.Textarea(attrs={'cols': 150, 'id': 'information'}))
+                                  widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
     class Meta:
         model = Descricao
@@ -177,19 +179,19 @@ class DescricaoModeloForm(forms.ModelForm):
 # Definie aprovador
 class DescricaoAprovadorForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe",
-                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 150, 'id': 'position_team'}))
+                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
-                                   widget=forms.Textarea(attrs={'cols': 150, 'id': 'summary_goal'}))
+                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'summary_goal'}))
 
     responsibility = forms.CharField(label="Principais Responsabilidades",
-                                     widget=forms.Textarea(attrs={'cols': 150, 'id': 'responsibility'}))
+                                     widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
     knowledge = forms.CharField(label="Conhecimentos Específicos",
-                                widget=forms.Textarea(attrs={'cols': 150, 'id': 'knowledge'}))
+                                widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
     information = forms.CharField(label="Outras Informações",
-                                  widget=forms.Textarea(attrs={'cols': 150, 'id': 'information'}))
+                                  widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
     #Verifica se o campo aprovador foi marcado quando status = a em aprovação e aprovado.
     def clean_approver(self):
@@ -247,19 +249,19 @@ class DescricaoAprovadorForm(forms.ModelForm):
 
 class DescricaoAprovacaoForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe",
-                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 150, 'id': 'position_team'}))
+                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
-                                   widget=forms.Textarea(attrs={'cols': 150, 'id': 'summary_goal'}))
+                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'summary_goal'}))
 
     responsibility = forms.CharField(label="Principais Responsabilidades",
-                                     widget=forms.Textarea(attrs={'cols': 150, 'id': 'responsibility'}))
+                                     widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
     knowledge = forms.CharField(label="Conhecimentos Específicos",
-                                widget=forms.Textarea(attrs={'cols': 150, 'id': 'knowledge'}))
+                                widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
     information = forms.CharField(label="Outras Informações",
-                                  widget=forms.Textarea(attrs={'cols': 150, 'id': 'information'}))
+                                  widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
     #Verifica se o campo aprovador foi preenchido.
     def clean_approver(self):
@@ -318,19 +320,19 @@ class DescricaoAprovacaoForm(forms.ModelForm):
 # Aprovação Final
 class DescricaoAprovacaoFinalForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe",
-                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 150, 'id': 'position_team'}))
+                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
-                                   widget=forms.Textarea(attrs={'cols': 150, 'id': 'summary_goal'}))
+                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'summary_goal'}))
 
     responsibility = forms.CharField(label="Principais Responsabilidades",
-                                     widget=forms.Textarea(attrs={'cols': 150, 'id': 'responsibility'}))
+                                     widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
     knowledge = forms.CharField(label="Conhecimentos Específicos",
-                                widget=forms.Textarea(attrs={'cols': 150, 'id': 'knowledge'}))
+                                widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
     information = forms.CharField(label="Outras Informações",
-                                  widget=forms.Textarea(attrs={'cols': 150, 'id': 'information'}))
+                                  widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
     # #Verifica se o campo aprovador foi marcado quando status = a em aprovação e aprovado.
     # def clean_approver(self):

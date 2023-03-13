@@ -14,7 +14,7 @@ from django.db import models
 class FamiliasAdmin(admin.ModelAdmin):
     # self.message_user(request, "Sem Voltar")
     ordering = ('name',)
-    list_display = ['name', 'is_active']
+    list_display = ['id','name', 'is_active']
     pass
 
 # @admin.register(SubFamilias)
@@ -25,7 +25,7 @@ class FamiliasAdmin(admin.ModelAdmin):
 
 class SubFamiliasAdmin(admin.ModelAdmin):
     ordering = ('name','name',)
-    list_display = ['name', 'family', 'is_active']
+    list_display = ['id','name', 'family', 'is_active']
 
 
 admin.site.register(SubFamilias, SubFamiliasAdmin)
@@ -58,11 +58,11 @@ class GradesAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Conhecimentos)
-class ConhecimentosAdmin(admin.ModelAdmin):
-    ordering = ('code',)
-    list_display = ['code','name']
-    pass
+# @admin.register(Conhecimentos)
+# class ConhecimentosAdmin(admin.ModelAdmin):
+#     ordering = ('code',)
+#     list_display = ['code','name']
+#     pass
 
 
 # @admin.register(Combinacoes)

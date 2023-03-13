@@ -17,13 +17,13 @@ class Descricao(TenantAwareModel):
     summary_goal = models.TextField(max_length=1000, verbose_name='Missão do Cargo', null=True, default="")
     responsibility = models.TextField(max_length=1000, verbose_name='Principais Responsabilidades', null=True, default="")
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, related_name='formation', verbose_name='Grau de Escolaridade Obrigatório', null=True, blank=True, default="")
-    areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 1', related_name='Area_1',
+    areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatória 1', related_name='Area_1',
                               blank=True, null=True)
-    areas2 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 2', related_name='Area_2',
+    areas2 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatória 2', related_name='Area_2',
                                blank=True, null=True)
-    areas3 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 3', related_name='Area_3',
+    areas3 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatória 3', related_name='Area_3',
                                blank=True, null=True)
-    areas4 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 4', related_name='Area_4',
+    areas4 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatória 4', related_name='Area_4',
                                blank=True, null=True)
     formation_desired = models.ForeignKey(Formacao, null=True, on_delete=models.PROTECT, related_name='formation_desired1', verbose_name='Grau de Escolaridade Desejável', default="")
     areas_desired = models.ForeignKey(Areas, on_delete=models.PROTECT, related_name='areas_desired_1',
