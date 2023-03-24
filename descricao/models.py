@@ -35,16 +35,16 @@ class Descricao(TenantAwareModel):
     areas_desired4 = models.ForeignKey(Areas, on_delete=models.PROTECT, related_name='areas_desired_4',
                                       verbose_name='Area de Formação Desejada 4', blank=True, null=True, default="")
     specialization = models.ForeignKey(Especializacoes, on_delete=models.PROTECT, verbose_name='Formação Complementar', blank=True, null=True, default="")
-    area_specialization = models.ForeignKey(AreasEspecializacoes, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 1',
+    area_specialization = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 1',
                                 related_name='area_specialization_1',
                                 blank=True, null=True)
-    area_specialization2 = models.ForeignKey(AreasEspecializacoes, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 2',
+    area_specialization2 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 2',
                                related_name='area_specialization_2',
                                blank=True, null=True)
-    area_specialization3 = models.ForeignKey(AreasEspecializacoes, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 3',
+    area_specialization3 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 3',
                                related_name='area_specialization_3',
                                blank=True, null=True)
-    area_specialization4 = models.ForeignKey(AreasEspecializacoes, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 4',
+    area_specialization4 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 4',
                                related_name='area_specialization_4',
                                blank=True, null=True)
     experience = models.ForeignKey(Experiencias, on_delete=models.PROTECT, verbose_name='Experiencia', null=True, default="")
