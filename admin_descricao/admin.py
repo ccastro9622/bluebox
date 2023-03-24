@@ -53,6 +53,7 @@ class EspecializacoesAdmin(admin.ModelAdmin):
 @admin.register(Experiencias)
 class ExperienciasAdmin(admin.ModelAdmin):
     ordering = ('name',)
+    list_display = ['id', 'name']
     pass
 
 

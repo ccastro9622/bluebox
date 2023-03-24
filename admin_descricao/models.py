@@ -117,10 +117,10 @@ class Descricoes(models.Model):
     summary_goal = models.TextField(max_length=1500, verbose_name='Missão do Cargo', blank=True, null=True)
     responsibility = models.TextField(max_length=1500, verbose_name='Principais Responsabilidades', blank=True, null=True)
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formação', related_name='Formacao',blank=True, null=True)
-    areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 1', related_name='Area1', blank=True, null=True)
-    areas2 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 2', related_name='Area2', blank=True, null=True)
-    areas3 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 3', related_name='Area3', blank=True, null=True)
-    areas4 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação 4', related_name='Area4', blank=True, null=True)
+    areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatoria 1', related_name='Area1', blank=True, null=True)
+    areas2 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatoria 2', related_name='Area2', blank=True, null=True)
+    areas3 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatoria 3', related_name='Area3', blank=True, null=True)
+    areas4 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatoria 4', related_name='Area4', blank=True, null=True)
     formation_desired = models.ForeignKey(Formacao, null=True, on_delete=models.PROTECT,
                                           related_name='formation_desired',
                                           verbose_name='Grau de Escolaridade Desejável', blank=True, default="")
@@ -134,19 +134,19 @@ class Descricoes(models.Model):
                                        verbose_name='Area de Formação Desejada 3', blank=True, null=True, default="")
     specialization = models.ForeignKey(Especializacoes, on_delete=models.PROTECT, verbose_name='Formação Complementar', blank=True, null=True)
 
-    area_specialization = models.ForeignKey(AreasEspecializacoes, on_delete=models.PROTECT,
+    area_specialization = models.ForeignKey(Areas, on_delete=models.PROTECT,
                                             verbose_name='Área de Formação Complementar 1',
                                             related_name='area_specialization1',
                                             blank=True, null=True)
-    area_specialization2 = models.ForeignKey(AreasEspecializacoes, on_delete=models.PROTECT,
+    area_specialization2 = models.ForeignKey(Areas, on_delete=models.PROTECT,
                                              verbose_name='Área de Formação Complementar 2',
                                              related_name='area_specialization2',
                                              blank=True, null=True)
-    area_specialization3 = models.ForeignKey(AreasEspecializacoes, on_delete=models.PROTECT,
+    area_specialization3 = models.ForeignKey(Areas, on_delete=models.PROTECT,
                                              verbose_name='Área de Formação Complementar 3',
                                              related_name='area_specialization3',
                                              blank=True, null=True)
-    area_specialization4 = models.ForeignKey(AreasEspecializacoes, on_delete=models.PROTECT,
+    area_specialization4 = models.ForeignKey(Areas, on_delete=models.PROTECT,
                                              verbose_name='Área de Formação Complementar 4',
                                              related_name='area_specialization4',
                                              blank=True, null=True)
