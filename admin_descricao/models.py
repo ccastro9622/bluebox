@@ -12,6 +12,7 @@ class Formacao(models.Model):
         return f"{self.code}" f" - {self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Formação'
         verbose_name_plural = 'Formações'
 
@@ -37,6 +38,7 @@ class Idiomas(models.Model):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Idioma'
         verbose_name_plural = 'Idiomas'
 
@@ -49,6 +51,7 @@ class Habilitacoes(models.Model):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Habilitação/Certificação'
         verbose_name_plural = 'Habilitações/Ceritificações'
 
@@ -86,6 +89,7 @@ class Experiencias(models.Model):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Experiência'
         verbose_name_plural = 'Experiências'
 

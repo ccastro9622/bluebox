@@ -10,6 +10,7 @@ class Familias(models.Model):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Família'
         verbose_name_plural = '      Famílias de Cargo'
 
@@ -24,7 +25,7 @@ class SubFamilias(models.Model):
         return f"{self.name}"
 
     class Meta:
-        ordering = ["family"]
+        ordering = ["name"]
         verbose_name = ' SubFamília'
         verbose_name_plural = '     SubFamílias de Cargo'
 
@@ -98,6 +99,7 @@ class Conhecimentos(models.Model):
         return f"{self.code}" f" - {self.name}"
 
     class Meta:
+        ordering = ["name"]
         verbose_name = 'Conhecimento'
         verbose_name_plural = 'Conhecimentos'
 

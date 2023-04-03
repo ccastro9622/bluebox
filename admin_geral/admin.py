@@ -44,5 +44,5 @@ class Dimensaoadmin(admin.ModelAdmin):
 
 @admin.register(Core)
 class Coreadmin(admin.ModelAdmin):
-    ordering = ('name',)
+    ordering = ('id',)
     pass

@@ -24,7 +24,7 @@ class FamiliasAdmin(admin.ModelAdmin):
 
 
 class SubFamiliasAdmin(admin.ModelAdmin):
-    ordering = ('name','name',)
+    ordering = ('name',)
     list_display = ['id','name', 'family', 'is_active']
 
 

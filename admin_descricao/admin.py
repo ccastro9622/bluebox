@@ -59,6 +59,7 @@ class ExperienciasAdmin(admin.ModelAdmin):
 
 # excell
 class DescricoesResource(resources.ModelResource):
+    ordering = ('title',)
     class Meta:
         model = Descricoes
         skip_unchanged = True
