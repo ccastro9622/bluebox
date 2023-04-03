@@ -123,15 +123,15 @@ class Descricoes(models.Model):
     areas4 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatoria 4', related_name='Area4', blank=True, null=True)
     formation_desired = models.ForeignKey(Formacao, null=True, on_delete=models.PROTECT,
                                           related_name='formation_desired',
-                                          verbose_name='Grau de Escolaridade Desejável', blank=True, default="")
+                                          verbose_name='Grau de Escolaridade Desejável', blank=True)
     areas_desired = models.ForeignKey(Areas, on_delete=models.PROTECT, related_name='areas_desired1',
-                                      verbose_name='Area de Formação Desejada 1', blank=True, null=True, default="")
+                                      verbose_name='Area de Formação Desejada 1', blank=True, null=True)
     areas_desired2 = models.ForeignKey(Areas, on_delete=models.PROTECT, related_name='areas_desired2',
-                                       verbose_name='Area de Formação Desejada 2', blank=True, null=True, default="")
+                                       verbose_name='Area de Formação Desejada 2', blank=True, null=True)
     areas_desired3 = models.ForeignKey(Areas, on_delete=models.PROTECT, related_name='areas_desired3',
-                                       verbose_name='Area de Formação Desejada 3', blank=True, null=True, default="")
+                                       verbose_name='Area de Formação Desejada 3', blank=True, null=True)
     areas_desired4 = models.ForeignKey(Areas, on_delete=models.PROTECT, related_name='areas_desired4',
-                                       verbose_name='Area de Formação Desejada 3', blank=True, null=True, default="")
+                                       verbose_name='Area de Formação Desejada 3', blank=True, null=True)
     specialization = models.ForeignKey(Especializacoes, on_delete=models.PROTECT, verbose_name='Formação Complementar', blank=True, null=True)
 
     area_specialization = models.ForeignKey(Areas, on_delete=models.PROTECT,
