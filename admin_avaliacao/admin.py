@@ -44,18 +44,18 @@ class FatoresAdmin(admin.ModelAdmin):
 #     pass
 
 
-@admin.register(Matrizes)
-class MatrizesAdmin(admin.ModelAdmin):
-    ordering = ('name',)
-    list_display = ['name', 'is_active']
-    pass
+# @admin.register(Matrizes)
+# class MatrizesAdmin(admin.ModelAdmin):
+#     ordering = ('name',)
+#     list_display = ['name', 'is_active']
+#     pass
 
 
-@admin.register(Grades)
-class GradesAdmin(admin.ModelAdmin):
-    ordering = ('number',)
-    list_display = ['number','minimum','average','maximum']
-    pass
+# @admin.register(Grades)
+# class GradesAdmin(admin.ModelAdmin):
+#     ordering = ('number',)
+#     list_display = ['number','minimum','average','maximum']
+#     pass
 
 
 # @admin.register(Conhecimentos)

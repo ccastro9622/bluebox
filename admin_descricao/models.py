@@ -163,10 +163,10 @@ class Descricoes(models.Model):
     family = models.ForeignKey(Familias, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Família do Cargo')
     sub_familia = models.ForeignKey(SubFamilias, null=True, blank=True, on_delete=models.PROTECT, verbose_name='SubFamília do Cargo')
     manage_team = models.ForeignKey(Gerencia, on_delete=models.PROTECT, verbose_name='Gestão de Equipe',
-                                    related_name='gerencia1',null=True,default="", blank=True)
+                                    related_name='gerencia1',null=True,blank=True)
     formation_desired = models.ForeignKey(Formacao, null=True,  on_delete=models.PROTECT,
                                           related_name='formation_desired',
-                                          verbose_name='Grau de Escolaridade Desejável', blank=True, default="")
+                                          verbose_name='Grau de Escolaridade Desejável', blank=True)
     is_active = models.BooleanField(default=False, verbose_name='Ativo')
 
     def __str__(self):
