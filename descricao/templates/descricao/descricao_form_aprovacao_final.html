@@ -158,12 +158,12 @@
             <div class="col-md-4">
                 {{ form.experience|as_crispy_field }}
             </div>
-            <div class="col-md-4">
-                {{ form.approver|as_crispy_field }}
-            </div>
-            <div class="col-md-4">
-                {{ form.date_approval|as_crispy_field }}
-            </div>
+<!--            <div class="col-md-4">-->
+<!--                {{ form.approver|as_crispy_field }}-->
+<!--            </div>-->
+<!--            <div class="col-md-4">-->
+<!--                {{ form.date_approval|as_crispy_field }}-->
+<!--            </div>-->
         </div>
         <div class="row">
             <div class="col-md-4">
@@ -179,7 +179,7 @@
     </font>
 
     <br>
-    <button type="submit" class="btn btn-success">Salvar</button>
+    <button type="submit" class="btn btn-success">Salvar/Aprovação Final</button>
     <a href="{% url 'descricao:descricao-list-aprovador' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
 
 </form>

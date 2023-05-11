@@ -85,7 +85,7 @@ class DescricaoForm(forms.ModelForm):
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         self.fields['status'].queryset = Status.objects.filter(id__in=[1])
-        self.fields['status'].widget.attrs['disabled'] = 'disabled'
+        # self.fields['status'].widget.attrs['disabled'] = 'disabled'
 
 # Filtra a area pela diretoria
         if 'board' in self.data:

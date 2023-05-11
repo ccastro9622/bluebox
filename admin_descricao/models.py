@@ -12,7 +12,7 @@ class Formacao(models.Model):
         return f"{self.code}" f" - {self.name}"
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["code"]
         verbose_name = 'Formação'
         verbose_name_plural = 'Formações'
 

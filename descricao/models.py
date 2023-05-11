@@ -70,8 +70,8 @@ class Descricao(TenantAwareModel):
                                     verbose_name='Proficiência 2',  related_name='proficiencia2')
     proficiency3 = models.ForeignKey(Proficiencias, null=True, blank=True, on_delete=models.PROTECT,
                                     verbose_name='Proficiência 3',  related_name='proficiencia3')
-    knowledge = models.TextField(max_length=1000, verbose_name='Conhecimentos Específicos', blank=True, null=True, default="")
-    information = models.TextField(max_length=1000, verbose_name='Outras Informações', blank=True, null=True, default="")
+    knowledge = models.TextField(max_length=1000, verbose_name='Conhecimentos Específicos', blank=True, default="")
+    information = models.TextField(max_length=1000, verbose_name='Outras Informações', blank=True, default="")
     approver = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Aprovador', related_name='approver')
     date_approval = models.DateTimeField(null=True, blank=True, verbose_name='Data de Aprovação')
     status = models.ForeignKey(Status, on_delete=models.PROTECT, verbose_name='Status', related_name='status')

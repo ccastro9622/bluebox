@@ -64,7 +64,7 @@ class DescricaoAprovadorListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         tenant_id = tenant_from_request(self.request)
-        return super().get_queryset().filter(tenant_id=tenant_id, status__in=[2,3]).all()
+        return super().get_queryset().filter(tenant_id=tenant_id, status__in=[2, 3]).all()
 
 
 class DescricaoAprovacaoListView(LoginRequiredMixin, ListView):
@@ -276,10 +276,11 @@ class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
         kwargs['tenant_id'] = tenant_id
         return kwargs
 
+    # corrigir o problema de e-mail para descompentar
     def get_success_url(self):
         descricao = self.get_object()
         return reverse_lazy("descricao:descricao-email", kwargs={'title': descricao.title, 'email': descricao.approver.email})
-
+# reverse_lazy("descricao:descricao-list-aprovador")
 
 class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'descricao/descricao_form_aprovacao.html'
@@ -391,7 +392,7 @@ def envia_email(request, title, email):
 
     subject = 'Aprovação Pendente - BlueBox21' #request.POST.get('subject', '')
     message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ')'
-    from_email = 'pclinecomputadores@gmail.com' # request.POST.get('title', '')
+    from_email = 'cristiano.castro@pcline.com.br' # request.POST.get('title', '')
     to_email = [email]
 
     if subject and message and from_email and to_email and to_email != None:
@@ -415,7 +416,7 @@ def envia_aprovacao(request, pk):
     form_ = form.save(commit=False)
     form_.status_id = 2
     form_.save()
-    return redirect("/descricao/descricao_list_aprovador/")
+    return redirect("/descricao/descricao_list")
 
     # return render(request, 'descricao//descricao_list.html', {'form': form})
 
