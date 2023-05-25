@@ -282,6 +282,7 @@ class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
         return reverse_lazy("descricao:descricao-email", kwargs={'title': descricao.title, 'email': descricao.approver.email})
 # reverse_lazy("descricao:descricao-list-aprovador")
 
+
 class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'descricao/descricao_form_aprovacao.html'
     model = Descricao

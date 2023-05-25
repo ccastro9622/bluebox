@@ -54,6 +54,16 @@ class DescricaoForm(forms.ModelForm):
                 raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
         return proficiency3
 
+    def clean_areas(self):
+        formation_required = self.cleaned_data['formation']
+        areas_required = self.cleaned_data['areas']
+        formation = int(self.data.get('formation'))
+        if formation_required:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_required:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+        return areas_required
+
     def clean_areas_desired(self):
         formation_desired = self.cleaned_data['formation_desired']
         areas_desired = self.cleaned_data['areas_desired']
@@ -122,11 +132,66 @@ class DescricaoModeloForm(forms.ModelForm):
     responsibility = forms.CharField(label="Principais Responsabilidades",
                                      widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
-    knowledge = forms.CharField(label="Conhecimentos Específicos",
+    knowledge = forms.CharField(label="Conhecimentos Específicos", required=False,
                                 widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
-    information = forms.CharField(label="Outras Informações",
+    information = forms.CharField(label="Outras Informações", required=False,
                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
+
+#Valida preenchimento area de formacao complementar
+    def clean_area_specialization(self):
+        specialization = self.cleaned_data['specialization']
+        area_specialization = self.cleaned_data['area_specialization']
+        if specialization:
+            if not area_specialization:
+                raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
+        return area_specialization
+
+    def clean_proficiency(self):
+        idioma = self.cleaned_data['idioma']
+        proficiency = self.cleaned_data['proficiency']
+        if idioma:
+            if not proficiency:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency
+
+    def clean_proficiency2(self):
+        idioma2 = self.cleaned_data['idioma2']
+        proficiency2 = self.cleaned_data['proficiency2']
+        if idioma2:
+            if not proficiency2:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency2
+
+    def clean_proficiency3(self):
+        idioma3 = self.cleaned_data['idioma3']
+        proficiency3 = self.cleaned_data['proficiency3']
+        if idioma3:
+            if not proficiency3:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency3
+
+    def clean_areas(self):
+        formation_required = self.cleaned_data['formation']
+        areas_required = self.cleaned_data['areas']
+        formation = int(self.data.get('formation'))
+        if formation_required:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_required:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+        return areas_required
+
+    def clean_areas_desired(self):
+        formation_desired = self.cleaned_data['formation_desired']
+        areas_desired = self.cleaned_data['areas_desired']
+        formation = int(self.data.get('formation_desired'))
+        if formation_desired:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_desired:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Desejada para o Grau de Escolaridade acima.')
+        return areas_desired
+
+
 
     class Meta:
         model = Descricao
@@ -151,7 +216,7 @@ class DescricaoModeloForm(forms.ModelForm):
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
         self.fields['approver'].queryset = CustomUser.objects.filter(default_tenant=tenant_id)
         self.fields['area'].queryset = Area.objects.none()
-        self.fields['sub_familia'].queryset = SubFamilias.objects.none()
+        # self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         self.fields['status'].queryset = Status.objects.filter(id__in=[1])
 
         # Filtra a area pela diretoria
@@ -187,10 +252,10 @@ class DescricaoAprovadorForm(forms.ModelForm):
     responsibility = forms.CharField(label="Principais Responsabilidades",
                                      widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
-    knowledge = forms.CharField(label="Conhecimentos Específicos",
+    knowledge = forms.CharField(label="Conhecimentos Específicos", required=False,
                                 widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
-    information = forms.CharField(label="Outras Informações",
+    information = forms.CharField(label="Outras Informações", required=False,
                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
     #Verifica se o campo aprovador foi marcado quando status = a em aprovação e aprovado.
@@ -201,6 +266,61 @@ class DescricaoAprovadorForm(forms.ModelForm):
             if not approver:
                 raise forms.ValidationError('O campo Aprovador é obrigatório para Status: Em Aprovaçao')
         return approver
+
+    #Valida preenchimento area de formacao complementar
+    def clean_area_specialization(self):
+        specialization = self.cleaned_data['specialization']
+        area_specialization = self.cleaned_data['area_specialization']
+        if specialization:
+            if not area_specialization:
+                raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
+        return area_specialization
+
+    def clean_proficiency(self):
+        idioma = self.cleaned_data['idioma']
+        proficiency = self.cleaned_data['proficiency']
+        if idioma:
+            if not proficiency:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency
+
+    def clean_proficiency2(self):
+        idioma2 = self.cleaned_data['idioma2']
+        proficiency2 = self.cleaned_data['proficiency2']
+        if idioma2:
+            if not proficiency2:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency2
+
+    def clean_proficiency3(self):
+        idioma3 = self.cleaned_data['idioma3']
+        proficiency3 = self.cleaned_data['proficiency3']
+        if idioma3:
+            if not proficiency3:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency3
+
+    def clean_areas(self):
+        formation_required = self.cleaned_data['formation']
+        areas_required = self.cleaned_data['areas']
+        formation = int(self.data.get('formation'))
+        if formation_required:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_required:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+        return areas_required
+
+    def clean_areas_desired(self):
+        formation_desired = self.cleaned_data['formation_desired']
+        areas_desired = self.cleaned_data['areas_desired']
+        formation = int(self.data.get('formation_desired'))
+        if formation_desired:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_desired:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Desejada para o Grau de Escolaridade acima.')
+        return areas_desired
+
+
 
 
     class Meta:
@@ -257,11 +377,64 @@ class DescricaoAprovacaoForm(forms.ModelForm):
     responsibility = forms.CharField(label="Principais Responsabilidades",
                                      widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
-    knowledge = forms.CharField(label="Conhecimentos Específicos",
+    knowledge = forms.CharField(label="Conhecimentos Específicos", required=False,
                                 widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
-    information = forms.CharField(label="Outras Informações",
+    information = forms.CharField(label="Outras Informações", required=False,
                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
+    #Valida preenchimento area de formacao complementar
+    def clean_area_specialization(self):
+        specialization = self.cleaned_data['specialization']
+        area_specialization = self.cleaned_data['area_specialization']
+        if specialization:
+            if not area_specialization:
+                raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
+        return area_specialization
+
+    def clean_proficiency(self):
+        idioma = self.cleaned_data['idioma']
+        proficiency = self.cleaned_data['proficiency']
+        if idioma:
+            if not proficiency:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency
+
+    def clean_proficiency2(self):
+        idioma2 = self.cleaned_data['idioma2']
+        proficiency2 = self.cleaned_data['proficiency2']
+        if idioma2:
+            if not proficiency2:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency2
+
+    def clean_proficiency3(self):
+        idioma3 = self.cleaned_data['idioma3']
+        proficiency3 = self.cleaned_data['proficiency3']
+        if idioma3:
+            if not proficiency3:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency3
+
+    def clean_areas(self):
+        formation_required = self.cleaned_data['formation']
+        areas_required = self.cleaned_data['areas']
+        formation = int(self.data.get('formation'))
+        if formation_required:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_required:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+        return areas_required
+
+    def clean_areas_desired(self):
+        formation_desired = self.cleaned_data['formation_desired']
+        areas_desired = self.cleaned_data['areas_desired']
+        formation = int(self.data.get('formation_desired'))
+        if formation_desired:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_desired:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Desejada para o Grau de Escolaridade acima.')
+        return areas_desired
+
 
     #Verifica se o campo aprovador foi preenchido.
     def clean_approver(self):
@@ -328,10 +501,10 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
     responsibility = forms.CharField(label="Principais Responsabilidades",
                                      widget=forms.Textarea(attrs={'cols': 100, 'id': 'responsibility'}))
 
-    knowledge = forms.CharField(label="Conhecimentos Específicos",
+    knowledge = forms.CharField(label="Conhecimentos Específicos", required=False,
                                 widget=forms.Textarea(attrs={'cols': 100, 'id': 'knowledge'}))
 
-    information = forms.CharField(label="Outras Informações",
+    information = forms.CharField(label="Outras Informações", required=False,
                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
     # #Verifica se o campo aprovador foi marcado quando status = a em aprovação e aprovado.
@@ -342,6 +515,59 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
     #         if not approver:
     #             raise forms.ValidationError('O campo Aprovador é obrigatório para Status: Em Aprovaçao')
     #     return approver
+
+    #Valida preenchimento area de formacao complementar
+    def clean_area_specialization(self):
+        specialization = self.cleaned_data['specialization']
+        area_specialization = self.cleaned_data['area_specialization']
+        if specialization:
+            if not area_specialization:
+                raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
+        return area_specialization
+
+    def clean_proficiency(self):
+        idioma = self.cleaned_data['idioma']
+        proficiency = self.cleaned_data['proficiency']
+        if idioma:
+            if not proficiency:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency
+
+    def clean_proficiency2(self):
+        idioma2 = self.cleaned_data['idioma2']
+        proficiency2 = self.cleaned_data['proficiency2']
+        if idioma2:
+            if not proficiency2:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency2
+
+    def clean_proficiency3(self):
+        idioma3 = self.cleaned_data['idioma3']
+        proficiency3 = self.cleaned_data['proficiency3']
+        if idioma3:
+            if not proficiency3:
+                raise forms.ValidationError('Informe o nível de Proficiência para o Idioma acima.')
+        return proficiency3
+
+    def clean_areas(self):
+        formation_required = self.cleaned_data['formation']
+        areas_required = self.cleaned_data['areas']
+        formation = int(self.data.get('formation'))
+        if formation_required:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_required:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+        return areas_required
+
+    def clean_areas_desired(self):
+        formation_desired = self.cleaned_data['formation_desired']
+        areas_desired = self.cleaned_data['areas_desired']
+        formation = int(self.data.get('formation_desired'))
+        if formation_desired:
+            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                if not areas_desired:
+                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Desejada para o Grau de Escolaridade acima.')
+        return areas_desired
 
 
     class Meta:

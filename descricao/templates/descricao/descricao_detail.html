@@ -25,7 +25,7 @@
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Titulo do Cargo: {{descricao.title}}</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Função: {{descricao.function}} </th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Função: {% if {{descricao.function}} == 'none' %} '' {% else %}  {{descricao.function}} {% endif %} </th>
         </tr>
         <tr>
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Área: {{descricao.board}}</th>
