@@ -47,7 +47,7 @@ class Descricao(TenantAwareModel):
     area_specialization4 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 4',
                                related_name='area_specialization_4',
                                blank=True, null=True)
-    experience = models.ForeignKey(Experiencias, on_delete=models.PROTECT, verbose_name='Experiencia')
+    experience = models.ForeignKey(Experiencias, on_delete=models.PROTECT, verbose_name='Experiencia', null=True, blank=True)
     qualification = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, related_name='Habilitacao_1',
                                       verbose_name='Habilitação/Certificação Obrigatória 1', null=True, blank=True)
     qualification2 = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, related_name='Habilitacao_2',
