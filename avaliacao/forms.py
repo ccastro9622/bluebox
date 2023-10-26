@@ -68,7 +68,7 @@ class AvaliacaoForm(forms.ModelForm):
         #Não é o primeiro cargo a ser avaliado.
         self.fields['ceo'].initial = False
 
-        if avaliacao:
+        if avaliacao: # Não é CEO
             self.fields['ceo'].initial = False
             self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1).order_by('code')
             self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2).order_by('code')
@@ -78,49 +78,48 @@ class AvaliacaoForm(forms.ModelForm):
             self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6).order_by('code')
             self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7).order_by('code')
             self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8).order_by('code')
-        else:
+        else:# É CEO
             self.fields['ceo'].initial = True
             self.fields['title_super'].widget.attrs['disabled'] = 'disabled' # Torna o campo ceo readonly
-
+# Fator 2 - Conhecimento
             if empresa.size_id == 1 or empresa.size_id == 2:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[10]).order_by('code')
-            elif empresa.size_id == 3:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[10, 11]).order_by('code')
-            elif empresa.size_id == 4:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[11]).order_by('code')
-            elif empresa.size_id == 5:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[11, 12]).order_by('code')
-            elif empresa.size_id == 6:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[12]).order_by('code')
-            elif empresa.size_id == 7:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[12, 13]).order_by('code')
-            elif empresa.size_id == 8:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[13]).order_by('code')
-            elif empresa.size_id == 9:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[13, 14]).order_by('code')
-            elif empresa.size_id == 10:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[14]).order_by('code')
-            elif empresa.size_id == 11:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[14, 15]).order_by('code')
-            elif empresa.size_id == 12:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[15]).order_by('code')
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[8]).order_by('code')
+            elif empresa.size_id == 3 or empresa.size_id == 4:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[9]).order_by('code')
+            elif empresa.size_id == 5 or empresa.size_id == 6:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[10]).order_by('code')
+            elif empresa.size_id == 7 or empresa.size_id == 8:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[11]).order_by('code')
+            elif empresa.size_id == 9 or empresa.size_id == 10:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[12]).order_by('code')
+            elif empresa.size_id == 11 or empresa.size_id == 12:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[13]).order_by('code')
 
-            self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[4]).order_by('code')
-            self.fields['level3'].queryset = Niveis.objects.filter(factor_id=3, code__in=[11, 12]).order_by('code')
+# Fator 1 - Nivel Organizacional
+            self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[4]).order_by('code')
 
+# Fator 3 - Escopo
+            self.fields['level3'].queryset = Niveis.objects.filter(factor_id=3, code__in=[10, 11]).order_by('code')
+
+# Fator 4 - Abrangencia
             if empresa.core_id == 1 or empresa.core_id == 2:
                 self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[7]).order_by('code')
             else:
                 self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[8]).order_by('code')
 
+# Fator 5 - Contribuição
             self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[6]).order_by('code')
 
+# Fator 6 - Gestão Recebida
             if empresa.governanca_id == 1:
                 self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code__in=[6]).order_by('code')
             else:
                 self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code__in=[5]).order_by('code')
 
-            self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code__in=[2, 3]).order_by('code')
+# Fator 7 - Liderança
+            self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code__in=[3]).order_by('code')
+
+# Fator 8 - Comunicação
             self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8, code__in=[3]).order_by('code')
 
 # Filtra a area pela diretoria
@@ -217,50 +216,50 @@ class AvaliacaoModeloForm(forms.ModelForm):
             self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6).order_by('code')
             self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7).order_by('code')
             self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8).order_by('code')
-        else:
+        else:# É CEO
             self.fields['ceo'].initial = True
             self.fields['title_super'].widget.attrs['disabled'] = 'disabled' # Torna o campo ceo readonly
-
+# Fator 2 - Conhecimento
             if empresa.size_id == 1 or empresa.size_id == 2:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[10]).order_by('code')
-            elif empresa.size_id == 3:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[10, 11]).order_by('code')
-            elif empresa.size_id == 4:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[11]).order_by('code')
-            elif empresa.size_id == 5:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[11, 12]).order_by('code')
-            elif empresa.size_id == 6:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[12]).order_by('code')
-            elif empresa.size_id == 7:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[12, 13]).order_by('code')
-            elif empresa.size_id == 8:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[13]).order_by('code')
-            elif empresa.size_id == 9:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[13, 14]).order_by('code')
-            elif empresa.size_id == 10:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[14]).order_by('code')
-            elif empresa.size_id == 11:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[14, 15]).order_by('code')
-            elif empresa.size_id == 12:
-                self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[15]).order_by('code')
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[8]).order_by('code')
+            elif empresa.size_id == 3 or empresa.size_id == 4:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[9]).order_by('code')
+            elif empresa.size_id == 5 or empresa.size_id == 6:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[10]).order_by('code')
+            elif empresa.size_id == 7 or empresa.size_id == 8:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[11]).order_by('code')
+            elif empresa.size_id == 9 or empresa.size_id == 10:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[12]).order_by('code')
+            elif empresa.size_id == 11 or empresa.size_id == 12:
+                self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[13]).order_by('code')
 
-            self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[4]).order_by('code')
-            self.fields['level3'].queryset = Niveis.objects.filter(factor_id=3, code__in=[11, 12]).order_by('code')
+# Fator 1 - Nivel Organizacional
+            self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__in=[4]).order_by('code')
 
+# Fator 3 - Escopo
+            self.fields['level3'].queryset = Niveis.objects.filter(factor_id=3, code__in=[10, 11]).order_by('code')
+
+# Fator 4 - Abrangencia
             if empresa.core_id == 1 or empresa.core_id == 2:
                 self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[7]).order_by('code')
             else:
                 self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[8]).order_by('code')
 
+# Fator 5 - Contribuição
             self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[6]).order_by('code')
 
+# Fator 6 - Gestão Recebida
             if empresa.governanca_id == 1:
                 self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code__in=[6]).order_by('code')
             else:
                 self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code__in=[5]).order_by('code')
 
-            self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code__in=[2, 3]).order_by('code')
+# Fator 7 - Liderança
+            self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code__in=[3]).order_by('code')
+
+# Fator 8 - Comunicação
             self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8, code__in=[3]).order_by('code')
+
 
 
 # Filtra a area pela diretoria

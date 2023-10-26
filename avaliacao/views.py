@@ -448,24 +448,26 @@ def load_levels1(request):
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 2 Nivel Organizacional de acordo com o conhecimento
+# Carregar as nivel 2 conhecimento de acordo com o Nivel Organizacional
 def load_levels2(request):
 
     level1_id = int(request.GET.get('level1'))
-    if level1_id < 7:
-        levels = Niveis.objects.filter(factor_id=2, code__in=[1]).order_by('id')
-    elif level1_id < 10:
-        levels = Niveis.objects.filter(factor_id=2, code__in=[2]).order_by('id')
+    if level1_id  == 1:
+        levels = Niveis.objects.filter(factor_id=2, code__in=[1,2,3,4,5]).order_by('id')
+    elif level1_id == 2:
+        levels = Niveis.objects.filter(factor_id=2, code__in=[6,7,8,9,10]).order_by('id')
+    elif level1_id == 3:
+        levels = Niveis.objects.filter(factor_id=2, code__in=[9,10,11,12]).order_by('id')
     else:
-        levels = Niveis.objects.filter(factor_id=2, code__in=[2, 3, 4]).order_by('id')
+        levels = Niveis.objects.filter(factor_id=2, code__in=[10,11,12]).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar o nivel 3 Escopo com o nivel2 Nivel organizacional
+# Carregar o nivel 3 Escopo com o nivel1 Nivel organizacional e nivel 2 conhecimento
 def load_levels3(request):
-    level2_id = int(request.GET.get('level2')) #nivel organizacional
-    level1_id = int(request.GET.get('level1')) # conhecimento
+    level1_id = int(request.GET.get('level1')) #nivel organizacional
+    level2_id = int(request.GET.get('level2')) # conhecimento
 
     super_id = int(request.GET.get('title_super'))
     superior = Superior.objects.filter(id=super_id).first()
@@ -476,39 +478,66 @@ def load_levels3(request):
     # messages.add_message(request, messages.ERROR, 'Can not delete: this parent has a child!')
 
     # Monta o escopo maximo de acordo com o escopo do gestor - slide 14
-    if escopo_super == 30 or escopo_super == 31:
-        escopo = 10
-    elif escopo_super == 28 or escopo_super == 29:
+    if escopo_super == 27 or escopo_super == 28:
+        escopo = 9
+    elif escopo_super == 26:
         escopo = 8
-    elif escopo_super == 26 or escopo_super == 27:
+    elif escopo_super == 25:
+        escopo = 7
+    elif escopo_super == 24:
         escopo = 6
-    elif escopo_super == 24 or escopo_super == 25:
-        escopo = 5
     elif escopo_super == 23:
+        escopo = 5
+    elif escopo_super == 22:
+        escopo = 4
+    elif escopo_super == 21:
         escopo = 3
-    elif escopo_super <= 22:
+    elif escopo_super == 20:
         escopo = 2
+    elif escopo_super == 19:
+        escopo = 1
 
     # levels = Niveis.objects.filter(factor_id=3, code=1).order_by('id')
 
     # filra o escopo de acordo com o conhecimento, nivel organizacional e escopo do gestor - slide 13
-    if level1_id == 1 or  level1_id == 2:
-        levels = Niveis.objects.filter(factor_id=3, code=1).order_by('id')
-    elif level1_id == 3:
-        levels = Niveis.objects.filter(factor_id=3, code__in=[2, 3], code__lte=escopo).order_by('id')
-    elif level1_id == 4:
-        levels = Niveis.objects.filter(factor_id=3, code__in=[3, 4], code__lte=escopo).order_by('id')
-    elif 5 <= level1_id <= 8:
-        levels = Niveis.objects.filter(factor_id=3, code=4, code__lte=escopo).order_by('id')
-    elif level1_id == 9:
-        levels = Niveis.objects.filter(factor_id=3, code__in=[5,6], code__lte=escopo).order_by('id')
-    else:
-        if level2_id == 17:
-            levels = Niveis.objects.filter(factor_id=3, code__in=[5, 6], code__lte=escopo).order_by('id')
-        elif level2_id == 18:
-            levels = Niveis.objects.filter(factor_id=3, code__in=[7, 8], code__lte=escopo).order_by('id')
+    if level1_id == 1:
+        if level2_id <= 6: # id e não code
+            levels = Niveis.objects.filter(factor_id=3, code__in=[1, 2], code__lte=escopo).order_by('id')
         else:
-            levels = Niveis.objects.filter(factor_id=3, code__in=[9, 10], code__lte=escopo).order_by('id')
+            levels = Niveis.objects.filter(factor_id=3, code__in=[3, 4], code__lte=escopo).order_by('id')
+
+    elif level1_id == 2:
+        if level2_id == 10:
+            levels = Niveis.objects.filter(factor_id=3, code=5, code__lte=escopo).order_by('id')
+        else:
+            levels = Niveis.objects.filter(factor_id=3, code__in=[5, 6], code__lte=escopo).order_by('id')
+
+    elif level1_id == 3:
+        if level2_id == 13:
+            levels = Niveis.objects.filter(factor_id=3, code__in=[7,8], code__lte=escopo).order_by('id')
+        else:
+            levels = Niveis.objects.filter(factor_id=3, code=7, code__lte=escopo).order_by('id')
+
+    else:
+        levels = Niveis.objects.filter(factor_id=3, code__in=[8, 9], code__lte=escopo).order_by('id')
+
+
+    #     levels = Niveis.objects.filter(factor_id=3, code__in=[1, 2], code__lte=escopo).order_by('id')
+    # elif level1_id == 3:
+    #     levels = Niveis.objects.filter(factor_id=3, code__in=[2, 3], code__lte=escopo).order_by('id')
+    # elif level1_id == 4:
+    #     levels = Niveis.objects.filter(factor_id=3, code__in=[3, 4], code__lte=escopo).order_by('id')
+    # elif 5 <= level1_id <= 8:
+    #     levels = Niveis.objects.filter(factor_id=3, code=4, code__lte=escopo).order_by('id')
+    # elif level1_id == 9:
+    #     levels = Niveis.objects.filter(factor_id=3, code__in=[5,6], code__lte=escopo).order_by('id')
+    # else:
+    #     if level2_id == 17:
+    #         levels = Niveis.objects.filter(factor_id=3, code__in=[5, 6], code__lte=escopo).order_by('id')
+    #     elif level2_id == 18:
+    #         levels = Niveis.objects.filter(factor_id=3, code__in=[7, 8], code__lte=escopo).order_by('id')
+    #     else:
+    #         levels = Niveis.objects.filter(factor_id=3, code__in=[9, 10], code__lte=escopo).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
@@ -517,32 +546,37 @@ def load_levels3(request):
 def load_levels4(request):
     level3_id = int(request.GET.get('level3'))
 
-    if level3_id <= 22 :
+    if level3_id <= 20 :
         levels = Niveis.objects.filter(factor_id=4, code__in=[1]).order_by('id')
-    elif 23 <= level3_id <= 26 :
+    elif level3_id <= 25:
         levels = Niveis.objects.filter(factor_id=4, code__in=[2, 3, 4]).order_by('id')
-    elif level3_id == 27 or level3_id == 29:
+    else:
         levels = Niveis.objects.filter(factor_id=4, code__in=[5, 6]).order_by('id')
-    elif level3_id == 28 :
-        levels = Niveis.objects.filter(factor_id=4, code__in=[2, 3, 4]).order_by('id')
-    elif level3_id == 30 or level3_id == 31 :
-        levels = Niveis.objects.filter(factor_id=4, code__in=[7, 8]).order_by('id')
+
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 5 liderança de acordo com 1 executivo
+# Carregar as nivel 5  contribuição de acordo com escopo e abrangencia
 def load_levels5(request):
     level3_id = int(request.GET.get('level3'))
+    level4_id = int(request.GET.get('level4'))
 
-    if level3_id <= 22 :
+    if level3_id <= 20 :
         levels = Niveis.objects.filter(factor_id=5, code__in=[1]).order_by('id')
-    elif 23 <= level3_id <= 25 :
-        levels = Niveis.objects.filter(factor_id=5, code__in=[2, 3]).order_by('id')
-    elif 26 <= level3_id <= 29 :
-        levels = Niveis.objects.filter(factor_id=5, code__in=[4, 5]).order_by('id')
-    elif level3_id == 30 or level3_id == 31 :
-        levels = Niveis.objects.filter(factor_id=4, code__in=[6]).order_by('id')
+    elif level3_id <= 23:
+        if level4_id <= 31:
+            levels = Niveis.objects.filter(factor_id=5, code=2).order_by('id')
+        else:
+            levels = Niveis.objects.filter(factor_id=5, code__in=[2, 3]).order_by('id')
+    elif level3_id <= 25 :
+        if level4_id <= 31:
+            levels = Niveis.objects.filter(factor_id=5, code=4).order_by('id')
+        else:
+            levels = Niveis.objects.filter(factor_id=5, code__in=[4, 5]).order_by('id')
+    else:
+            levels = Niveis.objects.filter(factor_id=5, code__in=[4, 5]).order_by('id')
+
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
@@ -565,49 +599,36 @@ def load_levels5(request):
 #     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 6 Gestao Recebida de acordo com o 3 escopo e com o 1 conhecimento
+# Carregar as nivel 6 Gestao Recebida de acordo com o 3 escopo
 def load_levels6(request):
     level3_id = int(request.GET.get('level3')) # Escopo
-    level1_id = int(request.GET.get('level1')) # conhecimento
 
-    if level3_id <= 23:
-        levels = Niveis.objects.filter(factor_id=6, code__in=[1]).order_by('id')
-    elif level3_id == 24 and level1_id == 9:
-        levels = Niveis.objects.filter(factor_id=6, code__in=[2, 3]).order_by('id')
-    elif level3_id == 24 and level1_id > 9:
-        levels = Niveis.objects.filter(factor_id=6, code__in=[3]).order_by('id')
-    elif level3_id == 25:
-        levels = Niveis.objects.filter(factor_id=6, code__in=[3, 4]).order_by('id')
-    elif 26 <= level3_id <= 29:
-        levels = Niveis.objects.filter(factor_id=6, code__in=[4]).order_by('id')
-    elif level3_id == 28 and level3_id == 29:
-        levels = Niveis.objects.filter(factor_id=6, code__in=[4]).order_by('id')
-    elif level3_id == 30:
-        levels = Niveis.objects.filter(factor_id=6, code__in=[5]).order_by('id')
-    elif level3_id == 31:
-        levels = Niveis.objects.filter(factor_id=6, code__in=[6]).order_by('id')
+    if level3_id <= 19:
+        levels = Niveis.objects.filter(factor_id=6, code=1).order_by('id')
+    elif level3_id <= 21:
+        levels = Niveis.objects.filter(factor_id=6, code=2).order_by('id')
+    elif level3_id ==22:
+        levels = Niveis.objects.filter(factor_id=6, code=3).order_by('id')
+    else:
+        levels = Niveis.objects.filter(factor_id=6, code=4).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
 
-# Carregar as nivel 7 Liderança  de acordo com o 2 Nivel Organizacional
+# Carregar as nivel 7 Liderança  de acordo com o escopo e gestao
 def load_levels7(request):
-    level2_id = int(request.GET.get('level2')) #nivel organizacional
-    # manage_team_id = int(request.GET.get('manage_team')) # Gestão de Equipe
-    # level3_id = int(request.GET.get('level3'))  # escopo
+    level3_id = int(request.GET.get('level3')) #escopo
+    manage_team_id = int(request.GET.get('manage_team')) # Gestão de Equipe
 
-    if 18 <= level2_id <= 19:
-        levels = Niveis.objects.filter(factor_id=7, code__in=[2, 3]).order_by('id')
+    if manage_team_id == 1: # Não tem gestao de equipe
+        levels = Niveis.objects.filter(factor_id=7, code=1).order_by('id')
     else:
-        levels = Niveis.objects.filter(factor_id=7, code__in=[1, 2]).order_by('id')
-        # if level2_id == 17 and manage_team_id == 2:
-        #     levels = Niveis.objects.filter(factor_id=7, code__in=[2]).order_by('id')
-        # elif manage_team_id == 1:
-        #     levels = Niveis.objects.filter(factor_id=7, code__in=[1]).order_by('id')
-        # elif level2_id == 16 and manage_team_id == 2 and 22 <= level3_id <= 23:
-        #     levels = Niveis.objects.filter(factor_id=7, code__in=[2]).order_by('id')
-        # elif level2_id == 16 and manage_team_id == 2 and 20 <= level3_id <= 21:
-        #     levels = Niveis.objects.filter(factor_id=7, code__in=[1]).order_by('id')
+        if level3_id <= 19:
+            levels = Niveis.objects.filter(factor_id=7, code=1).order_by('id')
+        elif level3_id <= 21:
+            levels = Niveis.objects.filter(factor_id=7, code=2).order_by('id')
+        else:
+            levels = Niveis.objects.filter(factor_id=7, code__in=[2, 3]).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
@@ -615,15 +636,13 @@ def load_levels7(request):
 # Carregar as nivel 8 - Comunicação  de acordo com a gerencia
 def load_levels8(request):
     level7_id = int(request.GET.get('level7')) # Liderança
-    level1_id = int(request.GET.get('level1')) # conhecimento
+    level2_id = int(request.GET.get('level2')) # conhecimento
 
-    if level7_id == 52:
-        if level1_id <= 4:
+    if level7_id == 49:
+        if level2_id <= 8:
             levels = Niveis.objects.filter(factor_id=8, code=1).order_by('id')
-        elif 5 <= level1_id <= 12:
-            levels = Niveis.objects.filter(factor_id=8, code__in=[2, 3]).order_by('id')
-        elif level1_id >= 13:
-            levels = Niveis.objects.filter(factor_id=8, code__in=[3]).order_by('id')
+        else:
+            levels = Niveis.objects.filter(factor_id=8, code__in=[2,3]).order_by('id')
     else:
         levels = Niveis.objects.filter(factor_id=8, code=3).order_by('id')
 
@@ -633,14 +652,14 @@ def load_levels8(request):
 # Carregar o grade
 def load_grade(request):
 
-    level1_id = request.GET.get('level1') # conhecimento
-    level2_id = str(int(request.GET.get('level2')) - 15) # Nivel organizacional
-    level3_id = str(int(request.GET.get('level3')) - 19) # escopo
-    level4_id = str(int(request.GET.get('level4')) - 31) # abrangencia
-    level5_id = str(int(request.GET.get('level5')) - 39) # gestão recebida
-    level6_id = str(int(request.GET.get('level6')) - 45) # liderança
-    level7_id = str(int(request.GET.get('level7')) - 51) # comunicação
-    level8_id = str(int(request.GET.get('level8')) - 54) # Liderança
+    level1_id = request.GET.get('level1') # Nivel organizacional
+    level2_id = str(int(request.GET.get('level2')) - 4) # conhecimento
+    level3_id = str(int(request.GET.get('level3')) - 17) # escopo
+    level4_id = str(int(request.GET.get('level4')) - 28) # abrangencia
+    level5_id = str(int(request.GET.get('level5')) - 36) # gestão recebida
+    level6_id = str(int(request.GET.get('level6')) - 42) # liderança
+    level7_id = str(int(request.GET.get('level7')) - 48) # comunicação
+    level8_id = str(int(request.GET.get('level8')) - 51) # Liderança
 
     niveis = level1_id + ';' + level2_id + ';' + level3_id + ';' + level4_id + ';' + level5_id + ';' + level6_id + ';' + level7_id + ';' + level8_id
 
