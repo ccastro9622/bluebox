@@ -12,6 +12,7 @@ class Diretoria(TenantAwareModel):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         unique_together = ('name', 'tenant_id',)
         verbose_name = 'Area da Empresa'
         verbose_name_plural = 'Áreas da Empresa'
@@ -27,6 +28,7 @@ class Area(TenantAwareModel):
         return f"{self.name}"
 
     class Meta:
+        ordering = ["name"]
         unique_together = ('name', 'tenant_id',)
         verbose_name = 'Subárea da Empresa'
         verbose_name_plural = 'Subáreas da Empresa'

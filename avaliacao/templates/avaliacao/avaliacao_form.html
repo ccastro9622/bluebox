@@ -69,7 +69,9 @@
             </div>
             <div>
                 </br>
+                <center>
                 <button onclick="DescricaoNivel1()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </center>
             </div>
         </div>
         <div class="row">
@@ -81,7 +83,9 @@
             </div>
             <div>
                 <br>
+                <center>
                 <button onclick="DescricaoNivel2()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </center>
             </div>
         </div>
         <div class="row">
@@ -93,7 +97,9 @@
             </div>
             <div>
                 <br>
-                <button onclick="DescricaoNivel3()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                <center>
+                <button onclick="DescricaoNivel3()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button
+                </center>
             </div>
         </div>
         <div class="row">
@@ -105,7 +111,9 @@
             </div>
             <div>
                 <br>
+                <center>
                 <button onclick="DescricaoNivel4()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </center>
             </div>
         </div>
         <div class="row">
@@ -117,7 +125,9 @@
             </div>
             <div>
                 <br>
+                <center>
                 <button onclick="DescricaoNivel5()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </center>
             </div>
         </div>
         <div class="row">
@@ -129,7 +139,9 @@
             </div>
             <div>
                 <br>
+                <center>
                 <button onclick="DescricaoNivel6()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </center>
             </div>
         </div>
         <div class="row">
@@ -141,7 +153,9 @@
             </div>
             <div>
                 <br>
+                <center>
                 <button onclick="DescricaoNivel7()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </center>
             </div>
         </div>
         <div class="row">
@@ -153,7 +167,9 @@
             </div>
             <div>
                 <br>
+                <center>
                 <button onclick="DescricaoNivel8()" type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </center>
             </div>
         </div>
         <br>
@@ -387,11 +403,13 @@
             $("#id_level1").change(function () { // 1 - 2 - Nivel organizacional e Conhecimento
               var url = $("#avaliacaoForm").attr("data-levels2-url");
               var level1Id = $(this).val();  // get the selected country ID from the HTML input
+              var superId = $("#id_title_super").val(); // Verifica superior imediato
 
               $.ajax({                       // initialize an AJAX request
                 url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
                 data: {
-                  'level1': level1Id       // add the country id to the GET parameters
+                  'level1': level1Id,
+                  'title_super': superId       // add the country id to the GET parameters
                 },
                 success: function (data) {   // `data` is the return of the `load_cities` view function
                   $("#id_level2").html(data);  // replace the contents of the city input with the data that came from the server

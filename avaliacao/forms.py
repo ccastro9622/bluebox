@@ -39,7 +39,7 @@ class AvaliacaoForm(forms.ModelForm):
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
-        # self.fields['title_super'].queryset = Avaliacao.objects.filter(tenant_id=tenant_id)
+        self.fields['title_super'].queryset = Superior.objects.filter(tenant_id=tenant_id)
 
         self.fields['factor1'].queryset = Fatores.objects.filter(id=1)
         self.fields['factor2'].queryset = Fatores.objects.filter(id=2)
@@ -55,14 +55,14 @@ class AvaliacaoForm(forms.ModelForm):
         # Torna o campo  readonly
         self.fields['ceo'].widget.attrs['disabled'] = 'disabled'
         # self.fields['grade'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['factor1'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['factor2'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['factor3'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['factor4'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['factor5'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['factor6'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['factor7'].widget.attrs['disabled'] = 'disabled'
-        # self.fields['factor8'].widget.attrs['disabled'] = 'disabled'
+        self.fields['factor1'].widget.attrs['disabled'] = 'disabled'
+        self.fields['factor2'].widget.attrs['disabled'] = 'disabled'
+        self.fields['factor3'].widget.attrs['disabled'] = 'disabled'
+        self.fields['factor4'].widget.attrs['disabled'] = 'disabled'
+        self.fields['factor5'].widget.attrs['disabled'] = 'disabled'
+        self.fields['factor6'].widget.attrs['disabled'] = 'disabled'
+        self.fields['factor7'].widget.attrs['disabled'] = 'disabled'
+        self.fields['factor8'].widget.attrs['disabled'] = 'disabled'
 
         avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
         #Não é o primeiro cargo a ser avaliado.
@@ -193,7 +193,7 @@ class AvaliacaoModeloForm(forms.ModelForm):
         self.fields['factor8'].queryset = Fatores.objects.filter(id=8)
 
         # Torna o campo  readonly
-        self.fields['ceo'].widget.attrs['disabled'] = 'disabled'
+        # self.fields['ceo'].widget.attrs['disabled'] = 'disabled'
         # self.fields['grade'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor1'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor2'].widget.attrs['disabled'] = 'disabled'
