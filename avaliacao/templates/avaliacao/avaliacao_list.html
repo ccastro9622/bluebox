@@ -21,7 +21,7 @@
                     <thead>
                         <tr>
                             <th>Cargo</th>
-                            <th><center>Editar</center></th>
+<!--                            <th><center>Editar</center></th>-->
                             <th><center>Excluir</center></th>
                         </tr>
                     </thead>
@@ -29,7 +29,7 @@
                     {%for avaliacao in object_list %}
                         <tr>
                             <td>{{avaliacao.title}}</td>
-                            <td><a href="{% url 'avaliacao:avaliacao-update' avaliacao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
+<!--                            <td><a href="{% url 'avaliacao:avaliacao-update' avaliacao.id %}"><center><i class="fas fa-edit"></i></center></a></td>-->
                             <td><a href="{% url 'avaliacao:avaliacao-delete' avaliacao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
                         </tr>
                      {% endfor %}

@@ -458,13 +458,13 @@ def load_levels2(request):
 
     level1_id = int(request.GET.get('level1'))
     if level1_id  == 1:
-        levels = Niveis.objects.filter(factor_id=2, code__in=[1,2,3,4,5], code__lte=(conhecimento_super - 4)).order_by('id')
+        levels = Niveis.objects.filter(factor_id=2, code__in=[1,2,3,4,5], code__lte=(conhecimento_super - 5)).order_by('id')
     elif level1_id == 2:
-        levels = Niveis.objects.filter(factor_id=2, code__in=[6,7,8,9,10], code__lte=(conhecimento_super - 4)).order_by('id')
+        levels = Niveis.objects.filter(factor_id=2, code__in=[6,7,8,9,10], code__lte=(conhecimento_super - 5)).order_by('id')
     elif level1_id == 3:
-        levels = Niveis.objects.filter(factor_id=2, code__in=[9,10,11,12], code__lte=(conhecimento_super - 4)).order_by('id')
+        levels = Niveis.objects.filter(factor_id=2, code__in=[9,10,11,12], code__lte=(conhecimento_super - 5)).order_by('id')
     else:
-        levels = Niveis.objects.filter(factor_id=2, code__in=[10,11,12], code__lte=(conhecimento_super - 4)).order_by('id')
+        levels = Niveis.objects.filter(factor_id=2, code__in=[10,11,12], code__lte=(conhecimento_super - 5)).order_by('id')
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
