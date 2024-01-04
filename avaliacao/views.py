@@ -2,7 +2,7 @@ import csv
 import os
 
 from django.db.models import ProtectedError
-from django.http import FileResponse, HttpResponse, HttpResponseRedirect
+from django.http import FileResponse, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -689,3 +689,16 @@ def load_detalhe(request):
     # # grade = "BX22" #combinacao.grade
 
     return render(request, 'avaliacao/niveis_detalhe.html', {'detalhes': detalhes})
+
+
+# Verifica se é alteração e se tem cargos abaixo.
+def load_alteracao(request):
+    id = request.GET.get('id')
+
+    superior = Superior.objects.filter(evaluation_id=id).first()
+
+    avaliacoes = Avaliacao.objects.filter(title_super_id=superior.id).order_by('id')
+
+
+    return render(request, 'avaliacao/valida_alteracao.html', {'avaliacoes': avaliacoes})
+

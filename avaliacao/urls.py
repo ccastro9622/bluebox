@@ -30,6 +30,7 @@ urlpatterns = [
     path('ajax/load-levels8/', load_levels8, name='ajax_load_levels8'),
     path('ajax/load-grade/', load_grade, name='ajax_load_grade'),
     path('ajax/load-detalhe/', load_detalhe, name='ajax_load_detalhe'),
+    path('ajax/load-alteracao/', load_alteracao, name='ajax_load_alteracao'),
     path("avaliacao-manual", mostra_pdf, name="avaliacao-manual"),
     path("avaliacao_rel_list/", AvaliacaoRelListView.as_view(), name="avaliacao-rel-list"),
     path("avaliacao_pdf/<int:pk>", AvaliacaoPdfListView.as_view(), name="avaliacao-pdf-list"),

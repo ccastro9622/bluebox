@@ -3,7 +3,7 @@ from django import forms
 from tenants.models import Tenant
 from user_account.models import CustomUser
 from .models import *
-
+from django import forms
 
 class AvaliacaoForm(forms.ModelForm):
 
@@ -84,6 +84,13 @@ class AvaliacaoForm(forms.ModelForm):
             else: #alteração
                 # self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__lte=(3)).order_by('code')
 
+                def clean_title(self):
+                    title = self.cleaned_data['title']
+                    if title != 'teste':
+                        raise forms.ValidationError('Informe pelo menos')
+                    else:
+                        return title
+
                 super_id = self.instance.title_super_id
                 superior = Superior.objects.filter(id=super_id).first()
                 avaliacao_superior = Avaliacao.objects.filter(id=superior.evaluation_id).first()
@@ -156,69 +163,69 @@ class AvaliacaoForm(forms.ModelForm):
 
 #Filtra Abrangencia
 
-            level3_id = self.instance.level3_id
+                level3_id = self.instance.level3_id
 
-            if level3_id <= 20:
-                self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[1]).order_by('id')
-            elif level3_id <= 25:
-                self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[2, 3, 4]).order_by('id')
-            else:
-                self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[5, 6]).order_by('id')
+                if level3_id <= 20:
+                    self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[1]).order_by('id')
+                elif level3_id <= 25:
+                    self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[2, 3, 4]).order_by('id')
+                else:
+                    self.fields['level4'].queryset = Niveis.objects.filter(factor_id=4, code__in=[5, 6]).order_by('id')
 #Filtra Contribuição
 
-            level4_id = self.instance.level4_id
+                level4_id = self.instance.level4_id
 
-            if level3_id <= 20:
-                self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[1]).order_by('id')
-            elif level3_id <= 23:
-                if level4_id <= 31:
-                    self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code=2).order_by('id')
-                else:
-                    self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[2, 3]).order_by('id')
-            elif level3_id <= 25:
-                if level4_id <= 31:
-                    self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code=4).order_by('id')
+                if level3_id <= 20:
+                    self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[1]).order_by('id')
+                elif level3_id <= 23:
+                    if level4_id <= 31:
+                        self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code=2).order_by('id')
+                    else:
+                        self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[2, 3]).order_by('id')
+                elif level3_id <= 25:
+                    if level4_id <= 31:
+                        self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code=4).order_by('id')
+                    else:
+                        self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[4, 5]).order_by('id')
                 else:
                     self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[4, 5]).order_by('id')
-            else:
-                self.fields['level5'].queryset = Niveis.objects.filter(factor_id=5, code__in=[4, 5]).order_by('id')
 
 #Filtra a Gestão recebida
 
-            if level3_id <= 19:
-                self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code=1).order_by('id')
-            elif level3_id <= 21:
-                self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code=2).order_by('id')
-            elif level3_id == 22:
-                self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code=3).order_by('id')
-            else:
-                self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code=4).order_by('id')
+                if level3_id <= 19:
+                    self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code=1).order_by('id')
+                elif level3_id <= 21:
+                    self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code=2).order_by('id')
+                elif level3_id == 22:
+                    self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code=3).order_by('id')
+                else:
+                    self.fields['level6'].queryset = Niveis.objects.filter(factor_id=6, code=4).order_by('id')
 
 #Filtra Liderança
 
-            manage_team_id = self.instance.manage_team
+                manage_team_id = self.instance.manage_team
 
-            if manage_team_id == 1:  # Não tem gestao de equipe
-                self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code=1).order_by('id')
-            else:
-                if level3_id <= 19:
+                if manage_team_id == 1:  # Não tem gestao de equipe
                     self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code=1).order_by('id')
-                elif level3_id <= 21:
-                    self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code=2).order_by('id')
                 else:
-                    self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code__in=[2, 3]).order_by('id')
+                    if level3_id <= 19:
+                        self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code=1).order_by('id')
+                    elif level3_id <= 21:
+                        self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code=2).order_by('id')
+                    else:
+                        self.fields['level7'].queryset = Niveis.objects.filter(factor_id=7, code__in=[2, 3]).order_by('id')
 
 #Filtra a comunicação
 
-            level7_id = self.instance.level7_id # Liderança
+                level7_id = self.instance.level7_id # Liderança
 
-            if level7_id == 49:
-                if level2_id <= 8:
-                    self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8, code=1).order_by('id')
+                if level7_id == 49:
+                    if level2_id <= 8:
+                        self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8, code=1).order_by('id')
+                    else:
+                        self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8, code__in=[2, 3]).order_by('id')
                 else:
-                    self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8, code__in=[2, 3]).order_by('id')
-            else:
-                self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8, code=3).order_by('id')
+                    self.fields['level8'].queryset = Niveis.objects.filter(factor_id=8, code=3).order_by('id')
 
 
         else:# É CEO

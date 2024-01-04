@@ -13,8 +13,10 @@
     </a>
     <br>
 
-    <form method="post">
+    <form method="post" enctype="multipart/form-data" id="avaliacaoForm"
+          data-alteracao-url="{% url 'avaliacao:ajax_load_alteracao' %}">
         {% csrf_token %}
+
         <div class="row">
             <div class="col-md-12">
                 <table id="table_id" class="display" align="center" style="width:100%">
@@ -29,7 +31,8 @@
                     {%for avaliacao in object_list %}
                         <tr>
                             <td>{{avaliacao.title}}</td>
-                            <td><a href="{% url 'avaliacao:avaliacao-update' avaliacao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
+<!--                            <td><a href="{% url 'avaliacao:avaliacao-update' avaliacao.id %}"><center><i class="fas fa-edit"></i></center></a></td>-->
+                            <td><center><button onclick="alteracao({{avaliacao.id}})" type="button" type="button" class="btn btn-primary "><i class="fa fa-edit"></i></button></center></td>
                             <td><a href="{% url 'avaliacao:avaliacao-delete' avaliacao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
                         </tr>
                      {% endfor %}
@@ -48,6 +51,26 @@
     $(document).ready( function () {
         $('#table_id').DataTable();
     } );
+
+
+        function alteracao(id) {
+<!--            alert(id);-->
+            var url = $("#avaliacaoForm").attr("data-alteracao-url");
+
+
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                      'id': id       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      confirm(data);
+
+                }
+           });
+
+        }
+
 
 
 </script>
