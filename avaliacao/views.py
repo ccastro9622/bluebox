@@ -244,6 +244,7 @@ class AvaliacaoUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AvaliacaoForm
     success_url = reverse_lazy("avaliacao:avaliacao-list")
 
+
     # pegar o tenant do usuario logado para filtrar a dropdonw
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(AvaliacaoUpdateView, self).get_form_kwargs()
