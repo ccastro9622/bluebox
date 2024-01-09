@@ -1,5 +1,8 @@
-A alteração deste cargo poderá impactar nos cargos:
-{% for avaliacao in avaliacoes %}
-    {{ avaliacao.title }}
-{% endfor %}
-Deseja continuar?
+{% if avaliacoes %}
+    A alteração deste cargo poderá impactar nos cargos:
+    {% for avaliacao in avaliacoes %}
+        * {{ avaliacao.title }}
+    {% endfor %}
+
+    Deseja continuar?
+{% endif%}

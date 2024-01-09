@@ -14,7 +14,8 @@
     <br>
 
     <form method="post" enctype="multipart/form-data" id="avaliacaoForm"
-          data-alteracao-url="{% url 'avaliacao:ajax_load_alteracao' %}">
+          data-alteracao-url="{% url 'avaliacao:ajax_load_alteracao' %}"
+          data-updadte-url="{% url 'avaliacao:avaliacao-update' 80 %}">
         {% csrf_token %}
 
         <div class="row">
@@ -56,6 +57,7 @@
         function alteracao(id) {
 <!--            alert(id);-->
             var url = $("#avaliacaoForm").attr("data-alteracao-url");
+            var url1 = $("#avaliacaoForm").attr("data-update-url");
 
 
             $.ajax({                       // initialize an AJAX request
@@ -64,12 +66,21 @@
                       'id': id       // add the country id to the GET parameters,      // add the country id to the GET parameters
                 },
                 success: function (data) {   // `data` is the return of the `load_cities` view function
-                      confirm(data);
+                      if (data != "") {
+                        var retorno = confirm(data);
+                        if (retorno == true)
+                        {
+                           window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/update/" + id;
+                        }
 
+                      } else {
+                        window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/update/" + id;
+                      }
                 }
            });
 
         }
+
 
 
 
