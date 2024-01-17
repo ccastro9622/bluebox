@@ -84,13 +84,6 @@ class AvaliacaoForm(forms.ModelForm):
             else: #alteração
                 # self.fields['level1'].queryset = Niveis.objects.filter(factor_id=1, code__lte=(3)).order_by('code')
 
-                def clean_title(self):
-                    title = self.cleaned_data['title']
-                    if title != 'teste':
-                        raise forms.ValidationError('Informe pelo menos')
-                    else:
-                        return title
-
                 super_id = self.instance.title_super_id
                 superior = Superior.objects.filter(id=super_id).first()
                 avaliacao_superior = Avaliacao.objects.filter(id=superior.evaluation_id).first()

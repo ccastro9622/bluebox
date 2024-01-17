@@ -11,7 +11,7 @@ from tenants.models import TenantAwareModel
 
 class Descricao(TenantAwareModel):
 
-    title = models.CharField(max_length=255, verbose_name='Título do Cargo', null=False, default="", help_text=u'',)
+    title = models.CharField(max_length=255, verbose_name='Título do Cargo', null=False, default="", help_text='',)
     cbo = models.CharField(null=True,max_length=255, verbose_name='CBO', blank=True, default="")
     function = models.CharField(null=True,max_length=255, verbose_name='Função', blank=True, default="")
     summary_goal = models.TextField(max_length=1000, verbose_name='Missão do Cargo', null=True, default="")
@@ -47,7 +47,7 @@ class Descricao(TenantAwareModel):
     area_specialization4 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Complementar 4',
                                related_name='area_specialization_4',
                                blank=True, null=True)
-    experience = models.ForeignKey(Experiencias, on_delete=models.PROTECT, verbose_name='Experiencia', null=True, blank=True)
+    experience = models.ForeignKey(Experiencias, on_delete=models.PROTECT, verbose_name='Experiencia')
     qualification = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, related_name='Habilitacao_1',
                                       verbose_name='Habilitação/Certificação Obrigatória 1', null=True, blank=True)
     qualification2 = models.ForeignKey(Habilitacoes, on_delete=models.PROTECT, related_name='Habilitacao_2',

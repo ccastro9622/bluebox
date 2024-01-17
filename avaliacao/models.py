@@ -24,8 +24,8 @@ class Avaliacao(TenantAwareModel):
     manage_team = models.ForeignKey(Gerencia, on_delete=models.PROTECT, verbose_name='Gestão de Equipe', null=True, blank=True)
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formacao',
                                   blank=True, null=True, default="")
-    board = models.ForeignKey(Diretoria, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Área')
-    area = models.ForeignKey(Area, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Subárea')
+    board = models.ForeignKey(Diretoria, on_delete=models.PROTECT, verbose_name='Área')
+    area = models.ForeignKey(Area, on_delete=models.PROTECT, verbose_name='Subárea')
     family = models.ForeignKey(Familias, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Familia')
     sub_familia = models.ForeignKey(SubFamilias, null=True, blank=True, on_delete=models.PROTECT,
                                     verbose_name='SubFamilia')

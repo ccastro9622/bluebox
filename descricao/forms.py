@@ -6,7 +6,7 @@ from .models import *
 
 
 class DescricaoForm(forms.ModelForm):
-    position_team = forms.CharField(label="Cargos da Equipe",
+    position_team = forms.CharField(label="Cargos da Equipe", required=False,
                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
@@ -20,6 +20,17 @@ class DescricaoForm(forms.ModelForm):
 
     information = forms.CharField(label="Outras Informações", required=False,
                                    widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
+
+
+    #Valida preenchimento area de formacao complementar
+    def clean_position_team(self):
+        data = self.cleaned_data
+        gestor = data["manage_team"]
+        position_team = self.cleaned_data['position_team']
+        if str(gestor) == 'Sim':
+            if not position_team:
+                raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
+        return position_team
 
     #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
@@ -78,10 +89,10 @@ class DescricaoForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+        fields = ['manage_team','title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
                   'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
                   'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
-                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia',
                   'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
                   'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
@@ -123,7 +134,7 @@ class DescricaoForm(forms.ModelForm):
 
 
 class DescricaoModeloForm(forms.ModelForm):
-    position_team = forms.CharField(label="Cargos da Equipe",
+    position_team = forms.CharField(label="Cargos da Equipe", required=False,
                                     widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
@@ -243,7 +254,7 @@ class DescricaoModeloForm(forms.ModelForm):
 
 # Definie aprovador
 class DescricaoAprovadorForm(forms.ModelForm):
-    position_team = forms.CharField(label="Cargos da Equipe",
+    position_team = forms.CharField(label="Cargos da Equipe", required=False,
                                     widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
@@ -368,7 +379,7 @@ class DescricaoAprovadorForm(forms.ModelForm):
 
 
 class DescricaoAprovacaoForm(forms.ModelForm):
-    position_team = forms.CharField(label="Cargos da Equipe",
+    position_team = forms.CharField(label="Cargos da Equipe", required=False,
                                     widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
@@ -492,7 +503,7 @@ class DescricaoAprovacaoForm(forms.ModelForm):
 
 # Aprovação Final
 class DescricaoAprovacaoFinalForm(forms.ModelForm):
-    position_team = forms.CharField(label="Cargos da Equipe",
+    position_team = forms.CharField(label="Cargos da Equipe", required=False,
                                     widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 
     summary_goal = forms.CharField(label="Missão do Cargo",
