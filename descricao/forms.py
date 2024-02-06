@@ -68,8 +68,8 @@ class DescricaoForm(forms.ModelForm):
     def clean_areas(self):
         formation_required = self.cleaned_data['formation']
         areas_required = self.cleaned_data['areas']
-        formation = int(self.data.get('formation'))
         if formation_required:
+            formation = int(self.data.get('formation'))
             if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
                 if not areas_required:
                     raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')

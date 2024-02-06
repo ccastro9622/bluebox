@@ -489,6 +489,25 @@
 
             });
 
+            $("#id_manage_team").change(function () { // Qaundo altera a gestao de equipe afeta a liderança
+              var url3 = $("#avaliacaoForm").attr("data-levels7-url");  // get the url of the `load_cities` view
+              var level3Id = $("#id_level3").val(); // Escopo
+              var manage_teamId    = $(this).val(); // Gestão de Equipe
+
+
+              $.ajax({                       // initialize an AJAX request - Liderança
+                url: url3,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                  'level3': level3Id,      // add the country id to the GET parameters
+                  'manage_team': manage_teamId,      // add the country id to the GET parameters
+
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                  $("#id_level7").html(data);  // replace the contents of the city input with the data that came from the server
+                }
+              });
+
+            });
 
             $("#id_level4").change(function ()  { // 4 - Abrangencia
               var url = $("#avaliacaoForm").attr("data-levels5-url");

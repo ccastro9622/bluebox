@@ -93,7 +93,7 @@ class AvaliacaoForm(forms.ModelForm):
 
                 conhecimento_super = int(avaliacao_superior.level2_id)
 
-# Filtra o conhecimento.
+                # Filtra o conhecimento.
                 level1_id = self.instance.level1_id
                 if level1_id == 1:
                     self.fields['level2'].queryset = Niveis.objects.filter(factor_id=2, code__in=[1, 2, 3, 4, 5],

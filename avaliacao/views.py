@@ -226,7 +226,7 @@ class AvaliacaoModeloCreateView(LoginRequiredMixin, CreateView):
             form.instance.ceo = True
 
         form.save()
-        # Insere na tabela superiror imediado a avaliação cadastrada.
+        # Insere na tabela superior imediado a avaliação cadastrada.
         Superior.objects.create(title=form.instance.title, tenant_id=tenant_id, evaluation_id=form.instance.id)
 
         return super(AvaliacaoModeloCreateView, self).form_valid(form)
@@ -583,6 +583,7 @@ def load_levels4(request):
     else:
         levels = Niveis.objects.filter(factor_id=4, code__in=[5, 6]).order_by('id')
 
+    # request.fields['level4'].queryset = levels
 
     return render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
