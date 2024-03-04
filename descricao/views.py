@@ -165,6 +165,8 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
     form_class = DescricaoForm
     success_url = reverse_lazy("descricao:descricao-list")
 
+    # Do something else
+
     def get_initial(self, *args, **kwargs):
         initial = super(DescricaoCreateView, self).get_initial(**kwargs)
         initial['status'] = 1
@@ -178,6 +180,7 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
         user_id = user_from_request(self.request)
         form.instance.user_id = user_id
         return super(DescricaoCreateView, self).form_valid(form)
+
 
     # pegar o tenant do usuario logado para filtrar a dropdonw
     def get_form_kwargs(self, *args, **kwargs):
@@ -412,11 +415,11 @@ def envia_aprovacao(request, pk):
     aprovacao = get_object_or_404(models.Descricao, pk=pk)
     form = forms.DescricaoForm(request.POST or None, request.FILES or None, instance=aprovacao)
 
-    #
-
+    # if form.is_valid():
     form_ = form.save(commit=False)
     form_.status_id = 2
     form_.save()
+
     return redirect("/descricao/descricao_list")
 
     # return render(request, 'descricao//descricao_list.html', {'form': form})
@@ -430,6 +433,7 @@ def envia_reprovacao(request, pk):
     form_ = form.save(commit=False)
     form_.status_id = 4
     form_.save()
+
     return redirect("/descricao/descricao_list_aprovacao/")
 
     # return render(request, 'descricao//descricao_list.html', {'form': form})

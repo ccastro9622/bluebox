@@ -81,8 +81,6 @@ class Dimensao(models.Model):
         return f"{self.name}"
 
     class Meta:
-
-        ordering = ["id"]
         verbose_name = 'Dimensão Financeira'
         verbose_name_plural = 'Dimensões Financeiras'
 

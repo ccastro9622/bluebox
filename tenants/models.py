@@ -6,6 +6,7 @@ from admin_geral.models import Sector, Origemcapital, Tipoempresa, Governanca, D
 
 class Tenant(models.Model):
     ESTADO_CHOICES = (
+        ("--", "---------"),
         ("AC", "Acre"),
         ("AL", "Alagoas"),
         ("AP", "Amapá"),

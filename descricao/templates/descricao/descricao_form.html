@@ -193,7 +193,7 @@
     {% if descricao.id != null %}
         <a href="{% url 'descricao:descricao-aprovacao' descricao.id %}"><button type="button" class="btn btn-success">Finalizar/Aprovação</button></a>
     {% else %}
-        <button type="submit" class="btn btn-success">Finalizar/Aprovação</button>
+        <button type="submit" class="btn btn-success" value="Approve">Finalizar/Aprovação</button>
     {% endif %}
 
     <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>

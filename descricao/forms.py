@@ -149,6 +149,16 @@ class DescricaoModeloForm(forms.ModelForm):
     information = forms.CharField(label="Outras Informações", required=False,
                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
+    # Valida preenchimento area de formacao complementar
+    def clean_position_team(self):
+        data = self.cleaned_data
+        gestor = data["manage_team"]
+        position_team = self.cleaned_data['position_team']
+        if str(gestor) == 'Sim':
+            if not position_team:
+                raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
+        return position_team
+
 #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
         specialization = self.cleaned_data['specialization']
@@ -185,11 +195,12 @@ class DescricaoModeloForm(forms.ModelForm):
     def clean_areas(self):
         formation_required = self.cleaned_data['formation']
         areas_required = self.cleaned_data['areas']
-        formation = int(self.data.get('formation'))
         if formation_required:
+            formation = int(self.data.get('formation'))
             if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
                 if not areas_required:
-                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+                    raise forms.ValidationError(
+                        'Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
         return areas_required
 
     def clean_areas_desired(self):
@@ -278,6 +289,16 @@ class DescricaoAprovadorForm(forms.ModelForm):
                 raise forms.ValidationError('O campo Aprovador é obrigatório para Status: Em Aprovaçao')
         return approver
 
+    # # Valida preenchimento area de formacao complementar
+    # def clean_position_team(self):
+    #     data = self.cleaned_data
+    #     gestor = data["manage_team"]
+    #     position_team = self.cleaned_data['position_team']
+    #     if str(gestor) == 'Sim':
+    #         if not position_team:
+    #             raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
+    #     return position_team
+
     #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
         specialization = self.cleaned_data['specialization']
@@ -314,11 +335,12 @@ class DescricaoAprovadorForm(forms.ModelForm):
     def clean_areas(self):
         formation_required = self.cleaned_data['formation']
         areas_required = self.cleaned_data['areas']
-        formation = int(self.data.get('formation'))
         if formation_required:
+            formation = int(self.data.get('formation'))
             if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
                 if not areas_required:
-                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+                    raise forms.ValidationError(
+                        'Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
         return areas_required
 
     def clean_areas_desired(self):
@@ -393,6 +415,17 @@ class DescricaoAprovacaoForm(forms.ModelForm):
 
     information = forms.CharField(label="Outras Informações", required=False,
                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
+
+    # # Valida preenchimento area de formacao complementar
+    # def clean_position_team(self):
+    #     data = self.cleaned_data
+    #     gestor = data["manage_team"]
+    #     position_team = self.cleaned_data['position_team']
+    #     if str(gestor) == 'Sim':
+    #         if not position_team:
+    #             raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
+    #     return position_team
+
     #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
         specialization = self.cleaned_data['specialization']
@@ -429,11 +462,12 @@ class DescricaoAprovacaoForm(forms.ModelForm):
     def clean_areas(self):
         formation_required = self.cleaned_data['formation']
         areas_required = self.cleaned_data['areas']
-        formation = int(self.data.get('formation'))
         if formation_required:
+            formation = int(self.data.get('formation'))
             if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
                 if not areas_required:
-                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+                    raise forms.ValidationError(
+                        'Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
         return areas_required
 
     def clean_areas_desired(self):
@@ -527,6 +561,16 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
     #             raise forms.ValidationError('O campo Aprovador é obrigatório para Status: Em Aprovaçao')
     #     return approver
 
+    # Valida preenchimento area de formacao complementar
+    def clean_position_team(self):
+        data = self.cleaned_data
+        gestor = data["manage_team"]
+        position_team = self.cleaned_data['position_team']
+        if str(gestor) == 'Sim':
+            if not position_team:
+                raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
+        return position_team
+
     #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
         specialization = self.cleaned_data['specialization']
@@ -563,11 +607,12 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
     def clean_areas(self):
         formation_required = self.cleaned_data['formation']
         areas_required = self.cleaned_data['areas']
-        formation = int(self.data.get('formation'))
         if formation_required:
+            formation = int(self.data.get('formation'))
             if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
                 if not areas_required:
-                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
+                    raise forms.ValidationError(
+                        'Informe pelo menos uma Área de Formação Obrigatória para o Grau de Escolaridade acima.')
         return areas_required
 
     def clean_areas_desired(self):
