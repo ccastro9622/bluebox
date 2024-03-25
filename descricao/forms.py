@@ -159,7 +159,7 @@ class DescricaoModeloForm(forms.ModelForm):
                 raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
         return position_team
 
-#Valida preenchimento area de formacao complementar
+    #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
         specialization = self.cleaned_data['specialization']
         area_specialization = self.cleaned_data['area_specialization']

@@ -24,7 +24,7 @@ class AvaliacaoForm(forms.ModelForm):
                   'company', 'governanca', 'size', 'ceo', 'factor1',
                   'level1', 'factor2', 'level2', 'factor3','level3', 'factor4', 'level4',
                   'factor5', 'level5', 'factor6', 'level6', 'factor7', 'level7',
-                  'factor8', 'level8', 'ceo', 'point', 'grade']
+                  'factor8', 'level8', 'ceo', 'point', 'grade', 'description']
 
         title_super = forms.ModelChoiceField(queryset=Avaliacao.objects.all())
 
@@ -314,7 +314,7 @@ class AvaliacaoModeloForm(forms.ModelForm):
                   'company', 'governanca', 'size', 'ceo', 'factor1',
                   'level1', 'factor2', 'level2', 'factor3','level3', 'factor4', 'level4',
                   'factor5', 'level5', 'factor6', 'level6', 'factor7', 'level7',
-                  'factor8', 'level8', 'ceo', 'point', 'grade']
+                  'factor8', 'level8', 'ceo', 'point', 'grade', 'description']
 
     # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
@@ -340,8 +340,17 @@ class AvaliacaoModeloForm(forms.ModelForm):
         self.fields['factor7'].queryset = Fatores.objects.filter(id=7)
         self.fields['factor8'].queryset = Fatores.objects.filter(id=8)
 
-        # Torna o campo  readonly
-        # self.fields['ceo'].widget.attrs['disabled'] = 'disabled'
+        #Torna o campo  readonly
+        self.fields['ceo'].widget.attrs['disabled'] = 'disabled'
+        self.fields['title'].widget.attrs['readonly'] = True
+        # self.fields['board'].widget.attrs['readonly'] = True
+        # self.fields['area'].widget.attrs['readonly'] = True
+        # self.fields['family'].widget.attrs['readonly'] = True
+        # self.fields['sub_familia'].widget.attrs['readonly'] = True
+        # self.fields['formation'].widget.attrs['readonly'] = True
+        # self.fields['manage_team'].widget.attrs['readonly'] = True
+        self.fields['description'].widget.attrs['readonly'] = True
+
         # self.fields['grade'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor1'].widget.attrs['disabled'] = 'disabled'
         # self.fields['factor2'].widget.attrs['disabled'] = 'disabled'

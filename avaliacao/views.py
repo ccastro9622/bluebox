@@ -204,7 +204,7 @@ class AvaliacaoModeloCreateView(LoginRequiredMixin, CreateView):
             initial['sub_familia'] = descricao.sub_familia
             initial['formation'] = descricao.formation
             initial['manage_team'] = descricao.manage_team
-
+            initial['description'] = descricao.id
         # avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
         # if avaliacao:
         #     initial['ceo'] = False
@@ -224,6 +224,7 @@ class AvaliacaoModeloCreateView(LoginRequiredMixin, CreateView):
             form.instance.ceo = False
         else:
             form.instance.ceo = True
+
 
         form.save()
         # Insere na tabela superior imediado a avaliação cadastrada.

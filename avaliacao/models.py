@@ -61,6 +61,7 @@ class Avaliacao(TenantAwareModel):
 
     point = models.IntegerField(verbose_name='Pontos', default=0, null=True, blank=True)
     grade = models.ForeignKey(Combinacoes, on_delete=models.PROTECT, verbose_name='Grade', related_name='Grade', null=True, blank=True)
+    description = models.IntegerField(verbose_name='Descrição', null=True, blank=True)
 
     def __str__(self):
         return f"{self.title}"

@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from avaliacao.models import Avaliacao
 from tenants.utils import tenant_from_request, user_from_request, userkind_from_request
 from report.mixins import PdfResponseMixin
 from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
@@ -94,10 +95,27 @@ class DescricaomodeloListView(LoginRequiredMixin, ListView):
     model = Descricao
     context_object_name = "descricao"
 
+
     def get_queryset(self):
         tenant_id = tenant_from_request(self.request)
-        return super().get_queryset().filter(tenant_id=tenant_id, status=5).all()
+        avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, description__isnull=False).all()
+        if avaliacao:
+            for lavaliacao in avaliacao:
+                lista = {lavaliacao.description}
+        else:
+            lista = {0}
 
+        return super().get_queryset().filter(tenant_id=tenant_id, status=5).exclude(id__in=lista)
+
+
+
+# projects = Project.objects.filter(projectscores__profile=profile)
+# score_list = [
+#   {'name': a_project.project_name,
+#    'scores': ProjectScores.objects.filter(project=a_project, profile=profile).values_list('score', flat=True)
+#   }
+#   for a_project in projects
+# ]
 
 class DescricaoRelListView(LoginRequiredMixin, ListView):
     template_name = 'descricao/descricao_rel_list.html'

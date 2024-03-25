@@ -79,7 +79,6 @@ class Descricao(TenantAwareModel):
     date_conclusion = models.DateTimeField(null=True, blank=True, verbose_name='Data de Conclusao')
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
-
     def __str__(self):
         return f"{self.title}"
 
