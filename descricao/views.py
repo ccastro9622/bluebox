@@ -414,7 +414,7 @@ def envia_email(request, title, email):
 
     subject = 'Aprovação Pendente - BlueBox21' #request.POST.get('subject', '')
     message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ')'
-    from_email = 'cristiano.castro@pcline.com.br' # request.POST.get('title', '')
+    from_email = 'envioautomatico@bluebox21.com ' # request.POST.get('title', '')
     to_email = [email]
 
     if subject and message and from_email and to_email and to_email != None:
