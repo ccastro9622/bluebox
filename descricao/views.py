@@ -322,6 +322,7 @@ class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
         user_id = user_from_request(self.request)
         kwargs['tenant_id'] = tenant_id
         kwargs['user_id'] = user_id
+
         return kwargs
 
 

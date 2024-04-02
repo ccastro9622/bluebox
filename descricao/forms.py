@@ -223,10 +223,10 @@ class DescricaoModeloForm(forms.ModelForm):
         #           'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
         #           'approver', 'date_approval', 'status', 'date_conclusion']
 
-        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+        fields = ['manage_team','title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
                   'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
                   'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience',
-                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia',
                   'position_team', 'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
                   'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
@@ -289,15 +289,15 @@ class DescricaoAprovadorForm(forms.ModelForm):
                 raise forms.ValidationError('O campo Aprovador é obrigatório para Status: Em Aprovaçao')
         return approver
 
-    # # Valida preenchimento area de formacao complementar
-    # def clean_position_team(self):
-    #     data = self.cleaned_data
-    #     gestor = data["manage_team"]
-    #     position_team = self.cleaned_data['position_team']
-    #     if str(gestor) == 'Sim':
-    #         if not position_team:
-    #             raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
-    #     return position_team
+    # Valida preenchimento area de formacao complementar
+    def clean_position_team(self):
+        data = self.cleaned_data
+        gestor = data["manage_team"]
+        position_team = self.cleaned_data['position_team']
+        if str(gestor) == 'Sim':
+            if not position_team:
+                raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
+        return position_team
 
     #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
@@ -358,10 +358,10 @@ class DescricaoAprovadorForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+        fields = ['manage_team','title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
                   'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
                   'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
-                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia',
                   'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
                   'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
@@ -416,15 +416,15 @@ class DescricaoAprovacaoForm(forms.ModelForm):
     information = forms.CharField(label="Outras Informações", required=False,
                                   widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
-    # # Valida preenchimento area de formacao complementar
-    # def clean_position_team(self):
-    #     data = self.cleaned_data
-    #     gestor = data["manage_team"]
-    #     position_team = self.cleaned_data['position_team']
-    #     if str(gestor) == 'Sim':
-    #         if not position_team:
-    #             raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
-    #     return position_team
+    # Valida preenchimento area de formacao complementar
+    def clean_position_team(self):
+        data = self.cleaned_data
+        gestor = data["manage_team"]
+        position_team = self.cleaned_data['position_team']
+        if str(gestor) == 'Sim':
+            if not position_team:
+                raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
+        return position_team
 
     #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
@@ -492,10 +492,10 @@ class DescricaoAprovacaoForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+        fields = ['manage_team','title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
                   'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
                   'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
-                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia',
                   'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
                   'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
@@ -561,7 +561,8 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
     #             raise forms.ValidationError('O campo Aprovador é obrigatório para Status: Em Aprovaçao')
     #     return approver
 
-    # Valida preenchimento area de formacao complementar
+
+    #Valida preenchimento area de formacao complementar
     def clean_position_team(self):
         data = self.cleaned_data
         gestor = data["manage_team"]
@@ -570,6 +571,8 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
             if not position_team:
                 raise forms.ValidationError('Informe pelo menos um Cargo da Equipe.')
         return position_team
+
+
 
     #Valida preenchimento area de formacao complementar
     def clean_area_specialization(self):
@@ -628,10 +631,10 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
+        fields = ['manage_team','title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
                   'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
                   'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
-                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia', 'manage_team',
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia',
                   'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
                   'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
 
