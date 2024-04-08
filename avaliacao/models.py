@@ -20,7 +20,7 @@ class Superior(TenantAwareModel):
 
 
 class Avaliacao(TenantAwareModel):
-    title = models.CharField(max_length=255, verbose_name='Título do Cargo', null=False, default="", unique=True)
+    title = models.CharField(max_length=255, verbose_name='Título do Cargo', null=False, default="")
     manage_team = models.ForeignKey(Gerencia, on_delete=models.PROTECT, verbose_name='Gestão de Equipe')
     formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, verbose_name='Formacao',
                                   blank=True, null=True, default="")
@@ -69,3 +69,4 @@ class Avaliacao(TenantAwareModel):
     class Meta:
         verbose_name = 'Avaliacao'
         verbose_name_plural = 'Avaliacao'
+        unique_together = ('title', 'tenant')

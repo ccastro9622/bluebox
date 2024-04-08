@@ -1,11 +1,12 @@
 from django import forms
-from rest_framework.fields import ReadOnlyField
+# from rest_framework.fields import ReadOnlyField
 
 from tenants.utils import user_from_request
 from .models import *
 
 
 class DescricaoForm(forms.ModelForm):
+
     position_team = forms.CharField(label="Cargos da Equipe", required=False,
                                    widget=forms.Textarea(attrs={'rows': 3, 'cols': 100, 'id': 'position_team'}))
 

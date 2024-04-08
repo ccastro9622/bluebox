@@ -414,7 +414,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 def envia_email(request, title, email):
 
     subject = 'Aprovação Pendente - BlueBox21' #request.POST.get('subject', '')
-    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ')'
+    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ') - https://bluebox21.herokuapp.com/'
     from_email = 'envioautomatico@bluebox21.com ' # request.POST.get('title', '')
     to_email = [email]
 

@@ -33,6 +33,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["person.local", ".person.local"]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 # Application definition
 
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'import_export',
     'crispy_forms',
+    'crispy_bootstrap4',
     'cpf_field',
     'tenants',
     'descricao',

@@ -21,7 +21,7 @@ from django.contrib import admin
 from django.urls import path, include
 from user_account.views import *
 from django.contrib.auth import views as auth_views
-from django.conf.urls import url
+from django.urls import re_path
 
 
 admin.site.site_header = " "
@@ -38,13 +38,13 @@ urlpatterns = [
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="reset_password_set.html"), name="password_reset_done"),
     path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(template_name="set_password.html"), name="password_reset_confirm"),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name="reset_password_complete.html"), name="password_reset_complete"),
-    url(r"person/", include("person.urls")),
-    url(r"customuser/", include("user_account.urls")),
-    url(r"diretoria/", include("master.urls")),
-    url(r"area/", include("master.urls")),
-    url(r"tenant/", include("tenants.urls")),
-    url(r"admin_descricao/", include("admin_descricao.urls")),
-    url(r"descricao/", include("descricao.urls")),
-    url(r"avaliacao/", include("avaliacao.urls")),
-    url(r"api/", include("api.urls")),
+    re_path(r"person/", include("person.urls")),
+    re_path(r"customuser/", include("user_account.urls")),
+    re_path(r"diretoria/", include("master.urls")),
+    re_path(r"area/", include("master.urls")),
+    re_path(r"tenant/", include("tenants.urls")),
+    re_path(r"admin_descricao/", include("admin_descricao.urls")),
+    re_path(r"descricao/", include("descricao.urls")),
+    re_path(r"avaliacao/", include("avaliacao.urls")),
+    re_path(r"api/", include("api.urls")),
 ]
