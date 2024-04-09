@@ -6,58 +6,65 @@
 
 {% block conteudo_painel %}
 
-    <a id="add-link" href="{% url 'descricao:descricao-create' %}">
-        <div class="col-2 add-div">
-            <i class="fas fa-plus"></i> Adicionar Descrição de Cargo
+<head>
+    <!-- BOOTSTRAP -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"> </script>
+</head>
+
+
+<a id="add-link" href="{% url 'descricao:descricao-create' %}">
+    <div class="col-2 add-div">
+        <i class="fas fa-plus"></i> Adicionar Descrição de Cargo
+    </div>
+</a>
+<br>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-12">
+            <table id="table_id" class="display" align="center" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Status</th>
+                        <th>Ativo</th>
+                        <th><center>Editar</center></th>
+                        <th><center>Excluir</center></th>
+                        <th><center>Formulário</center></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                {%for descricao in object_list %}
+                    <tr>
+                        <td>{{descricao.title}}</td>
+                        <td>{{descricao.status}}</td>
+                        {% if descricao.is_active == True %}
+                            <td>Sim</td>
+                        {% else %}
+                            <td>Não</td>
+                        {% endif %}
+
+                        {% if descricao.status.id != 1 or descricao.is_active == False %}
+                            <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
+                            <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
+                        {% else %}
+                            <td><a href="{% url 'descricao:descricao-update' descricao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
+                            <td><a href="{% url 'descricao:descricao-delete' descricao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+                        {% endif %}
+                        <td><a href="{% url 'descricao:descricao-pdf' descricao.id %}"><center><i class="far fa-file-alt"></i></center></a></td>
+                    </tr>
+                 {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </a>
+    </div>
     <br>
-
-    <form method="post">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-md-12">
-                <table id="table_id" class="display" align="center" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Descrição</th>
-                            <th>Status</th>
-                            <th>Ativo</th>
-                            <th><center>Editar</center></th>
-                            <th><center>Excluir</center></th>
-                            <th><center>Formulário</center></th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {%for descricao in object_list %}
-                        <tr>
-                            <td>{{descricao.title}}</td>
-                            <td>{{descricao.status}}</td>
-                            {% if descricao.is_active == True %}
-                                <td>Sim</td>
-                            {% else %}
-                                <td>Não</td>
-                            {% endif %}
-
-                            {% if descricao.status.id != 1 or descricao.is_active == False %}
-                                <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
-                                <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
-                            {% else %}
-                                <td><a href="{% url 'descricao:descricao-update' descricao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
-                                <td><a href="{% url 'descricao:descricao-delete' descricao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
-                            {% endif %}
-                            <td><a href="{% url 'descricao:descricao-pdf' descricao.id %}"><center><i class="far fa-file-alt"></i></center></a></td>
-                        </tr>
-                     {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <br>
-         <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
-         <a href="{% url 'descricao:descricao-excel-list' %}"><button type="button" class="btn btn-success">Gerar Excel</button></a>
-    </form>
+     <a href="/index.html"><button type="button" class="btn btn-secondary">Voltar</button></a>
+     <a href="{% url 'descricao:descricao-excel-list' %}"><button type="button" class="btn btn-success">Gerar Excel</button></a>
+</form>
 
 {% endblock conteudo_painel %}
 
