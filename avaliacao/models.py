@@ -8,7 +8,7 @@ from tenants.models import TenantAwareModel
 
 
 class Superior(TenantAwareModel):
-    title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="", unique=True)
+    title = models.CharField(max_length=255, verbose_name='Nome', null=False, default="")
     evaluation_id = models.IntegerField(verbose_name='Avaliacao', default=0)
 
     def __str__(self):
@@ -17,6 +17,7 @@ class Superior(TenantAwareModel):
     class Meta:
         verbose_name = 'Superior'
         verbose_name_plural = 'Superior'
+        unique_together = ('title', 'tenant')
 
 
 class Avaliacao(TenantAwareModel):
