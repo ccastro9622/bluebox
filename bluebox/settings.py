@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'import_export',
     'crispy_forms',
-    'crispy_bootstrap4',
     'cpf_field',
     'tenants',
     'descricao',
