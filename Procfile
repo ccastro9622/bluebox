@@ -1,1 +1,1 @@
-web: gunicorn bluebox.wsgi
+web:gunicorn bluebox.wsgi
