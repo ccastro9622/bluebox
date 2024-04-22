@@ -59,7 +59,8 @@
                 {{ form.sub_familia|as_crispy_field }}
             </div>
             <div class="col-md-4">
-                {{ form.description|as_crispy_field }}
+<!--                {{ form.description|as_crispy_field }}-->
+                {{ form.description.as_hidden }}
             </div>
         </div>
         <br>

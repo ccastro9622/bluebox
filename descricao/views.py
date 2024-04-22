@@ -197,6 +197,10 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
         form.instance.tenant_id = tenant_id
         user_id = user_from_request(self.request)
         form.instance.user_id = user_id
+        aprovado = self.request.POST.get('submit')
+        if aprovado == 'Aprovar':
+            form.instance.status_id = 2
+
         return super(DescricaoCreateView, self).form_valid(form)
 
 
@@ -312,7 +316,7 @@ class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(DescricaoAprovacaoUpdateView, self).get_initial(**kwargs)
-        initial['status'] = 3
+        initial['status'] = 4
         return initial
 
     # pegar o tenant do usuario logado para filtrar a dropdonw

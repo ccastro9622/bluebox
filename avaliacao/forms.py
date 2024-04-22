@@ -328,6 +328,8 @@ class AvaliacaoModeloForm(forms.ModelForm):
         kwargs.update(initial=updated_initial)
         super().__init__(*args, **kwargs)
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
+        self.fields['title_super'].queryset = Superior.objects.filter(tenant_id=tenant_id)
+
         # self.fields['area'].queryset = Area.objects.none()
         # self.fields['sub_familia'].queryset = SubFamilias.objects.none()
 
