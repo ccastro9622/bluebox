@@ -60,15 +60,24 @@ function alteracao(id) {
     var url = $("#avaliacaoForm").attr("data-alteracao-url");
     var url1 = $("#avaliacaoForm").attr("data-update-url");
 
-    alert('Variaveis 2');
-
     $.ajax({                       // initialize an AJAX request
         url: url,               // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
         data: {
               'id': id       // add the country id to the GET parameters,      // add the country id to the GET parameters
         },
         success: function (data) {   // `data` is the return of the `load_cities` view function
-            alert(data);
+          if (data != "") {
+            var retorno = confirm(data);
+            if (retorno == true)
+            {
+               window.location = "//bluebox21.herokuapp.com/avaliacao/avaliacao/update/" + id;
+<!--                           window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/update/" + id;-->
+            }
+
+          } else {
+            window.location = "//bluebox21.herokuapp.com/avaliacao/avaliacao/update/" + id;
+<!--                        window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/update/" + id;-->
+          }
         }
     });
 
