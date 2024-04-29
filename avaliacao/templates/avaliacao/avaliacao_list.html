@@ -56,42 +56,42 @@ $(document).ready( function () {
 } );
 
 
-<!--        function alteracao(id) {-->
-<!--            alert('Entrou na funcao');-->
-<!--            var teste = "teste"-->
-<!--            alert(teste);-->
-<!--            var url = $("#avaliacaoForm").attr("data-alteracao-url");-->
-<!--            alert('Variaveis 1');-->
-<!--            var url1 = $("#avaliacaoForm").attr("data-update-url");-->
-<!--            alert('Variaveis 2');-->
+        function alteracao(id) {
+            alert('Entrou na funcao');
+            var teste = "teste"
+            alert(teste);
+            var url = $("#avaliacaoForm").attr("data-alteracao-url");
+            alert('Variaveis 1');
+            var url1 = $("#avaliacaoForm").attr("data-update-url");
+            alert('Variaveis 2');
 
-<!--            $.ajax({                       // initialize an AJAX request-->
-<!--                url: url,               // set the url of the request (= localhost:8000/hr/ajax/load-cities/)-->
-<!--&lt;!&ndash;                alert(" sucesso ");&ndash;&gt;-->
-<!--                data: {-->
-<!--                      'id': id       // add the country id to the GET parameters,      // add the country id to the GET parameters-->
-<!--                },-->
-<!--&lt;!&ndash;                alert('parametros ajax');&ndash;&gt;-->
-<!--                success: function (data) {   // `data` is the return of the `load_cities` view function-->
-<!--                      alert(" sucesso ");-->
-<!--                      alert(data + " 2 ");-->
-<!--                      if (data != "") {-->
-<!--                        var retorno = confirm(data);-->
-<!--&lt;!&ndash;                        alert(retorno);&ndash;&gt;-->
-<!--                        if (retorno == true)-->
-<!--                        {-->
-<!--&lt;!&ndash;                           window.location = "https://bluebox21.herokuapp.com/avaliacao/avaliacao/update/" + id;&ndash;&gt;-->
+            $.ajax({                       // initialize an AJAX request
+                url: url,               // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+<!--                alert(" sucesso ");-->
+                data: {
+                      'id': id       // add the country id to the GET parameters,      // add the country id to the GET parameters
+                },
+<!--                alert('parametros ajax');-->
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                      alert(" sucesso ");
+                      alert(data + " 2 ");
+                      if (data != "") {
+                        var retorno = confirm(data);
+<!--                        alert(retorno);-->
+                        if (retorno == true)
+                        {
+                           window.location = "//bluebox21.herokuapp.com/avaliacao/avaliacao/update/" + id;
 <!--                           window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/update/" + id;-->
-<!--                        }-->
+                        }
 
-<!--                      } else {-->
-<!--&lt;!&ndash;                        window.location = "https://bluebox21.herokuapp.com/avaliacao/avaliacao/update/" + id;&ndash;&gt;-->
+                      } else {
+                        window.location = "//bluebox21.herokuapp.com/avaliacao/avaliacao/update/" + id;
 <!--                        window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/update/" + id;-->
-<!--                      }-->
-<!--                }-->
-<!--           });-->
+                      }
+                }
+           });
 
-<!--        }-->
+        }
 
 
 
