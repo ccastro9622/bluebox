@@ -15,7 +15,8 @@
 
     <form method="post" enctype="multipart/form-data" id="avaliacaoForm"
           data-alteracao-url="{% url 'avaliacao:ajax_load_alteracao' %}"
-          data-updadte-url="{% url 'avaliacao:avaliacao-update' 80 %}">
+          data-updadte-url="{% url 'avaliacao:avaliacao-update' 80 %}"
+          data-exclusao-url="{% url 'avaliacao:ajax_load_exclusao' %}">
         {% csrf_token %}
 
         <div class="row">
@@ -35,7 +36,9 @@
 <!--                            <td><a href="{% url 'avaliacao:avaliacao-update' avaliacao.id %}"><center><i class="fas fa-edit"></i></center></a></td>-->
                             <td><center><button onclick="alteracao({{avaliacao.id}})" type="button" type="button"
                                                 class="btn btn-primary "><i class="fa fa-edit"></i></button></center></td>
-                            <td><a href="{% url 'avaliacao:avaliacao-delete' avaliacao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+                            <td><center><button onclick="exclusao({{avaliacao.id}})" type="button" type="button"
+                                                class="btn btn-primary "><i class="fa fa-edit"></i></button></center></td>
+<!--                            <td><a href="{% url 'avaliacao:avaliacao-delete' avaliacao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>-->
                         </tr>
                      {% endfor %}
                     </tbody>
@@ -83,6 +86,36 @@ function alteracao(id) {
 
 }
 
+
+function exclusao(id) {
+    var url = $("#avaliacaoForm").attr("data-exclusao-url");
+
+    $.ajax({                       // initialize an AJAX request
+        url: url,               // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+              'id': id       // add the country id to the GET parameters,      // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          alert(data);
+        }
+    });
+}
+<!--    -->
+<!--function DescricaoNivel1() { // Mostra descrição do nivel 1-->
+<!--var url = $("#avaliacaoForm").attr("data-detalhe-url");-->
+<!--var levelId = $("#id_level1").val(); // Conhecimento-->
+
+<!--$.ajax({                       // initialize an AJAX request-->
+<!--    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)-->
+<!--    data: {-->
+<!--          'level': levelId       // add the country id to the GET parameters,      // add the country id to the GET parameters-->
+<!--    },-->
+<!--    success: function (data) {   // `data` is the return of the `load_cities` view function-->
+<!--          alert(data);-->
+
+<!--    }-->
+<!--});-->
+<!--}-->
 
 </script>
 {% endblock js %}

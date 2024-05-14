@@ -1,0 +1,7 @@
+{% if avaliacoes %}
+    Este cargo não pode ser exluído, pois ele é superior imediáto dos cargos abaixo:
+    {% for avaliacao in avaliacoes %}
+        * {{ avaliacao.title }}
+    {% endfor %}
+
+{% endif%}

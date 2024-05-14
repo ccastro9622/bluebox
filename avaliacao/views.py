@@ -43,85 +43,21 @@ class AvaliacaoListView(LoginRequiredMixin, ListView):
 
 
 class AvaliacaoDeleteView(LoginRequiredMixin, DeleteView):
+
     model = Avaliacao
     context_object_name = "avaliacao"
     success_url = reverse_lazy("avaliacao:avaliacao-list")
 
-    def delete(self, request, *args, **kwargs):
-
-        self.object = self.get_object()
+    def form_valid(self, form):
         success_url = self.get_success_url()
 
         idsuper=self.object.id
-
-        # try:
-        #     self.object.delete()
-        #     data = {'success': 'ok'}
-        # except ProtectedError:
-        #     data = {'success': 'violation_protected'}
-        #
-        # return HttpResponse(json.dumps(data), mimetype="application/json")
-
         # Deleta da tabela de superior imediato
         super = Superior.objects.filter(evaluation_id=idsuper)
         super.delete()
 
         self.object.delete()
-
-        # try:
-        #     messages.add_message(request, messages.ERROR, 'Can not delete: this parent has a child!')
-        #     return redirect('master:diretoria-list') # The url of the delete view (or whatever you want)
-
         return HttpResponseRedirect(success_url)
-
-    # def delete(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     try:
-    #         self.object.delete()
-    #         data = {'success': 'ok'}
-    #     except ProtectedError:
-    #         data = {'success': 'violation_protected'}
-    #     return HttpResponse(json.dumps(data), mimetype="application/json")
-
-#
-# class DiretoriaDeleteView(LoginRequiredMixin, DeleteView):
-#     model = Diretoria
-#     context_object_name = "diretoria"
-#     success_url = reverse_lazy("master:diretoria-list")
-#
-#     def delete(self, request, *args, **kwargs):
-#
-#         """
-#         Call the delete() method on the fetched object and then redirect to the
-#         success URL. If the object is protected, send an error message.
-#         """
-#         self.object = self.get_object()
-#
-#         try:
-#             self.object.delete()
-#         except ProtectedError:
-#             messages.add_message(request, messages.ERROR, 'Can not delete: this parent has a child!')
-#             return redirect('master:diretoria-list') # The url of the delete view (or whatever you want)
-#
-#         return HttpResponseRedirect(reverse_lazy("master:diretoria-list"))
-#
-#
-# def delete_product(request, pk, group):
-#     from django.db.models import ProtectedError
-#     product = get_object_or_404(Product, pk=pk)
-#
-#     if request.method == 'POST':
-#         try:
-#             product.delete()
-#             Inventory.objects.filter(product=product).delete()
-#             messages.success(request, _("Product deleted"))
-#         except ProtectedError:
-#             messages.error(request, _('Cannot delete product'))
-#
-#         return redirect(list_products, group)
-#
-#     action = request.path
-#     return render(request, 'products/remove.html', locals())
 
 
 class AvaliacaoCreateView(LoginRequiredMixin, CreateView):
@@ -728,3 +664,14 @@ def load_alteracao(request):
 
     return render(request, 'avaliacao/valida_alteracao.html', {'avaliacoes': avaliacoes})
 
+
+# Verifica se é alteração e se tem cargos abaixo.
+def load_exclusao(request):
+    id = request.GET.get('id')
+
+    superior = Superior.objects.filter(evaluation_id=id).first()
+
+    avaliacoes = Avaliacao.objects.filter(title_super_id=superior.id).order_by('id')
+
+
+    return render(request, 'avaliacao/valida_exclusao.html', {'avaliacoes': avaliacoes})
