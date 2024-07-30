@@ -16,7 +16,7 @@ class Descricao(TenantAwareModel):
     function = models.CharField(null=True,max_length=255, verbose_name='Função', blank=True, default="")
     summary_goal = models.TextField(max_length=1000, verbose_name='Missão do Cargo', null=True, default="")
     responsibility = models.TextField(max_length=1000, verbose_name='Principais Responsabilidades', null=True, default="")
-    formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, related_name='formation', verbose_name='Grau de Escolaridade Obrigatório', null=True, blank=True, default="")
+    formation = models.ForeignKey(Formacao, on_delete=models.PROTECT, related_name='formation', verbose_name='Grau de Escolaridade Mínimo', null=True, blank=True, default="")
     areas = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatória 1', related_name='Area_1',
                               blank=True, null=True)
     areas2 = models.ForeignKey(Areas, on_delete=models.PROTECT, verbose_name='Área de Formação Obrigatória 2', related_name='Area_2',

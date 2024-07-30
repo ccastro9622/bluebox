@@ -99,9 +99,10 @@ class DescricaomodeloListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         tenant_id = tenant_from_request(self.request)
         avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, description__isnull=False).all()
+        lista = []
         if avaliacao:
             for lavaliacao in avaliacao:
-                lista = {lavaliacao.description}
+                lista.append(lavaliacao.description)
         else:
             lista = {0}
 

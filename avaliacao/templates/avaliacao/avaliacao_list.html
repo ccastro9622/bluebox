@@ -74,7 +74,7 @@ function alteracao(id) {
             if (retorno == true)
             {
                 window.location = "//bluebox21.herokuapp.com/avaliacao/avaliacao/update/" + id;
-<!--                           window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/update/" + id;-->
+<!--                    window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/update/" + id;-->
             }
 
           } else {
@@ -98,6 +98,11 @@ function exclusao(id) {
         success: function (data) {   // `data` is the return of the `load_cities` view function
             if (data != "") {
                 alert(data);
+            }
+            else {
+<!--                window.location = "http://127.0.0.1:8000/avaliacao/avaliacao/delete/" + id;-->
+                window.location = "http://bluebox21.herokuapp.com/avaliacao/avaliacao/delete/" + id;
+
             }
         }
     });
