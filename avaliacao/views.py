@@ -181,8 +181,21 @@ class AvaliacaoUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AvaliacaoForm
     success_url = reverse_lazy("avaliacao:avaliacao-list")
 
+    def get_initial(self, *args, **kwargs):
+        initial = super(AvaliacaoUpdateView, self).get_initial(**kwargs)
+        initial['level1'] = None
+        initial['level2'] = None
+        initial['level3'] = None
+        initial['level4'] = None
+        initial['level5'] = None
+        initial['level6'] = None
+        initial['level7'] = None
+        initial['level8'] = None
+        initial['grade'] = None
+        return initial
 
-    # pegar o tenant do usuario logado para filtrar a dropdonw
+
+        # pegar o tenant do usuario logado para filtrar a dropdonw
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(AvaliacaoUpdateView, self).get_form_kwargs()
         tenant_id = tenant_from_request(self.request)
@@ -529,6 +542,9 @@ def load_levels4(request):
 def load_levels5(request):
     level3_id = int(request.GET.get('level3'))
     level4_id = int(request.GET.get('level4'))
+
+    levels = Niveis.objects.filter(factor_id=5).order_by('id')
+    render(request, 'avaliacao/level1_dropdown_list_options.html', {'levels': levels})
 
     if level3_id <= 20 :
         levels = Niveis.objects.filter(factor_id=5, code__in=[1]).order_by('id')
