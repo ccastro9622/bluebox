@@ -61,7 +61,7 @@ class Avaliacao(TenantAwareModel):
     level8 = models.ForeignKey(Niveis, on_delete=models.PROTECT, verbose_name=' ', related_name='level8')
 
     point = models.IntegerField(verbose_name='Pontos', default=0, null=True, blank=True)
-    grade = models.ForeignKey(Combinacoes, on_delete=models.PROTECT, verbose_name='Grade', related_name='Grade', null=True, blank=True)
+    grade = models.ForeignKey(Combinacoes, on_delete=models.PROTECT, verbose_name='Grade', related_name='Grade', null=False)
     description = models.IntegerField(verbose_name='Descrição', null=True, blank=True)
 
     def __str__(self):
