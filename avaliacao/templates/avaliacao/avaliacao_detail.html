@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+
+{% endblock titulo_painel %}
+
+{% block conteudo_painel %}
+<form method="post" enctype="multipart/form-data" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+
+    <table border="1" >
+        <thead>
+            <tr>
+<!--                <img src="img/logo_v.jpg" />-->
+                <th colspan="4" style="height: 80px; font-size:180%">Avaliação - {{avaliacao.title}}</th>
+            </tr>
+        </thead>
+    </table>
+    </br>
+    <table border=1>
+        <tr>
+            <th style="height: 30px; font-size:120%" align="center" valign="bottom" bgcolor="silver">Identificação</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">Titulo do Cargo: {{avaliacao.title}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">Superior: {{avaliacao.title_super}} </th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">Gerente: {{avaliacao.manage_team}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">Área: {{avaliacao.board}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">Subárea: {{avaliacao.area}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">Familia de Cargo: {{avaliacao.family}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">Subfámilia de Cargo: {{avaliacao.sub_familia}}</th>
+        </tr>
+    </table>
+        </br>
+        </br>
+    <table border=1>
+        <tr>
+            <th colspan="2" style="height: 30px; font-size:120%" align="center" valign="bottom" bgcolor="silver">Fatores</th>
+            <th colspan="2" style="height: 30px; font-size:120%" align="center" valign="bottom" bgcolor="silver">Níveis</th>
+        </tr>
+    </table>
+    <table border=1>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.factor1}}</th>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.level1}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.factor2}}</th>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.level2}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.factor3}}</th>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.level3}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.factor4}}</th>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.level4}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.factor5}}</th>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.level5}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.factor6}}</th>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.level6}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.factor7}}</th>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.level7}}</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.factor8}}</th>
+            <th style="height: 25px; font-size:100%" align="left" valign="bottom">{{avaliacao.level8}}</th>
+        </tr>
+    </table>
+    </br>
+    </br>
+    </br>
+    </br>
+    <table border=1>
+        <tr>
+            <th style="height: 30px; font-size:120%" align="center" valign="bottom" bgcolor="silver">Resultado</th>
+        </tr>
+        <tr>
+            <th style="height: 25px; font-size:100%" align="center" valign="bottom">Grade: {{avaliacao.grade}}</th>
+        </tr>
+    </table>
+</form>
+{% endblock %}

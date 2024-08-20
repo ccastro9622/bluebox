@@ -9,6 +9,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+import avaliacao
 from admin_avaliacao.models import Niveis, Combinacoes
 from descricao.models import Descricao
 from master.models import Diretoria
@@ -227,6 +228,11 @@ class AvaliacaoUpdateView(LoginRequiredMixin, UpdateView):
     #         obj.save()
     #
     #     return super(AvaliacaoUpdateView, self).form_valid(form)
+
+
+class AvaliacaoPdfDetailView(PdfResponseMixin, DetailView):
+    model = Avaliacao
+    context_object_name = 'avaliacao'
 
 class AvaliacaoRelListView(LoginRequiredMixin, ListView):
     template_name = 'avaliacao/avaliacao_rel_list.html'
@@ -691,3 +697,5 @@ def load_exclusao(request):
 
 
     return render(request, 'avaliacao/valida_exclusao.html', {'avaliacoes': avaliacoes})
+
+

@@ -15,7 +15,6 @@
 
     <form method="post" enctype="multipart/form-data" id="avaliacaoForm"
           data-alteracao-url="{% url 'avaliacao:ajax_load_alteracao' %}"
-          data-updadte-url="{% url 'avaliacao:avaliacao-update' 80 %}"
           data-exclusao-url="{% url 'avaliacao:ajax_load_exclusao' %}">
         {% csrf_token %}
 
@@ -25,6 +24,7 @@
                     <thead>
                         <tr>
                             <th>Cargo</th>
+                            <th><center>Visualizar</center></th>
                             <th><center>Reavaliar</center></th>
                             <th><center>Excluir</center></th>
                         </tr>
@@ -33,12 +33,14 @@
                     {%for avaliacao in object_list %}
                         <tr>
                             <td>{{avaliacao.title}}</td>
-<!--                            <td><a href="{% url 'avaliacao:avaliacao-update' avaliacao.id %}"><center><i class="fas fa-edit"></i></center></a></td>-->
+
+                            <td><a href="{% url 'avaliacao:avaliacao-pdf' avaliacao.id %}"><center><i class="fa fa-eye"></i></center></a></td>
+
                             <td><center><button onclick="alteracao({{avaliacao.id}})" type="button" type="button"
                                                 class="btn btn-primary "><i class="fa fa-edit"></i></button></center></td>
+
                             <td><center><button onclick="exclusao({{avaliacao.id}})" type="button" type="button"
                                                 class="btn btn-primary "><i class="far fa-trash-alt"></i></button></center></td>
-<!--                            <td><a href="{% url 'avaliacao:avaliacao-delete' avaliacao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>-->
                         </tr>
                      {% endfor %}
                     </tbody>

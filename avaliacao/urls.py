@@ -38,7 +38,10 @@ urlpatterns = [
     path("avaliacao_excel/", export_users_csv, name="avaliacao-excel-list"),
     path("avaliacao_excel/matriz", export_matriz_csv, name="avaliacao-excel-matriz"),
     path("avaliacao_rel_list_matriz/", AvaliacaoRelMatrizListView.as_view(), name="avaliacao-rel-list-matriz"),
-    path("avaliacao_rel_list_hierarquica/", AvaliacaoRelHierarquicaListView.as_view(), name="avaliacao-rel-list-hierarquica"),
+    path("avaliacao_rel_list_hierarquica/", AvaliacaoRelHierarquicaListView.as_view(),
+         name="avaliacao-rel-list-hierarquica"),
+
+    path("avaliacao/<int:pk>", AvaliacaoPdfDetailView.as_view(), name="avaliacao-pdf"),
 
 
 ]
