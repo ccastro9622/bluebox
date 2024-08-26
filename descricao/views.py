@@ -428,7 +428,7 @@ def envia_email(request, title, email):
             send_mail(subject, message, from_email, to_email)
         except BadHeaderError:
             return HttpResponse('Dados do e-mail inválidos')
-        return HttpResponseRedirect("/descricao/descricao_list/") #HttpResponseRedirect('../descricao-rel-list')
+        return HttpResponseRedirect("/descricao/descricao_rel_list/") #HttpResponseRedirect('../descricao-rel-list')
     else:
         # In reality we'd use a form class
         # to get proper validation errors.

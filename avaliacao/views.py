@@ -205,29 +205,20 @@ class AvaliacaoUpdateView(LoginRequiredMixin, UpdateView):
         return kwargs
 
 
-    #
-    # # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
-    # def form_valid(self, form):
-    #     id = form.instance.id
-    #
-    #     form.save()
-    #
-    #     superior = Superior.objects.filter(evaluation_id=id).first()
-    #
-    #     # Insere na tabela superiror imediado a avaliação cadastrada.
-    #     objects = Avaliacao.objects.filter(title_super_id=superior.id)
-    #     for obj in objects:
-    #         obj.level1_id = 0
-    #         obj.level2_id = 0
-    #         obj.level3_id = 0
-    #         obj.level4_id = 0
-    #         obj.level5_id = 0
-    #         obj.level6_id = 0
-    #         obj.level7_id = 0
-    #         obj.level8_id = 0
-    #         obj.save()
-    #
-    #     return super(AvaliacaoUpdateView, self).form_valid(form)
+    # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
+    def form_valid(self, form):
+        tenant_id = tenant_from_request(self.request)
+        id = form.instance.id
+        avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id, ceo=True).first()
+        if avaliacao.id == id:
+            form.instance.ceo = True
+        else:
+            form.instance.ceo = False
+
+        form.save()
+
+        return super(AvaliacaoUpdateView, self).form_valid(form)
+
 
 
 class AvaliacaoPdfDetailView(PdfResponseMixin, DetailView):
