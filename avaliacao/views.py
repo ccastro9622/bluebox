@@ -283,10 +283,13 @@ def export_users_csv(request):
     response['Content-Disposition'] = 'attachment; filename="avaliacoes.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Cargo', 'Diretoria', 'Area', 'Grade', 'Formação', 'Nivel', 'Escopo','Abrangência',
+    writer.writerow(['Cargo', 'Diretoria', 'Area', 'Grade', 'Nivel', 'Formação', 'Escopo','Abrangência',
                      'Contribuição','Gestão','Liderança','Comunicação'])
 
-    avaliacoes = Avaliacao.objects.all()
+    # avaliacoes = Avaliacao.objects.all()
+
+    tenant_id = tenant_from_request(request)
+    avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).all()
 
     writer.writerows((avaliacao.title, avaliacao.board, avaliacao.area, avaliacao.grade, avaliacao.level1,
                       avaliacao.level2, avaliacao.level3, avaliacao.level4, avaliacao.level5,
