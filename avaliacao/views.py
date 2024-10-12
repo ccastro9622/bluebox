@@ -22,6 +22,11 @@ from tenants.models import Tenant
 
 from django.shortcuts import render, redirect
 
+from io import BytesIO
+
+import xlsxwriter
+from django.http import HttpResponse
+
 from django.db.models.deletion import ProtectedError
 import json
 
@@ -277,26 +282,93 @@ class AvaliacaoPdfListView(PdfResponseMixin, ListView):
         return self.model.objects.filter(tenant_id=tenant_id).all()
 
 
-# Chamado no batao de gerar excel do relatorio de acompanhamento
+
+
+
 def export_users_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="avaliacoes.csv"'
-
-    writer = csv.writer(response)
-    writer.writerow(['Cargo', 'Diretoria', 'Area', 'Grade', 'Nivel', 'Formação', 'Escopo','Abrangência',
-                     'Contribuição','Gestão','Liderança','Comunicação'])
-
-    # avaliacoes = Avaliacao.objects.all()
+    # create our spreadsheet.  I will create it in memory with a StringIO
+    # string = 'teste'
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet("Minha Planilha")
 
     tenant_id = tenant_from_request(request)
-    avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).all()
+    avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).order_by('-grade')
 
-    writer.writerows((avaliacao.title, avaliacao.board, avaliacao.area, avaliacao.grade, avaliacao.level1,
-                      avaliacao.level2, avaliacao.level3, avaliacao.level4, avaliacao.level5,
-                      avaliacao.level6, avaliacao.level7, avaliacao.level8
-                      ) for avaliacao in avaliacoes)
+    # worksheet.write('A1', 'Cargo')
+
+    # worksheet.write(([avaliacao.title, avaliacao.board, avaliacao.area]) for avaliacao in avaliacoes)
+
+    format = workbook.add_format()
+
+    format.set_pattern(1)
+    format.set_bg_color('Blue')
+    format.set_font_color('white')
+    format.set_bold()
+    format.set_border()
+
+    data = ([['Cargo', 'Diretoria', 'Area', 'Grade', 'Nivel', 'Formação', 'Escopo','Abrangência',
+                     'Contribuição','Gestão','Liderança','Comunicação']])
+
+    for avaliacao in avaliacoes:
+        data += [[avaliacao.title,str(avaliacao.board),str(avaliacao.area), str(avaliacao.grade), str(avaliacao.level1),
+                      str(avaliacao.level2), str(avaliacao.level3), str(avaliacao.level4), str(avaliacao.level5),
+                      str(avaliacao.level6), str(avaliacao.level7), str(avaliacao.level8)]]
+
+    for row_num , columns in enumerate(data):
+        for col_num, cell_data in enumerate(columns):
+            if row_num == 1:
+                format = workbook.add_format()
+                format.set_pattern(1)
+                format.set_bg_color('white')
+                format.set_font_color('black')
+                format.set_bold(False)
+                format.set_border()
+
+            worksheet.write(row_num, col_num, cell_data, format)
+
+
+    workbook.close()
+
+    output.seek(0)
+
+    # create a response
+    response = HttpResponse(output, content_type='application/vnd.ms-excel')
+
+    # tell the browser what the file is named
+    response['Content-Disposition'] = 'attachment;filename="Avaliacoes.xlsx"'
+
+    # tenant_id = tenant_from_request(request)
+    # avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).all()
+    #
+    # # put the spreadsheet data into the response
+    # response.write((avaliacao.title, avaliacao.board, avaliacao.area) for avaliacao in avaliacoes)
 
     return response
+
+
+
+
+# # Chamado no batao de gerar excel do relatorio de acompanhamento
+# def export_users_csv(request):
+#     response = HttpResponse(content_type='text/csv')
+#     response['Content-Disposition'] = 'attachment; filename="avaliacoes.csv"'
+#
+#     writer = csv.writer(response)
+#     writer.writerow(['Cargo', 'Diretoria', 'Area', 'Grade', 'Nivel', 'Formação', 'Escopo','Abrangência',
+#                      'Contribuição','Gestão','Liderança','Comunicação'])
+#
+#     # avaliacoes = Avaliacao.objects.all()
+#
+#     tenant_id = tenant_from_request(request)
+#     avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).all()
+#
+#     writer.writerows((avaliacao.title, avaliacao.board, avaliacao.area, avaliacao.grade, avaliacao.level1,
+#                       avaliacao.level2, avaliacao.level3, avaliacao.level4, avaliacao.level5,
+#                       avaliacao.level6, avaliacao.level7, avaliacao.level8
+#                       ) for avaliacao in avaliacoes)
+#
+#     return response
 
 # Chamado no batao de gerar excel do relatorio de acompanhamento
 def export_matriz_csv(request):

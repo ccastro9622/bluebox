@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 {% load static %}
 
@@ -93,9 +93,40 @@
         <div class="jumbotron">
             <img src="{% static 'img/logo_h.png' %}" alt="logo" width="380px">
              <hr class="my-4">
-            <p class="lead" style="color: #00205E">A sua Plataforma Web para Gestão de Cargos e Salários.</p>
+            <p class="lead"  style="color: #00205E">A sua Plataforma Web para Gestão de Cargos e Salários.</p>
+            </br>
+            </br>
+            </br>
+            <div class="container dashboard">
+                <div class="col-4 dashboard-box" id="dashboard-descricoes">
+                    <h4> Descrições Cadastradas</h4>
+                    <span>{{descricao}}</span>
+                </div>
+            </div>
+
+            <div class="container dashboard">
+                <div class="col-4 dashboard-box" id="dashboard-avaliacoes">
+                    <h4> Avaliações Realizadas</h4>
+                    <span>{{avaliacao}}</span>
+                </div>
+            </div>
+
+            <div class="container dashboard">
+                <div class="col-4 dashboard-box" id="dashboard-pendentes">
+                    <h4> Descrições Pendentes</h4>
+                    <span>{{pendente}}</span>
+                </div>
+            </div>
+            </br>
+            </br>
+            </br>
+            </br>
+            </br>
+            </br>
         </div>
     </div>
+
+
 </body>
 
 </html>

@@ -12,6 +12,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from tenants.utils import tenant_from_request
 from .models import CustomUser
 from user_account.forms import CustomUserCreationForm, CustomUserChangeForm
+from descricao.models import Descricao
+from avaliacao.models import Avaliacao
 
 
 class CustomuserDetailView(LoginRequiredMixin, DetailView):
@@ -63,7 +65,12 @@ def logar_usuario(request):
 
 
 def index(request):
-    return render(request, 'index.html', {})
+    tenant_id = tenant_from_request(request)
+    descricao = Descricao.objects.filter(tenant_id=tenant_id).count()
+    avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id).count()
+    pendente = Descricao.objects.filter(tenant_id=tenant_id, status_id__in=[3,4]).count()
+
+    return render(request, 'index.html', {'descricao': descricao, 'avaliacao':avaliacao, 'pendente':pendente})
 
 
 def sair(request):
