@@ -26,6 +26,10 @@ from . import models, forms
 
 import os
 
+from io import BytesIO
+
+import xlsxwriter
+
 DOCUMENT_COLUMNS = (
     (0, 'title'),
     (1, 'status'),
@@ -139,38 +143,96 @@ class DescricaoPdfListView(PdfResponseMixin, ListView):
         return self.model.objects.filter(tenant_id=tenant_id).all()
 
 
-# Chamado no batao de gerar excel do relatorio de acompanhamento
 def export_users_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="descricoes.csv"'
+    # create our spreadsheet.  I will create it in memory with a StringIO
 
-    writer = csv.writer(response)
-    # writer.writerow(['Titulo', 'Status', 'Usuário', 'Aprovador', 'Data'])
-
-    writer.writerow(['title', 'cbo', 'function',  'summary_goal', 'responsibility', 'formation', 'areas',
-     'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
-     'qualification', 'board', 'area', 'title_super', 'family', 'sub_familia', 'manage_team',
-     'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
-     'approver', 'date_approval', 'status', 'date_conclusion'])
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet("Planilha")
 
     tenant_id = tenant_from_request(request)
-    descricoes = Descricao.objects.filter(tenant_id=tenant_id).all()
+    descricoes = Descricao.objects.filter(tenant_id=tenant_id).order_by('title')
+
+    format = workbook.add_format()
+
+    format.set_pattern(1)
+    format.set_bg_color('Blue')
+    format.set_font_color('white')
+    format.set_bold()
+    format.set_border()
+
+    data = ([['Titulo', 'Função',  'Area', 'SubArea', 'Familia', 'Subfamilia', 'Cargo Superior',
+     'Gestao de Equipe', 'Cargos', 'Missao', 'Responsabilidades', 'Formacao_Desejada',
+     'Experiencia', 'Idioma', 'Proficiencia', 'Habilitacao', 'Conhecimento', 'Outros', 'Aprovador',
+     'DataAprovacao']])
+
+    for descricao in descricoes:
+        data += [[descricao.title, descricao.function, str(descricao.board) , str(descricao.area),
+                  str(descricao.family), str(descricao.sub_familia), descricao.title_super , str(descricao.manage_team),
+                  descricao.position_team, descricao.summary_goal, descricao.responsibility,
+                  str(descricao.formation_desired), str(descricao.experience), str(descricao.idioma), str(descricao.proficiency),
+                  str(descricao.qualification), descricao.knowledge, descricao.information, str(descricao.approver),
+                  descricao.date_approval]]
+
+    for row_num , columns in enumerate(data):
+        for col_num, cell_data in enumerate(columns):
+            if row_num == 1:
+                format = workbook.add_format()
+                format.set_pattern(1)
+                format.set_bg_color('white')
+                format.set_font_color('black')
+                format.set_bold(False)
+                format.set_border()
+
+            worksheet.write(row_num, col_num, cell_data, format)
 
 
-    # Descricoes = Descricao.objects.filter(tenant_id=tenant_id).all().values_list('username', 'first_name', 'last_name', 'email')
-    # Descricao.objects.filter
+    workbook.close()
 
-    # users = User.objects.all().values_list('username', 'first_name', 'last_name', 'email')
+    output.seek(0)
 
-    # for descricao in descricoes:
-    writer.writerows((descricao.title, descricao.cbo, descricao.function, descricao.summary_goal,
-                      descricao.responsibility , descricao.formation , descricao.areas ,
-                      descricao.qualification , descricao.board , descricao.area , descricao.title_super ,
-                      descricao.family , descricao.sub_familia , descricao.manage_team , descricao.position_team, descricao.idioma,
-                      descricao.proficiency, descricao.knowledge, descricao.information, descricao.approver, descricao.date_approval,
-                      descricao.status, descricao.date_conclusion) for descricao in descricoes)
+    # create a response
+    response = HttpResponse(output, content_type='application/vnd.ms-excel')
+
+    # tell the browser what the file is named
+    response['Content-Disposition'] = 'attachment;filename="Descricoes.xlsx"'
 
     return response
+
+
+
+# # Chamado no batao de gerar excel do relatorio de acompanhamento
+# def export_users_csv(request):
+#     response = HttpResponse(content_type='text/csv')
+#     response['Content-Disposition'] = 'attachment; filename="descricoes.csv"'
+#
+#     writer = csv.writer(response)
+#     # writer.writerow(['Titulo', 'Status', 'Usuário', 'Aprovador', 'Data'])
+#
+#     writer.writerow(['title', 'cbo', 'function',  'summary_goal', 'responsibility', 'formation', 'areas',
+#      'formation_desired', 'areas_desired', 'specialization', 'area_specialization', 'experience',
+#      'qualification', 'board', 'area', 'title_super', 'family', 'sub_familia', 'manage_team',
+#      'position_team', 'idioma', 'proficiency', 'knowledge', 'information',
+#      'approver', 'date_approval', 'status', 'date_conclusion'])
+#
+#     tenant_id = tenant_from_request(request)
+#     descricoes = Descricao.objects.filter(tenant_id=tenant_id).all()
+#
+#
+#     # Descricoes = Descricao.objects.filter(tenant_id=tenant_id).all().values_list('username', 'first_name', 'last_name', 'email')
+#     # Descricao.objects.filter
+#
+#     # users = User.objects.all().values_list('username', 'first_name', 'last_name', 'email')
+#
+#     # for descricao in descricoes:
+#     writer.writerows((descricao.title, descricao.cbo, descricao.function, descricao.summary_goal,
+#                       descricao.responsibility , descricao.formation , descricao.areas ,
+#                       descricao.qualification , descricao.board , descricao.area , descricao.title_super ,
+#                       descricao.family , descricao.sub_familia , descricao.manage_team , descricao.position_team, descricao.idioma,
+#                       descricao.proficiency, descricao.knowledge, descricao.information, descricao.approver, descricao.date_approval,
+#                       descricao.status, descricao.date_conclusion) for descricao in descricoes)
+#
+#     return response
 
 
 class DescricaoDeleteView(LoginRequiredMixin, DeleteView):

@@ -287,17 +287,13 @@ class AvaliacaoPdfListView(PdfResponseMixin, ListView):
 
 def export_users_csv(request):
     # create our spreadsheet.  I will create it in memory with a StringIO
-    # string = 'teste'
+
     output = BytesIO()
     workbook = xlsxwriter.Workbook(output)
-    worksheet = workbook.add_worksheet("Minha Planilha")
+    worksheet = workbook.add_worksheet("Planilha")
 
     tenant_id = tenant_from_request(request)
     avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).order_by('-grade')
-
-    # worksheet.write('A1', 'Cargo')
-
-    # worksheet.write(([avaliacao.title, avaliacao.board, avaliacao.area]) for avaliacao in avaliacoes)
 
     format = workbook.add_format()
 
@@ -337,12 +333,6 @@ def export_users_csv(request):
 
     # tell the browser what the file is named
     response['Content-Disposition'] = 'attachment;filename="Avaliacoes.xlsx"'
-
-    # tenant_id = tenant_from_request(request)
-    # avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).all()
-    #
-    # # put the spreadsheet data into the response
-    # response.write((avaliacao.title, avaliacao.board, avaliacao.area) for avaliacao in avaliacoes)
 
     return response
 
