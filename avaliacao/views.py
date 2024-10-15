@@ -362,18 +362,65 @@ def export_users_csv(request):
 
 # Chamado no batao de gerar excel do relatorio de acompanhamento
 def export_matriz_csv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="avaliacoes_matriz.csv"'
+    # create our spreadsheet.  I will create it in memory with a StringIO
 
-    writer = csv.writer(response)
-    writer.writerow(['Grade', 'Cargo', 'Diretoria', 'Area', ])
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    worksheet = workbook.add_worksheet("Planilha")
 
-    avaliacoes = Avaliacao.objects.all()
+    tenant_id = tenant_from_request(request)
+    avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).order_by('-grade')
 
-    writer.writerows((avaliacao.grade, avaliacao.title, avaliacao.board, avaliacao.area
-                      ) for avaliacao in avaliacoes)
+    format = workbook.add_format()
+
+    format.set_pattern(1)
+    format.set_bg_color('Blue')
+    format.set_font_color('white')
+    format.set_bold()
+    format.set_border()
+
+    data = ([['Grade', 'Cargo', 'Diretoria', 'Area']])
+
+    for avaliacao in avaliacoes:
+        data += [[str(avaliacao.grade), avaliacao.title, str(avaliacao.board), str(avaliacao.area)]]
+
+    for row_num, columns in enumerate(data):
+        for col_num, cell_data in enumerate(columns):
+            if row_num == 1:
+                format = workbook.add_format()
+                format.set_pattern(1)
+                format.set_bg_color('white')
+                format.set_font_color('black')
+                format.set_bold(False)
+                format.set_border()
+
+            worksheet.write(row_num, col_num, cell_data, format)
+
+    workbook.close()
+
+    output.seek(0)
+
+    # create a response
+    response = HttpResponse(output, content_type='application/vnd.ms-excel')
+
+    # tell the browser what the file is named
+    response['Content-Disposition'] = 'attachment;filename="Avaliacoes_matriz.xlsx"'
 
     return response
+
+
+    # response = HttpResponse(content_type='text/csv')
+    # response['Content-Disposition'] = 'attachment; filename="avaliacoes_matriz.csv"'
+    #
+    # writer = csv.writer(response)
+    # writer.writerow(['Grade', 'Cargo', 'Diretoria', 'Area', ])
+    #
+    # avaliacoes = Avaliacao.objects.all()
+    #
+    # writer.writerows((avaliacao.grade, avaliacao.title, avaliacao.board, avaliacao.area
+    #                   ) for avaliacao in avaliacoes)
+    #
+    # return response
 
 
 # Carregar as areas de acordo com os diretorias
