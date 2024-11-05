@@ -26,7 +26,7 @@
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Titulo do Cargo: {{descricao.title}}</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Função: {{descricao.function}} </th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Função: {{descricao.function|default_if_none:""}} </th>
         </tr>
         <tr>
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Área: {{descricao.board}}</th>
@@ -38,10 +38,10 @@
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Título do Cargo do Superior Imediato:: {{descricao.title_super}}</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Familia de Cargo: {{descricao.family}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Familia de Cargo: {{descricao.family|default_if_none:""}}</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Subfámilia de Cargo: {{descricao.sub_familia}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Subfámilia de Cargo: {{descricao.sub_familia|default_if_none:""}}</th>
         </tr>
         <tr>
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Gestão de Equipe: {{descricao.manage_team}}</th>
@@ -97,37 +97,40 @@
             <th colspan="2" style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">4. Requisitos do Cargo</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Grau de Escolaridade Obrigatório: {{descricao.formation}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Grau de Escolaridade Obrigatório: {{descricao.formation|default_if_none:""}}</th>
             <th style="height: 20px; font-size:80%" align="left" valign="bottom">Grau de Escolaridade Desejável: {{descricao.formation_desired}}</th>
         </tr>
         <tr>
-            <th colspan="2" style="height: 20px; font-size:80%" align="left" valign="bottom">Area de Formação: {{descricao.areas}},
-                {{descricao.areas2}}, {{descricao.areas3}}, {{descricao.areas4}}</th>
+            <th colspan="2" style="height: 20px; font-size:80%" align="left" valign="bottom">Area de Formação: {{descricao.areas|default_if_none:""}},
+                {{descricao.areas2|default_if_none:""}}, {{descricao.areas3|default_if_none:""}}, {{descricao.areas4|default_if_none:""}}</th>
 <!--            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Area de Formação Desejada: {{descricao.area_desired}}</th>-->
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Formação Complementar: {{descricao.specialization}}</th>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Área Formação Complementar: {{descricao.area_specialization}},
-                {{descricao.area_specialization2}}, {{descricao.area_specialization3}}, {{descricao.area_specialization4}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Formação Complementar: {{descricao.specialization|default_if_none:""}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Área Formação Complementar: {{descricao.area_specialization|default_if_none:""}},
+                {{descricao.area_specialization2|default_if_none:""}}, {{descricao.area_specialization3|default_if_none:""}},
+                {{descricao.area_specialization4|default_if_none:""}}</th>
         </tr>
         <tr>
             <th colspan="2" style="height: 20px; font-size:80%" align="left" valign="bottom">Experiência: {{descricao.experience}}</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Idioma: {{descricao.idioma}}</th>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Proficiência: {{descricao.proficiency}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Idioma: {{descricao.idioma|default_if_none:""}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Proficiência: {{descricao.proficiency|default_if_none:""}}</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Idioma: {{descricao.idioma2}}</th>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Proficiência: {{descricao.proficiency2}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Idioma: {{descricao.idioma2|default_if_none:""}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Proficiência: {{descricao.proficiency2|default_if_none:""}}</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Idioma: {{descricao.idioma3}}</th>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Proficiência: {{descricao.proficiency3}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Idioma: {{descricao.idioma3|default_if_none:""}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Proficiência: {{descricao.proficiency3|default_if_none:""}}</th>
         </tr>
         <tr>
-            <th colspan="2"  style="height: 20px; font-size:80%" align="left" valign="bottom">Habilitação/Certificação Obrigatoria: {{descricao.qualification}}
-            {{descricao.qualification2}}, {{descricao.qualification3}}, {{descricao.qualification4}}</th>
+            <th colspan="2"  style="height: 20px; font-size:80%" align="left" valign="bottom">Habilitação/Certificação Obrigatoria:
+                {{descricao.qualification|default_if_none:""}}
+                {{descricao.qualification2|default_if_none:""}}, {{descricao.qualification3|default_if_none:""}},
+                {{descricao.qualification4|default_if_none:""}}</th>
         </tr>
         <tr>
             <br>
@@ -153,7 +156,7 @@
     </br>
     <table border=1>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom" >6. CBO: {{descricao.cbo}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom" >6. CBO: {{descricao.cbo|default_if_none:""}}</th>
         </tr>
     </table>
     </br>
@@ -162,8 +165,8 @@
             <th colspan="2" style="height: 20px; font-size:100%" align="left" valign="bottom" bgcolor="silver">7. Aprovação</th>
         </tr>
         <tr>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Nome do Aprovador: {{descricao.approver}}</th>
-            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Data de Aprovação: {{descricao.date_approval}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Nome do Aprovador: {{descricao.approver|default_if_none:""}}</th>
+            <th style="height: 20px; font-size:80%" align="left" valign="bottom">Data de Aprovação: {{descricao.date_approval|default_if_none:""}}</th>
         </tr>
     </table>
 

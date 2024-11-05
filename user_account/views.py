@@ -68,7 +68,7 @@ def index(request):
     tenant_id = tenant_from_request(request)
     descricao = Descricao.objects.filter(tenant_id=tenant_id).count()
     avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id).count()
-    pendente = Descricao.objects.filter(tenant_id=tenant_id, status_id__in=[3,4]).count()
+    pendente = Descricao.objects.filter(tenant_id=tenant_id, status_id__in=[3]).count()
 
     return render(request, 'index.html', {'descricao': descricao, 'avaliacao':avaliacao, 'pendente':pendente})
 

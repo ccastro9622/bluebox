@@ -96,24 +96,37 @@
             <p class="lead"  style="color: #00205E">A sua Plataforma Web para Gestão de Cargos e Salários.</p>
             </br>
             </br>
+
+<!--            <a id="add-link" href="{% url 'descricao:descricao-list' %}">-->
+<!--                <div class="col-2 add-div">-->
+<!--                    <i class="fas fa-plus"></i>  Descrição de Cargo-->
+<!--                </div>-->
+<!--            </a>-->
+
             </br>
             <div class="container dashboard">
                 <div class="col-4 dashboard-box" id="dashboard-descricoes">
-                    <h4> Descrições Cadastradas</h4>
+                    <a id="add-link" href="{% url 'descricao:descricao-list' %}">
+                        <h4 style="color:#FFFFFF"> Descrições Cadastradas</h4>
+                    </a>
                     <span>{{descricao}}</span>
                 </div>
             </div>
 
             <div class="container dashboard">
                 <div class="col-4 dashboard-box" id="dashboard-avaliacoes">
-                    <h4> Avaliações Realizadas</h4>
+                    <a id="add-link2" href="{% url 'avaliacao:avaliacao-list' %}">
+                        <h4 style="color:#FFFFFF"> Avaliações Realizadas</h4>
+                    </a>
                     <span>{{avaliacao}}</span>
                 </div>
             </div>
 
             <div class="container dashboard">
                 <div class="col-4 dashboard-box" id="dashboard-pendentes">
-                    <h4> Descrições Pendentes</h4>
+                    <a id="add-link3" href="{% url 'descricao:descricao-list-aprovacao' %}">
+                        <h4 style="color:#FFFFFF"> Descrições Pendentes</h4>
+                    </a>
                     <span>{{pendente}}</span>
                 </div>
             </div>
