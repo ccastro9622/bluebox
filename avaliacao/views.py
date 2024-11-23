@@ -369,7 +369,8 @@ def export_matriz_csv(request):
     worksheet = workbook.add_worksheet("Planilha")
 
     tenant_id = tenant_from_request(request)
-    avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id).order_by('-grade')
+    diretorias = Diretoria.objects.filter(tenant_id=tenant_id)
+    avaliacoes = Avaliacao.objects.filter(tenant_id=tenant_id) .order_by('-grade')
 
     format = workbook.add_format()
 
@@ -379,10 +380,23 @@ def export_matriz_csv(request):
     format.set_bold()
     format.set_border()
 
-    data = ([['Grade', 'Cargo', 'Diretoria', 'Area']])
+    lista1 = ['Grade']
+
+    for diretoria in diretorias:
+        lista1 += [str(diretoria.name)]
+
+    data = [lista1]
+
 
     for avaliacao in avaliacoes:
-        data += [[str(avaliacao.grade), avaliacao.title, str(avaliacao.board), str(avaliacao.area)]]
+        lista2 = [str(avaliacao.grade)]
+        for d in diretorias:
+            if d.id == avaliacao.board_id:
+                lista2 += [avaliacao.title]
+            else:
+                lista2 += [""]
+
+        data += [lista2]
 
     for row_num, columns in enumerate(data):
         for col_num, cell_data in enumerate(columns):
