@@ -1,12 +1,14 @@
 from django.db import models
 
 from admin_descricao.models import Formacao, Areas, Especializacoes, Experiencias, Habilitacoes, Idiomas, Status, \
-    Gerencia, Proficiencias, AreasEspecializacoes
+    Gerencia, Proficiencias, AreasEspecializacoes, Niveis
 from master.models import Diretoria, Area
 from admin_avaliacao.models import Familias, SubFamilias, Fatores
 from user_account.models import CustomUser
 
 from tenants.models import TenantAwareModel
+
+from admin_geral.models import Sector
 
 
 class Descricao(TenantAwareModel):
@@ -78,6 +80,8 @@ class Descricao(TenantAwareModel):
     user_id = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Elaborador', related_name='user_id')
     date_conclusion = models.DateTimeField(null=True, blank=True, verbose_name='Data de Conclusao')
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
+    level = models.ForeignKey(Niveis, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Nivel do Cargo')
+    sector = models.ForeignKey(Sector, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Setor de Atuação')
 
     def __str__(self):
         return f"{self.title}"

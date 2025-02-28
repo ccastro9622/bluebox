@@ -1,4 +1,6 @@
 from django import forms
+
+from tenants.models import Tenant
 # from rest_framework.fields import ReadOnlyField
 
 from tenants.utils import user_from_request
@@ -87,7 +89,6 @@ class DescricaoForm(forms.ModelForm):
         return areas_desired
 
 
-
     class Meta:
         model = Descricao
         fields = ['manage_team','title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
@@ -95,7 +96,7 @@ class DescricaoForm(forms.ModelForm):
                   'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
                   'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia',
                   'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
-                  'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id']
+                  'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id', 'level', 'sector']
 
 # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
@@ -107,6 +108,10 @@ class DescricaoForm(forms.ModelForm):
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         self.fields['status'].queryset = Status.objects.filter(id__in=[1])
+        empresa = Tenant.objects.filter(id=tenant_id).first()
+        sector_id = empresa.sector_id
+        self.fields['sector'].queryset = Sector.objects.filter(id=sector_id)
+        # self.fields['sector'].widget.attrs['disabled'] = 'disabled'
         # self.fields['status'].widget.attrs['disabled'] = 'disabled'
 
 # Filtra a area pela diretoria

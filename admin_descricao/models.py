@@ -89,7 +89,7 @@ class Experiencias(models.Model):
         return f"{self.name}"
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["id"]
         verbose_name = 'Experiência'
         verbose_name_plural = 'Experiências'
 
@@ -191,3 +191,16 @@ class Proficiencias(models.Model):
     class Meta:
         verbose_name = 'Proficiencia'
         verbose_name_plural = 'Proficiencia'
+
+
+class Niveis(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = 'Niveis'
+        verbose_name_plural = 'Niveis'

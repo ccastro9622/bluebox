@@ -7,7 +7,12 @@
 
 
 {% block conteudo_painel %}
-<form method="post" enctype="multipart/form-data" id="descricaoForm" data-areas-url="{% url 'descricao:ajax_load_areas' %}" data-sub_familias-url="{% url 'descricao:ajax_load_sub_familias' %}">{% csrf_token %}
+<form method="post" enctype="multipart/form-data" id="descricaoForm"
+      data-areas-url="{% url 'descricao:ajax_load_areas' %}"
+      data-sub_familias-url="{% url 'descricao:ajax_load_sub_familias' %}"
+      data-ia-url="{% url 'descricao:ajax_load_ia' %}"
+
+>{% csrf_token %}
     <font size=2>
         <div class="row">
             <div class="col-md-4">
@@ -44,10 +49,27 @@
                 {{ form.sub_familia|as_crispy_field }}
             </div>
             <div class="col-md-4">
+                {{ form.level|as_crispy_field }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.sector|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
+<!--                <center>-->
+                    <br>
+                    <button onclick="DescricaoIA()" type="button" class="btn btn-primary"><b>  Usar IA</b></button>
+<!--                </center>-->
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
                 {{ form.manage_team|as_crispy_field }}
             </div>
         </div>
-        <br>
+
         {{ form.position_team|as_crispy_field }}
 
 <!--        <div class="row">-->
@@ -209,37 +231,80 @@
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-$("#id_board").change(function () {
-  var url = $("#descricaoForm").attr("data-areas-url");  // get the url of the `load_cities` view
-  var boardId = $(this).val();  // get the selected country ID from the HTML input
+    $("#id_board").change(function () {
+      var url = $("#descricaoForm").attr("data-areas-url");  // get the url of the `load_cities` view
+      var boardId = $(this).val();  // get the selected country ID from the HTML input
 
-  $.ajax({                       // initialize an AJAX request
-    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-    data: {
-      'board': boardId       // add the country id to the GET parameters
-    },
-    success: function (data) {   // `data` is the return of the `load_cities` view function
-      $("#id_area").html(data);  // replace the contents of the city input with the data that came from the server
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'board': boardId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_area").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+
+    $("#id_family").change(function () {
+      var url = $("#descricaoForm").attr("data-sub_familias-url");  // get the url of the `load_cities` view
+      var familyId = $(this).val();  // get the selected country ID from the HTML input
+
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'family': familyId       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_sub_familia").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+
+    function DescricaoIA() {                                   // Mostra descrição da IA
+        var url = $("#descricaoForm").attr("data-ia-url");
+        var title = $("#id_title").val();                        // Titulo
+        var familyid = $("#id_family").val();                    // Familia
+        var sub_familiaoid = $("#id_sub_familia").val();         // Sub Familia
+        var levelid = $("#id_level").val();                      // Nivel
+        var sectorid = $("#id_sector").val();                    // Setor
+<!--        alert(familyid);-->
+
+        if ((title.trim().length == 0) || (familyid.trim().length == 0) || (sub_familiaoid.trim().length == 0) || (levelid.trim().length == 0) || (sectorid.trim().length == 0)) {
+            alert('Para usar a IA, os campos Título do Cargo, Família, Sub Família, Nivel do Cargo e Setor de Atuação devem ser preenchidos.');
+        }
+
+        $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'title': title,      // add the country id to the GET parameters
+              'family': familyid,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+              'sub_familia': sub_familiaoid,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+              'level': levelid,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+              'sector': sectorid,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+            },
+
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+
+<!--                alert(data);-->
+                data = data.split("|");
+
+                $('#summary_goal').html(data[0]);
+                $('#responsibility').html(data[1]);
+                $('#information').html(data[2]);
+
+                $("#id_manage_team").html(data[3]);
+                $('#id_formation_desired').html(data[4]);
+                $('#id_specialization').html(data[5]);
+                $('#id_experience').html(data[6]);
+                $("#id_areas_desired").html(data[7]);
+                $("#id_qualification").html(data[8]);
+
+            }
+       });
     }
-  });
-
-});
-
-$("#id_family").change(function () {
-  var url = $("#descricaoForm").attr("data-sub_familias-url");  // get the url of the `load_cities` view
-  var familyId = $(this).val();  // get the selected country ID from the HTML input
-
-  $.ajax({                       // initialize an AJAX request
-    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-    data: {
-      'family': familyId       // add the country id to the GET parameters
-    },
-    success: function (data) {   // `data` is the return of the `load_cities` view function
-      $("#id_sub_familia").html(data);  // replace the contents of the city input with the data that came from the server
-    }
-  });
-
-});
 
 </script>
 {% endblock %}

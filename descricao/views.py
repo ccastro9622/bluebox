@@ -7,12 +7,13 @@ from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from avaliacao.models import Avaliacao
+from tenants.models import Tenant
 from tenants.utils import tenant_from_request, user_from_request, userkind_from_request
 from report.mixins import PdfResponseMixin
 from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
     DescricaoAprovacaoFinalForm
 from .models import Descricao, Area, SubFamilias
-from admin_descricao.models import Descricoes
+from admin_descricao.models import Descricoes, Gerencia, Formacao, Especializacoes, Habilitacoes, Areas, Experiencias
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -29,6 +30,9 @@ import os
 from io import BytesIO
 
 import xlsxwriter
+
+import requests
+import json
 
 DOCUMENT_COLUMNS = (
     (0, 'title'),
@@ -248,6 +252,12 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(DescricaoCreateView, self).get_initial(**kwargs)
+
+        tenant_id = tenant_from_request(self.request)
+        empresa = Tenant.objects.filter(id=tenant_id).first()
+        sector_id = empresa.sector_id
+
+        initial['sector'] = sector_id
         initial['status'] = 1
         # initial['id'] = 50
         return initial
@@ -280,6 +290,7 @@ class DescricaoModeloCreateView(LoginRequiredMixin, CreateView):
 
     def get_initial(self, *args, **kwargs):
         initial = super(DescricaoModeloCreateView, self).get_initial(**kwargs)
+
         descricao_admin = Descricoes.objects.filter(id=self.kwargs.get("pk")).first()
         if descricao_admin:
             initial['title'] = descricao_admin.title
@@ -429,6 +440,73 @@ def load_sub_familias(request):
     family_id = request.GET.get('family')
     sub_familias = SubFamilias.objects.filter(family_id=family_id).order_by('name')
     return render(request, 'descricao/sub_familia_dropdown_list_options.html', {'sub_familias': sub_familias})
+
+# Carregar as areas de acordo com os diretorias
+def load_ia(request):
+
+    title = request.GET.get('title')
+    family_id = request.GET.get('family')
+    sub_familia_id = request.GET.get('sub_familia')
+    level_id = request.GET.get('level')
+    sector_id = request.GET.get('sector')
+
+    url = "https://neogem-bluebox-716723353548.us-east1.run.app/pesquisar_cargo_api"
+
+    payload = json.dumps({
+        "des_cargo": title,
+        "familia": family_id,
+        "sub_familia": sub_familia_id,
+        "setor": sector_id,
+        "nivel": level_id
+    })
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    dadosjson = json.loads(response.text)
+
+    missao = dadosjson.get('missao')
+    responsabilidades = dadosjson.get('responsabilidades')
+    competencias = dadosjson.get('competencias')
+
+    equipe = dadosjson.get('equipe')
+    gerencia = Gerencia.objects.filter(id=equipe).first()
+    equipe_name = gerencia.name
+
+    escolaridade = dadosjson.get('escolaridade')
+    formacao = Formacao.objects.filter(id=escolaridade).first()
+    escolaridade_name = formacao.name
+
+    complementar = dadosjson.get('formacao')
+    especializacao = Especializacoes.objects.filter(id=complementar).first()
+    complementar_name = especializacao.name
+
+    experiencia = dadosjson.get('experiencia')
+    experiencias = Experiencias.objects.filter(id=experiencia).first()
+    experiencia_name = experiencias.name
+    #
+    area_formacao = dadosjson.get('area')
+    areas = Areas.objects.filter(id=area_formacao).first()
+    area_formacao_name = areas.name
+
+    habilitacao = dadosjson.get('habilidade')
+    habilitacoes = Habilitacoes.objects.filter(id=habilitacao).first()
+    habilitacao_name = habilitacoes.name
+
+
+    ia_list = []
+    ia_list.append({'missao': missao,'responsabilidades': responsabilidades, 'competencias': competencias, 'equipe': equipe,
+                    'equipe_name': equipe_name, 'escolaridade': escolaridade, 'escolaridade_name': escolaridade_name,
+                    'complementar': complementar, 'complementar_name': complementar_name,
+                    'experiencia': experiencia, 'experiencia_name': experiencia_name,
+                    'area_formacao': area_formacao,  'area_formacao_name': area_formacao_name,
+                    'habilitacao': habilitacao, 'habilitacao_name': habilitacao_name,
+
+                    })
+
+    return render(request, 'descricao/ia_dropdown_list_options.html', {'ias': ia_list})
 
 
 # Relatorio personalizado

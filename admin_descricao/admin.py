@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Formacao, Areas, Idiomas, Habilitacoes, Especializacoes, Descricoes, Experiencias, Status, Gerencia, \
-    Proficiencias, AreasEspecializacoes
+    Proficiencias, Niveis
 
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
@@ -91,6 +91,12 @@ class GerenciaAdmin(admin.ModelAdmin):
 
 @admin.register(Proficiencias)
 class ProficienciasAdmin(admin.ModelAdmin):
+    ordering = ('id','name',)
+    list_display = ['id', 'name', 'is_active']
+    pass
+
+@admin.register(Niveis)
+class NiveisAdmin(admin.ModelAdmin):
     ordering = ('id','name',)
     list_display = ['id', 'name', 'is_active']
     pass

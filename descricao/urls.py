@@ -36,4 +36,5 @@ urlpatterns = [
     path("descricao_list_aprovacao_final/", DescricaoAprovacaoFinalListView.as_view(), name="descricao-list-aprovacao-final"),
     path("descricao/update/aprovacao_final/<int:pk>", DescricaoAprovacaoFinalUpdateView.as_view(),
          name="descricao-update-aprovacao-final"),
+    path('ajax/load-ia/', load_ia, name='ajax_load_ia'),
 ]

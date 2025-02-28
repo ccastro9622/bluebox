@@ -4,7 +4,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Formacao, Areas, Idiomas, Habilitacoes, Descricoes, Especializacoes, Experiencias, Status, Gerencia, \
-    AreasEspecializacoes
+    AreasEspecializacoes, Niveis
 
 
 class FormacaoDetailView(LoginRequiredMixin, DetailView):
@@ -74,3 +74,8 @@ class GerenciaDetailView(LoginRequiredMixin, DetailView):
 class ProficienciaDetailView(LoginRequiredMixin, DetailView):
     model = Idiomas
     context_object_name = "Proficiencia"
+
+
+class NiveisDetailView(LoginRequiredMixin, DetailView):
+    model = Niveis
+    context_object_name = "Niveis"
