@@ -109,3 +109,16 @@ width:180px;
 #dashboard-pendentes {
     background-color: #db1e47;
 }
+
+#loading {
+    margin: 10px auto;
+    width: 30%;
+}
+
+.loading > img {
+    max-width: 80px
+}
+
+.loading {
+    visibility: hidden
+}
