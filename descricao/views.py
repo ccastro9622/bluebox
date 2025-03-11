@@ -11,7 +11,7 @@ from tenants.models import Tenant
 from tenants.utils import tenant_from_request, user_from_request, userkind_from_request
 from report.mixins import PdfResponseMixin
 from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
-    DescricaoAprovacaoFinalForm
+    DescricaoAprovacaoFinalForm, ImportarDadosForm
 from .models import Descricao, Area, SubFamilias
 from admin_descricao.models import Descricoes, Gerencia, Formacao, Especializacoes, Habilitacoes, Areas, Experiencias
 
@@ -33,6 +33,12 @@ import xlsxwriter
 
 import requests
 import json
+
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
+
+import pandas as pd
+from django.views import View
 
 DOCUMENT_COLUMNS = (
     (0, 'title'),
@@ -450,6 +456,14 @@ def load_ia(request):
     level_id = request.GET.get('level')
     sector_id = request.GET.get('sector')
 
+    # #Fixa Valor para teste
+    # title = 'Analista de RH'
+    # family_id = 1
+    # sub_familia_id = 2
+    # level_id = 4
+    # sector_id = 3
+
+
     url = "https://neogem-bluebox-716723353548.us-east1.run.app/pesquisar_cargo_api"
 
     payload = json.dumps({
@@ -468,41 +482,61 @@ def load_ia(request):
     dadosjson = json.loads(response.text)
 
     missao = dadosjson.get('missao')
-    responsabilidades = dadosjson.get('responsabilidades')
-    competencias = dadosjson.get('competencias')
+
+    responsabilidade = str(dadosjson.get('responsabilidades'))
+    responsabilidades = responsabilidade.replace("[", "").replace("]","")
+
+    competencia = str(dadosjson.get('competencias'))
+    competencias = competencia.replace("[", "").replace("]", "")
 
     equipe = dadosjson.get('equipe')
-    gerencia = Gerencia.objects.filter(id=equipe).first()
-    equipe_name = gerencia.name
+    # gerencia = Gerencia.objects.filter(id=equipe).first()
+    # equipe_name = gerencia.name
 
     escolaridade = dadosjson.get('escolaridade')
-    formacao = Formacao.objects.filter(id=escolaridade).first()
-    escolaridade_name = formacao.name
+    # formacao = Formacao.objects.filter(id=escolaridade).first()
+    # escolaridade_name = formacao.name
 
     complementar = dadosjson.get('formacao')
-    especializacao = Especializacoes.objects.filter(id=complementar).first()
-    complementar_name = especializacao.name
+    # especializacao = Especializacoes.objects.filter(id=complementar).first()
+    # complementar_name = especializacao.name
 
     experiencia = dadosjson.get('experiencia')
-    experiencias = Experiencias.objects.filter(id=experiencia).first()
-    experiencia_name = experiencias.name
-    #
+    # experiencias = Experiencias.objects.filter(id=experiencia).first()
+    # experiencia_name = experiencias.name
+
     area_formacao = dadosjson.get('area')
-    areas = Areas.objects.filter(id=area_formacao).first()
-    area_formacao_name = areas.name
+    # areas = Areas.objects.filter(id=area_formacao).first()
+    # area_formacao_name = areas.name
 
     habilitacao = dadosjson.get('habilidade')
-    habilitacoes = Habilitacoes.objects.filter(id=habilitacao).first()
-    habilitacao_name = habilitacoes.name
+    # habilitacoes = Habilitacoes.objects.filter(id=habilitacao).first()
+    # habilitacao_name = habilitacoes.name
+
+
+    #Fixar para teste
+    # missao = "Teste" #dadosjson.get('missao')
+    # responsabilidades = "Teste" #dadosjson.get('responsabilidades')
+    # competencias = "Teste" #dadosjson.get('competencias')
+    # equipe = 1 #dadosjson.get('equipe')
+    # escolaridade = 8 #dadosjson.get('escolaridade')
+    # complementar = 1 #dadosjson.get('formacao')
+    # experiencia = 2 #dadosjson.get('experiencia')
+    # area_formacao = 15 #dadosjson.get('area')
+    # habilitacao = 35 #dadosjson.get('habilidade')
 
 
     ia_list = []
-    ia_list.append({'missao': missao,'responsabilidades': responsabilidades, 'competencias': competencias, 'equipe': equipe,
-                    'equipe_name': equipe_name, 'escolaridade': escolaridade, 'escolaridade_name': escolaridade_name,
-                    'complementar': complementar, 'complementar_name': complementar_name,
-                    'experiencia': experiencia, 'experiencia_name': experiencia_name,
-                    'area_formacao': area_formacao,  'area_formacao_name': area_formacao_name,
-                    'habilitacao': habilitacao, 'habilitacao_name': habilitacao_name,
+
+    ia_list.append({'missao': missao,
+                    'responsabilidades': responsabilidades,
+                    'competencias': competencias,
+                    'equipe': equipe,
+                    'escolaridade': escolaridade,
+                    'complementar': complementar,
+                    'experiencia': experiencia,
+                    'area_formacao': area_formacao,
+                    'habilitacao': habilitacao,
 
                     })
 
@@ -550,9 +584,6 @@ def mostra_pdf(request):
     return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
 
 
-from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
-
 
 def envia_email(request, title, email):
 
@@ -599,3 +630,42 @@ def envia_reprovacao(request, pk):
     return redirect("/descricao/descricao_list_aprovacao/")
 
     # return render(request, 'descricao//descricao_list.html', {'form': form})
+
+
+class ImportarDadosView(View):
+    template_name = 'descricao/importar_dados.html'
+
+    def get(self, request):
+        descricoes = Descricao.objects.all()
+        form = ImportarDadosForm()
+        return render(request, self.template_name, {
+            'form': form,
+            'descricoes': descricoes
+        })
+
+    def post(self, request):
+        form = ImportarDadosForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            arquivo = request.FILES['arquivo']
+            df = pd.read_excel(arquivo)
+
+            for _, row in df.iterrows():
+                # Itera sobre as linhas do DataFrame lido do arquivo Excel
+                self.criar_descricao(row)
+
+            return redirect('importar_dados')
+
+        return render(request, self.template_name, {'form': form})
+
+    def criar_descricao(self, row):
+        # Use get_or_create para evitar a necessidade de verificar a existência antes de criar
+        criado = Descricao.objects.get_or_create(
+            documento=row['documento'],
+            defaults={
+                'nome': row['nome'],
+                'profissao': row['profissao'],
+                'idade': row['idade']
+            }
+        )
+

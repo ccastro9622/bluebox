@@ -678,3 +678,7 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
             family_id = Descricao.objects.filter(id=self.instance.id).first()
             if family_id:
                 self.fields['sub_familia'].queryset = SubFamilias.objects.filter(family_id=family_id.family_id).order_by('name')
+
+
+class ImportarDadosForm(forms.Form):
+    arquivo = forms.FileField()

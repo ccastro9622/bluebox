@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block titulo_painel %}
+   Importa Descriçoẽs em Lote
+
+{% endblock titulo_painel %}
+
+
+{% block conteudo_painel %}
+
+<div class="container">
+  <h2>Importar Descrições</h2>
+  <br>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+    <br>
+    <br>
+    <button type="submit" class="btn btn-primary">Importar</button>
+    <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+  </form>
+</div>
+{% endblock %}

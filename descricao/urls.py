@@ -9,6 +9,7 @@ app_name = "descricao"
 urlpatterns = [
     path("descricao_list/", DescricaoListView.as_view(), name="descricao-list"),
     path("descricao/create/", DescricaoCreateView.as_view(), name="descricao-create"),
+    path("descricao/importar_dados", ImportarDadosView.as_view(), name="descricao-create-lote"),
     path("descricao/createmodelo/<int:pk>", DescricaoModeloCreateView.as_view(), name="descricao-modelo-create"),
     path("descricao/update/<int:pk>", DescricaoUpdateView.as_view(), name="descricao-update"),
     path("descricao/delete/<int:pk>", DescricaoDeleteView.as_view(), name="descricao-delete"),
