@@ -652,20 +652,42 @@ class ImportarDadosView(View):
 
             for _, row in df.iterrows():
                 # Itera sobre as linhas do DataFrame lido do arquivo Excel
+                print(row)
                 self.criar_descricao(row)
 
-            return redirect('importar_dados')
+            return redirect('/descricao/descricao_list')
 
         return render(request, self.template_name, {'form': form})
 
     def criar_descricao(self, row):
         # Use get_or_create para evitar a necessidade de verificar a existência antes de criar
-        criado = Descricao.objects.get_or_create(
-            documento=row['documento'],
+        tenant_id = tenant_from_request(self.request)
+        print(tenant_id)
+        descricao, criado = Descricao.objects.get_or_create(
+            title=row['Titulo'],
             defaults={
-                'nome': row['nome'],
-                'profissao': row['profissao'],
-                'idade': row['idade']
+                'id': 83, #row (id),
+                'title': row['Titulo'],
+                'area_id': row['Area'],
+                'board_id': row['SubArea'],
+                'family_id': row['Familia'],
+                'sub_familia_id': row['SubFamilia'],
+                'tenant_id': tenant_id,
+                'status_id': 1,
+                'is_active': row['Ativo'],
+                'sector_id': row['Setor'],
+                'level_id': row['Nivel'],
+
+                'summary_goal': "Teste", #dadosjson.get('missao'),
+                'responsibility': "Teste",  #dadosjson.get('responsabilidades'),
+                'information': "Teste", #dadosjson.get('competencias')
+                'manage_team_id': 1, #dadosjson.get('equipe')
+                'formation_desired_id': 8, #dadosjson.get('escolaridade')
+                'specialization_id': 1, #dadosjson.get('formacao')
+                'experience_id': 2, #dadosjson.get('experiencia')
+                'areas_desired_id': 15, #dadosjson.get('area')
+                'qualification_id': 35 #dadosjson.get('habilidade')
+
             }
         )
 
