@@ -1,5 +1,6 @@
 import csv
 
+from django.forms.widgets import Input
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -447,6 +448,95 @@ def load_sub_familias(request):
     sub_familias = SubFamilias.objects.filter(family_id=family_id).order_by('name')
     return render(request, 'descricao/sub_familia_dropdown_list_options.html', {'sub_familias': sub_familias})
 
+
+# Relatorio personalizado
+def query_documents_by_args(pk=1, **kwargs):
+    draw = int(kwargs.get('draw', None)[0])
+    length = int(kwargs.get('length', None)[0])
+    start = int(kwargs.get('start', None)[0])
+    search_value = kwargs.get('search[value]', None)[0]
+    order_column = int(kwargs.get('order[0][column]', None)[0])
+    order = kwargs.get('order[0][dir]', None)[0]
+
+    order_column = DOCUMENT_COLUMNS[order_column]
+    # django orm '-' -> desc
+    if order == 'desc':
+        order_column = '-' + order_column[1]
+    else:
+        order_column = order_column[1]
+
+    queryset = Descricao.objects.all() #filter(tenant=1)
+
+    total = queryset.count()
+
+    if search_value:
+        queryset = queryset.filter(Q(status_icontains=search_value))
+
+    count = queryset.count()
+
+    queryset = queryset.order_by(order_column)[start:start + length]
+
+    data = {
+        'items': queryset,
+        'count': count,
+        'total': total,
+        'draw': draw,
+    }
+    return data
+
+
+def mostra_pdf(request):
+    filepath = os.path.join('static', '/home/cristiano/bluebox/staticfiles/pdf/manual_cargos.pdf')
+    return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
+
+
+
+def envia_email(request, title, email):
+
+    subject = 'Aprovação Pendente - BlueBox21' #request.POST.get('subject', '')
+    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ') - https://bluebox21.herokuapp.com/'
+    from_email = 'envioautomatico@bluebox21.com ' # request.POST.get('title', '')
+    to_email = [email]
+
+    if subject and message and from_email and to_email and to_email != None:
+        try:
+            send_mail(subject, message, from_email, to_email)
+        except BadHeaderError:
+            return HttpResponse('Dados do e-mail inválidos')
+        return HttpResponseRedirect("/descricao/descricao_rel_list/") #HttpResponseRedirect('../descricao-rel-list')
+    else:
+        # In reality we'd use a form class
+        # to get proper validation errors.
+        return HttpResponse('Verifique os campos de envio.')
+
+
+def envia_aprovacao(request, pk):
+    aprovacao = get_object_or_404(models.Descricao, pk=pk)
+    form = forms.DescricaoForm(request.POST or None, request.FILES or None, instance=aprovacao)
+
+    # if form.is_valid():
+    form_ = form.save(commit=False)
+    form_.status_id = 2
+    form_.save()
+
+    return redirect("/descricao/descricao_list")
+
+    # return render(request, 'descricao//descricao_list.html', {'form': form})
+
+
+def envia_reprovacao(request, pk):
+    reprovacao = get_object_or_404(models.Descricao, pk=pk)
+    form = forms.DescricaoForm(request.POST or None, request.FILES or None, instance=reprovacao)
+
+    # if form.is_valid():
+    form_ = form.save(commit=False)
+    form_.status_id = 4
+    form_.save()
+
+    return redirect("/descricao/descricao_list_aprovacao/")
+
+    # return render(request, 'descricao//descricao_list.html', {'form': form})
+
 # Carregar as areas de acordo com os diretorias
 def load_ia(request):
 
@@ -543,101 +633,13 @@ def load_ia(request):
     return render(request, 'descricao/ia_dropdown_list_options.html', {'ias': ia_list})
 
 
-# Relatorio personalizado
-def query_documents_by_args(pk=1, **kwargs):
-    draw = int(kwargs.get('draw', None)[0])
-    length = int(kwargs.get('length', None)[0])
-    start = int(kwargs.get('start', None)[0])
-    search_value = kwargs.get('search[value]', None)[0]
-    order_column = int(kwargs.get('order[0][column]', None)[0])
-    order = kwargs.get('order[0][dir]', None)[0]
-
-    order_column = DOCUMENT_COLUMNS[order_column]
-    # django orm '-' -> desc
-    if order == 'desc':
-        order_column = '-' + order_column[1]
-    else:
-        order_column = order_column[1]
-
-    queryset = Descricao.objects.all() #filter(tenant=1)
-
-    total = queryset.count()
-
-    if search_value:
-        queryset = queryset.filter(Q(status_icontains=search_value))
-
-    count = queryset.count()
-
-    queryset = queryset.order_by(order_column)[start:start + length]
-
-    data = {
-        'items': queryset,
-        'count': count,
-        'total': total,
-        'draw': draw,
-    }
-    return data
-
-
-def mostra_pdf(request):
-    filepath = os.path.join('static', '/home/cristiano/bluebox/staticfiles/pdf/manual_cargos.pdf')
-    return FileResponse(open(filepath, 'rb'), content_type='application/pdf')
-
-
-
-def envia_email(request, title, email):
-
-    subject = 'Aprovação Pendente - BlueBox21' #request.POST.get('subject', '')
-    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ') - https://bluebox21.herokuapp.com/'
-    from_email = 'envioautomatico@bluebox21.com ' # request.POST.get('title', '')
-    to_email = [email]
-
-    if subject and message and from_email and to_email and to_email != None:
-        try:
-            send_mail(subject, message, from_email, to_email)
-        except BadHeaderError:
-            return HttpResponse('Dados do e-mail inválidos')
-        return HttpResponseRedirect("/descricao/descricao_rel_list/") #HttpResponseRedirect('../descricao-rel-list')
-    else:
-        # In reality we'd use a form class
-        # to get proper validation errors.
-        return HttpResponse('Verifique os campos de envio.')
-
-
-def envia_aprovacao(request, pk):
-    aprovacao = get_object_or_404(models.Descricao, pk=pk)
-    form = forms.DescricaoForm(request.POST or None, request.FILES or None, instance=aprovacao)
-
-    # if form.is_valid():
-    form_ = form.save(commit=False)
-    form_.status_id = 2
-    form_.save()
-
-    return redirect("/descricao/descricao_list")
-
-    # return render(request, 'descricao//descricao_list.html', {'form': form})
-
-
-def envia_reprovacao(request, pk):
-    reprovacao = get_object_or_404(models.Descricao, pk=pk)
-    form = forms.DescricaoForm(request.POST or None, request.FILES or None, instance=reprovacao)
-
-    # if form.is_valid():
-    form_ = form.save(commit=False)
-    form_.status_id = 4
-    form_.save()
-
-    return redirect("/descricao/descricao_list_aprovacao/")
-
-    # return render(request, 'descricao//descricao_list.html', {'form': form})
-
-
 class ImportarDadosView(View):
     template_name = 'descricao/importar_dados.html'
 
     def get(self, request):
         descricoes = Descricao.objects.all()
         form = ImportarDadosForm()
+
         return render(request, self.template_name, {
             'form': form,
             'descricoes': descricoes
@@ -649,44 +651,93 @@ class ImportarDadosView(View):
         if form.is_valid():
             arquivo = request.FILES['arquivo']
             df = pd.read_excel(arquivo)
+            last_desc = Descricao.objects.last()
+            last_id = last_desc.id
+            tenant_id = tenant_from_request(self.request)
+            empresa = Tenant.objects.filter(id=tenant_id).first()
+            sector_id = empresa.sector_id
 
             for _, row in df.iterrows():
                 # Itera sobre as linhas do DataFrame lido do arquivo Excel
-                print(row)
-                self.criar_descricao(row)
+                # print(row)
+                last_id += 1
+                self.criar_descricao(row, last_id, sector_id)
 
             return redirect('/descricao/descricao_list')
 
         return render(request, self.template_name, {'form': form})
 
-    def criar_descricao(self, row):
+    def criar_descricao(self, row, last_id, sector_id):
         # Use get_or_create para evitar a necessidade de verificar a existência antes de criar
         tenant_id = tenant_from_request(self.request)
-        print(tenant_id)
+
+        #IA
+
+        url = "https://neogem-bluebox-716723353548.us-east1.run.app/pesquisar_cargo_api"
+
+        payload = json.dumps({
+            "des_cargo": row['Titulo'],
+            "familia": row['Familia'],
+            "sub_familia": row['SubFamilia'],
+            "setor": sector_id,
+            "nivel": row['Nivel'],
+        })
+        headers = {
+            'Content-Type': 'application/json'
+        }
+
+        response = requests.request("POST", url, headers=headers, data=payload)
+
+        dadosjson = json.loads(response.text)
+
+        missao = dadosjson.get('missao')
+
+        responsabilidade = str(dadosjson.get('responsabilidades'))
+        responsabilidades = responsabilidade.replace("[", "").replace("]", "")
+
+        competencia = str(dadosjson.get('competencias'))
+        competencias = competencia.replace("[", "").replace("]", "")
+
+        equipe = dadosjson.get('equipe')
+
+        escolaridade = dadosjson.get('escolaridade')
+
+        complementar = dadosjson.get('formacao')
+
+        experiencia = dadosjson.get('experiencia')
+
+        area_formacao = dadosjson.get('area')
+
+        habilitacao = dadosjson.get('habilidade')
+
+        #Fim da IA -------------------------------
+
+
         descricao, criado = Descricao.objects.get_or_create(
             title=row['Titulo'],
             defaults={
-                'id': 83, #row (id),
+                'id': last_id,
                 'title': row['Titulo'],
                 'area_id': row['Area'],
                 'board_id': row['SubArea'],
+                'title_super': row['CargoSuperiorImediato'],
                 'family_id': row['Familia'],
                 'sub_familia_id': row['SubFamilia'],
                 'tenant_id': tenant_id,
                 'status_id': 1,
-                'is_active': row['Ativo'],
-                'sector_id': row['Setor'],
+                'is_active': True,
+                'sector_id': sector_id,
                 'level_id': row['Nivel'],
 
-                'summary_goal': "Teste", #dadosjson.get('missao'),
-                'responsibility': "Teste",  #dadosjson.get('responsabilidades'),
-                'information': "Teste", #dadosjson.get('competencias')
-                'manage_team_id': 1, #dadosjson.get('equipe')
-                'formation_desired_id': 8, #dadosjson.get('escolaridade')
-                'specialization_id': 1, #dadosjson.get('formacao')
-                'experience_id': 2, #dadosjson.get('experiencia')
-                'areas_desired_id': 15, #dadosjson.get('area')
-                'qualification_id': 35 #dadosjson.get('habilidade')
+                'summary_goal': missao, #dadosjson.get('missao'),
+                'responsibility': responsabilidades,  #dadosjson.get('responsabilidades'),
+                'information': competencias, #dadosjson.get('competencias')
+                'manage_team_id': equipe, #dadosjson.get('equipe')
+                'formation_desired_id': escolaridade, #dadosjson.get('escolaridade')
+                'specialization_id': complementar, #dadosjson.get('formacao')
+                'experience_id': experiencia, #dadosjson.get('experiencia')
+                'areas_desired_id': area_formacao, #dadosjson.get('area')
+                'qualification_id': habilitacao #dadosjson.get('habilidade')
 
             }
         )

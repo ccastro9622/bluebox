@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block titulo_painel %}
-   Importa Descriçoẽs em Lote
+   Carregar Descriçoẽs de Cargo
 
 {% endblock titulo_painel %}
 
@@ -9,16 +9,41 @@
 {% block conteudo_painel %}
 
 <div class="container">
-  <h2>Importar Descrições</h2>
-  <br>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+    <h4>Para a importação das descrições utilizando a IA, </h4>
+    <h4>é preciso baixar a Planilha Modelo no link abaixo,</h4>
+    <h4>preencher os dados, anexar e clicar no botão importar.</h4>
+    <br>
+    <br>
+    <br>
+    <strong><a href="/static/modelos/descricao_lote_imp.xlsx"> Baixar Planilha Modelo </a> </strong>
+    <br>
+    <br>
+    <br>
+    <br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    {{ form.as_p }}
-    <br>
-    <br>
-    <button type="submit" class="btn btn-primary">Importar</button>
-    <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
-  </form>
+        {{ form.as_p }}
+        <br>
+        <div class='loading'>
+            <img src='https://i.sstatic.net/fLkAW.gif' alt=''/>
+        </div>
+        <br>
+        <button onclick="CarregaIA()" type="submit" class="btn btn-primary">Importar</button>
+        <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+    </form>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+  function CarregaIA() {
+      var loading = $('.loading');
+      loading.css('visibility', 'visible'); // exibe o div
+
+  }
+
+</script>
+
 {% endblock %}
+

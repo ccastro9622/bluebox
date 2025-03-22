@@ -108,9 +108,10 @@ class DescricaoForm(forms.ModelForm):
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         self.fields['status'].queryset = Status.objects.filter(id__in=[1])
-        empresa = Tenant.objects.filter(id=tenant_id).first()
-        sector_id = empresa.sector_id
-        self.fields['sector'].queryset = Sector.objects.filter(id=sector_id)
+        # empresa = Tenant.objects.filter(id=tenant_id).first()
+        # print(empresa.sector_id)
+        # sector_id = int(empresa.sector_id)
+        # self.fields['sector'].queryset = Sector.objects.filter(id=sector_id)
         # self.fields['sector'].widget.attrs['disabled'] = 'disabled'
         # self.fields['status'].widget.attrs['disabled'] = 'disabled'
 

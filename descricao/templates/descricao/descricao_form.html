@@ -10,9 +10,8 @@
 <form method="post" enctype="multipart/form-data" id="descricaoForm"
       data-areas-url="{% url 'descricao:ajax_load_areas' %}"
       data-sub_familias-url="{% url 'descricao:ajax_load_sub_familias' %}"
-      data-ia-url="{% url 'descricao:ajax_load_ia' %}"
+      data-ia-url="{% url 'descricao:ajax_load_ia' %}">{% csrf_token %}
 
->{% csrf_token %}
     <font size=2>
         <div class="row">
             <div class="col-md-4">
@@ -275,7 +274,7 @@
         var levelid = $("#id_level").val();                      // Nivel
         var sectorid = $("#id_sector").val();                    // Setor
         var loading = $('.loading');                             // Ampulheta
-<!--        alert(familyid);-->
+
 
         if ((title.trim().length == 0) || (familyid.trim().length == 0) || (sub_familiaoid.trim().length == 0) || (levelid.trim().length == 0) || (sectorid.trim().length == 0)) {
             alert('Para usar a IA, os campos: Título do Cargo, Família, Sub Família, Nivel do Cargo e Setor de Atuação devem ser preenchidos.');
@@ -293,9 +292,9 @@
               'sector': sectorid,        // add the country id to the GET parameters,      // add the country id to the GET parameters
             },
 
-            beforeSend: function(){
-                loading.css('visibility', 'visible'); // exibe o div
-            },
+<!--            beforeSend: function(){-->
+<!--                loading.css('visibility', 'visible'); // exibe o div-->
+<!--            },-->
 
             complete: function(){
                 loading.css('visibility', 'hidden'); // esconde o div
