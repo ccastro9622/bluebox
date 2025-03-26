@@ -20,8 +20,10 @@
                 <table id="table_id" class="display" align="center" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Áreas da Empresa</th>
-                            <th>Subárea da Empresa</th>
+                            <th><center>Código Area</center></th>
+                            <th><center>Áreas da Empresa</center></th>
+                            <th><center>Código Sub Area</center></th>
+                            <th><center>Subárea da Empresa</center></th>
                             <th><center>Editar</center></th>
                             <th><center>Excluir</center></th>
                         </tr>
@@ -29,8 +31,10 @@
                     <tbody>
                     {%for area in object_list %}
                         <tr>
-                            <td>{{area.board}}</td>
-                            <td>{{area.name}}</td>
+                            <td><center>{{area.board_id}}</center></td>
+                            <td><center>{{area.board}}</center></td>
+                            <td><center>{{area.id}}</center></td>
+                            <td><center>{{area.name}}</center></td>
                             <td><a href="{% url 'master:area-update' area.id %}"><center><i class="fas fa-edit"></i></center></a></td>
                             <td><a href="{% url 'master:area-delete' area.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
                         </tr>
