@@ -718,8 +718,8 @@ class ImportarDadosView(View):
             defaults={
                 'id': last_id,
                 'title': row['Titulo'],
-                'area_id': row['Area'],
-                'board_id': row['SubArea'],
+                'area_id': row['SubArea'],
+                'board_id': row['Area'],
                 'title_super': row['CargoSuperiorImediato'],
                 'family_id': row['Familia'],
                 'sub_familia_id': row['SubFamilia'],
