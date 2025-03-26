@@ -32,9 +32,9 @@
                     {%for area in object_list %}
                         <tr>
                             <td><center>{{area.board_id}}</center></td>
-                            <td><center>{{area.board}}</center></td>
+                            <td>{{area.board}}</td>
                             <td><center>{{area.id}}</center></td>
-                            <td><center>{{area.name}}</center></td>
+                            <td>{{area.name}}</td>
                             <td><a href="{% url 'master:area-update' area.id %}"><center><i class="fas fa-edit"></i></center></a></td>
                             <td><a href="{% url 'master:area-delete' area.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
                         </tr>

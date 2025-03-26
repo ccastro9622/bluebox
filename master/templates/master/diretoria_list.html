@@ -30,7 +30,7 @@
                     {%for diretoria in object_list %}
                         <tr>
                             <td><center>{{diretoria.id}}</center></td>
-                            <td><center>{{diretoria.name}}</center></td>
+                            <td>{{diretoria.name}}</td>
                             <td><a href="{% url 'master:diretoria-update' diretoria.id %}"><center><i class="fas fa-edit"></i></center></a></td>
                             <td><a href="{% url 'master:diretoria-delete' diretoria.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
                         </tr>
