@@ -33,6 +33,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["person.local", ".person.local"]
 
+# DEBUG = False
+#
+# ALLOWED_HOSTS = ['*']
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 

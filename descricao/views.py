@@ -7,13 +7,15 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from admin_descricao.models import Niveis
 from avaliacao.models import Avaliacao
+from master.models import Diretoria, Area
 from tenants.models import Tenant
 from tenants.utils import tenant_from_request, user_from_request, userkind_from_request
 from report.mixins import PdfResponseMixin
 from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
     DescricaoAprovacaoFinalForm, ImportarDadosForm
-from .models import Descricao, Area, SubFamilias
+from .models import Descricao, Familias, SubFamilias
 from admin_descricao.models import Descricoes, Gerencia, Formacao, Especializacoes, Habilitacoes, Areas, Experiencias
 
 from rest_framework import viewsets, status
@@ -22,7 +24,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from api.serializers import DocumentSerializer
 
-from django.http import FileResponse
+from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models, forms
 
@@ -633,6 +635,7 @@ def load_ia(request):
     return render(request, 'descricao/ia_dropdown_list_options.html', {'ias': ia_list})
 
 
+
 class ImportarDadosView(View):
     template_name = 'descricao/importar_dados.html'
 
@@ -651,9 +654,23 @@ class ImportarDadosView(View):
         if form.is_valid():
             arquivo = request.FILES['arquivo']
             df = pd.read_excel(arquivo)
+            tenant_id = tenant_from_request(self.request)
+            numrow = 1
+            erro = 0
+            msn = ''
+
+            for _, row in df.iterrows():
+                # Itera sobre as linhas do DataFrame lido do arquivo Excel
+                # print(row)
+                numrow += 1
+                msn = self.validar_dados(row, tenant_id, numrow, msn, form)
+
+            if msn != '':
+                raise Http404(msn)
+
+
             last_desc = Descricao.objects.last()
             last_id = last_desc.id
-            tenant_id = tenant_from_request(self.request)
             empresa = Tenant.objects.filter(id=tenant_id).first()
             sector_id = empresa.sector_id
 
@@ -667,9 +684,83 @@ class ImportarDadosView(View):
 
         return render(request, self.template_name, {'form': form})
 
+    def validar_dados(self, row, tenant_id, numrow, msn, form):
+        id_diretoria = 0
+        id_familia = 0
+        # Trata a Area ou Diretoria que é o nome antigo.
+
+        try:
+            Descricao.objects.get(title=row['Titulo'], tenant_id=tenant_id)
+        except Descricao.DoesNotExist:
+            msn = msn
+        else:
+            msn += 'Linha ' + str(numrow) + ' - O Título do Cargo "' + row['Titulo'] + '" já existe!!\n'
+
+        try:
+            diretoria = Diretoria.objects.get(name=row['Area'], tenant_id=tenant_id)
+        except Diretoria.DoesNotExist:
+            msn += 'Linha ' + str(numrow) + ' - A área "' + row['Area'] + '" não existe!!\n'
+        else:
+            id_diretoria = diretoria.id
+        # Trata a subarea ou area que é o nome antigo
+        try:
+            Area.objects.get(name=row['SubArea'], board_id = id_diretoria, tenant_id=tenant_id)
+        except Area.DoesNotExist:
+            msn += 'Linha ' + str(numrow) + ' - A Subárea "' + row['SubArea'] + '" não existe para a Diretoria "' + row['Area'] + '"!!\n'
+
+        # Trata e verifica se a  Familia existe
+        try:
+            familia = Familias.objects.get(name=row['Familia'])
+        except Familias.DoesNotExist:
+            msn += 'Linha ' + str(numrow) + ' - A Familia "' + row['Familia'] + '" não existe!!\n'
+        else:
+            id_familia = familia.id
+
+        # Trata e verifica se a  SubFamilia existe
+        try:
+            SubFamilias.objects.get(name=row['SubFamilia'], family_id = id_familia)
+        except SubFamilias.DoesNotExist:
+            msn += 'Linha ' + str(numrow) + ' - A SubFamilia "' + row['SubFamilia'] + '" não existe para a Familia "' + \
+                   row['Familia'] + '"!!\n'
+
+        try:
+            Niveis.objects.get(name=row['Nivel'])
+            # subarea = Area.objects.get(name=row['SubArea'])
+        except Niveis.DoesNotExist:
+            msn += 'Linha ' + str(numrow) + ' - O Nivel "' + row['Nivel'] + '" não existe!!\n'
+
+
+        return msn
+
+        # finally:
+        #     if erro ==1 :
+        #         raise Http404(msn)
+
+
+        # return HttpResponse("Nivel encontrado")
+        # return render(request, "descricao/importar_dados.html", {'form': nivel})
+
+
+        # print(row['Nivel'])
+        # # Validar Nivel
+        # nivel = Niveis.objects.filter(name=row['Nivel'])
+        #
+        # # if len(nivel) == 0:
+        # return HttpResponseRedirect("<h1> Erro na validação </h1>")
+
     def criar_descricao(self, row, last_id, sector_id):
         # Use get_or_create para evitar a necessidade de verificar a existência antes de criar
         tenant_id = tenant_from_request(self.request)
+        diretoria = Diretoria.objects.get(name=row['Area'], tenant_id=tenant_id)
+        id_diretoria = diretoria.id
+        area = Area.objects.get(name=row['SubArea'], board_id=id_diretoria, tenant_id=tenant_id)
+        id_area = area.id
+        familia = Familias.objects.get(name=row['Familia'])
+        id_familia = familia.id
+        subfamilia = SubFamilias.objects.get(name=row['SubFamilia'], family_id=id_familia)
+        id_subfamilia = subfamilia.id
+        nivel = Niveis.objects.get(name=row['Nivel'])
+        id_nivel = nivel.id
 
         #IA
 
@@ -677,10 +768,10 @@ class ImportarDadosView(View):
 
         payload = json.dumps({
             "des_cargo": row['Titulo'],
-            "familia": row['Familia'],
-            "sub_familia": row['SubFamilia'],
+            "familia": id_familia,
+            "sub_familia": id_subfamilia,
             "setor": sector_id,
-            "nivel": row['Nivel'],
+            "nivel": id_nivel,
         })
         headers = {
             'Content-Type': 'application/json'
@@ -700,11 +791,17 @@ class ImportarDadosView(View):
 
         equipe = dadosjson.get('equipe')
 
+        if equipe is None:
+            equipe = 1
+
         escolaridade = dadosjson.get('escolaridade')
 
         complementar = dadosjson.get('formacao')
 
         experiencia = dadosjson.get('experiencia')
+
+        if experiencia is None:
+            experiencia = 1
 
         area_formacao = dadosjson.get('area')
 
@@ -718,16 +815,16 @@ class ImportarDadosView(View):
             defaults={
                 'id': last_id,
                 'title': row['Titulo'],
-                'area_id': row['SubArea'],
-                'board_id': row['Area'],
+                'area_id': id_area,
+                'board_id': id_diretoria,
                 'title_super': row['CargoSuperiorImediato'],
-                'family_id': row['Familia'],
-                'sub_familia_id': row['SubFamilia'],
+                'family_id': id_familia,
+                'sub_familia_id': id_subfamilia,
                 'tenant_id': tenant_id,
                 'status_id': 1,
                 'is_active': True,
                 'sector_id': sector_id,
-                'level_id': row['Nivel'],
+                'level_id': id_nivel,
 
                 'summary_goal': missao, #dadosjson.get('missao'),
                 'responsibility': responsabilidades,  #dadosjson.get('responsabilidades'),
