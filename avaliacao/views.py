@@ -581,7 +581,9 @@ def load_levels3(request):
     # messages.add_message(request, messages.ERROR, 'Can not delete: this parent has a child!')
 
     # Monta o escopo maximo de acordo com o escopo do gestor - slide 14
-    if escopo_super == 27 or escopo_super == 28:
+    if escopo_super == 28:
+        escopo = 10
+    elif escopo_super == 27:
         escopo = 9
     elif escopo_super == 26:
         escopo = 8
@@ -622,7 +624,7 @@ def load_levels3(request):
             levels = Niveis.objects.filter(factor_id=3, code=7, code__lte=escopo).order_by('id')
 
     else:
-        levels = Niveis.objects.filter(factor_id=3, code__in=[8, 9], code__lte=escopo).order_by('id')
+        levels = Niveis.objects.filter(factor_id=3, code__in=[8, 9, 10], code__lte=escopo).order_by('id')
 
 
     #     levels = Niveis.objects.filter(factor_id=3, code__in=[1, 2], code__lte=escopo).order_by('id')
