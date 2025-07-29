@@ -15,7 +15,8 @@ from tenants.utils import tenant_from_request, user_from_request, userkind_from_
 from report.mixins import PdfResponseMixin
 from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
     DescricaoAprovacaoFinalForm, ImportarDadosForm
-from .models import Descricao, Familias, SubFamilias
+from .models import Descricao
+from admin_avaliacao.models import Familias, SubFamilias
 from admin_descricao.models import Descricoes, Gerencia, Formacao, Especializacoes, Habilitacoes, Areas, Experiencias
 
 from rest_framework import viewsets, status
@@ -702,26 +703,48 @@ class ImportarDadosView(View):
             msn += 'Linha ' + str(numrow) + ' - A área "' + row['Area'] + '" não existe!!\n'
         else:
             id_diretoria = diretoria.id
+
         # Trata a subarea ou area que é o nome antigo
         try:
             Area.objects.get(name=row['SubArea'], board_id = id_diretoria, tenant_id=tenant_id)
         except Area.DoesNotExist:
             msn += 'Linha ' + str(numrow) + ' - A Subárea "' + row['SubArea'] + '" não existe para a Diretoria "' + row['Area'] + '"!!\n'
 
-        # Trata e verifica se a  Familia existe
-        try:
-            familia = Familias.objects.get(name=row['Familia'])
-        except Familias.DoesNotExist:
-            msn += 'Linha ' + str(numrow) + ' - A Familia "' + row['Familia'] + '" não existe!!\n'
+        # # Trata e verifica se a  Familia existe
+        # try:
+        #     nome = '"' + (row['Familia']) + '"'
+        #     print(nome)
+        #     print(row['Familia'])
+        #     familia = Familias.objects.get(name=nome)
+        #     id_familia = familia.id
+        # except Familias.DoesNotExist:
+        #     msn += 'Linha ' + str(numrow) + ' - A Familia "' + row['Familia'] + '" não existe!!\n'
+        # else:
+        #     id_familia = familia.id
+
+        nome = row['Familia']
+        print(nome)
+        if Familias.objects.filter(name=nome).exists():
+            familias = Familias.objects.filter(name=nome).first()
+            id_familia = familias.id
         else:
-            id_familia = familia.id
+            msn += 'Linha ' + str(numrow) + ' - A Familia "' + row['Familia'] + '" não existe!!\n'
+
+        # # Trata e verifica se a  SubFamilia existe
+        # try:
+        #     SubFamilias.objects.get(name=nome, family_id = id_familia)
+        # except SubFamilias.DoesNotExist:
+        #     msn += 'Linha ' + str(numrow) + ' - A SubFamilia "' + row['SubFamilia'] + '" não existe para a Familia "' + \
+        #            row['Familia'] + '"!!\n'
 
         # Trata e verifica se a  SubFamilia existe
-        try:
-            SubFamilias.objects.get(name=row['SubFamilia'], family_id = id_familia)
-        except SubFamilias.DoesNotExist:
+        nome = row['SubFamilia']
+        if SubFamilias.objects.filter(name=nome, family_id = id_familia).exists():
+            print(nome)
+        else:
             msn += 'Linha ' + str(numrow) + ' - A SubFamilia "' + row['SubFamilia'] + '" não existe para a Familia "' + \
                    row['Familia'] + '"!!\n'
+
 
         try:
             Niveis.objects.get(name=row['Nivel'])
@@ -755,9 +778,9 @@ class ImportarDadosView(View):
         id_diretoria = diretoria.id
         area = Area.objects.get(name=row['SubArea'], board_id=id_diretoria, tenant_id=tenant_id)
         id_area = area.id
-        familia = Familias.objects.get(name=row['Familia'])
+        familia = Familias.objects.filter(name=row['Familia']).first()
         id_familia = familia.id
-        subfamilia = SubFamilias.objects.get(name=row['SubFamilia'], family_id=id_familia)
+        subfamilia = SubFamilias.objects.filter(name=row['SubFamilia'], family_id=id_familia).first()
         id_subfamilia = subfamilia.id
         nivel = Niveis.objects.get(name=row['Nivel'])
         id_nivel = nivel.id
