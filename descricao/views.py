@@ -1,5 +1,6 @@
 import csv
 
+from django.db.models.functions import Trim, Replace
 from django.forms.widgets import Input
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
@@ -710,38 +711,19 @@ class ImportarDadosView(View):
         except Area.DoesNotExist:
             msn += 'Linha ' + str(numrow) + ' - A Subárea "' + row['SubArea'] + '" não existe para a Diretoria "' + row['Area'] + '"!!\n'
 
-        # # Trata e verifica se a  Familia existe
-        # try:
-        #     nome = '"' + (row['Familia']) + '"'
-        #     print(nome)
-        #     print(row['Familia'])
-        #     familia = Familias.objects.get(name=nome)
-        #     id_familia = familia.id
-        # except Familias.DoesNotExist:
-        #     msn += 'Linha ' + str(numrow) + ' - A Familia "' + row['Familia'] + '" não existe!!\n'
-        # else:
-        #     id_familia = familia.id
 
         nome = row['Familia']
-        print(nome)
+        nome = nome.replace("_", " ") # Foi necessario devido a regra de validação de dados do excell
         if Familias.objects.filter(name=nome).exists():
             familias = Familias.objects.filter(name=nome).first()
             id_familia = familias.id
         else:
-            msn += 'Linha ' + str(numrow) + ' - A Familia "' + row['Familia'] + '" não existe!!\n'
-
-        # # Trata e verifica se a  SubFamilia existe
-        # try:
-        #     SubFamilias.objects.get(name=nome, family_id = id_familia)
-        # except SubFamilias.DoesNotExist:
-        #     msn += 'Linha ' + str(numrow) + ' - A SubFamilia "' + row['SubFamilia'] + '" não existe para a Familia "' + \
-        #            row['Familia'] + '"!!\n'
+            msn += 'Linha ' + str(numrow) + ' - A Familia "' + nome + '" não existe!!\n'
 
         # Trata e verifica se a  SubFamilia existe
-        nome = row['SubFamilia']
-        if SubFamilias.objects.filter(name=nome, family_id = id_familia).exists():
-            print(nome)
-        else:
+        try:
+            SubFamilias.objects.get(name=nome, family_id = id_familia)
+        except SubFamilias.DoesNotExist:
             msn += 'Linha ' + str(numrow) + ' - A SubFamilia "' + row['SubFamilia'] + '" não existe para a Familia "' + \
                    row['Familia'] + '"!!\n'
 
@@ -778,7 +760,10 @@ class ImportarDadosView(View):
         id_diretoria = diretoria.id
         area = Area.objects.get(name=row['SubArea'], board_id=id_diretoria, tenant_id=tenant_id)
         id_area = area.id
-        familia = Familias.objects.filter(name=row['Familia']).first()
+
+        nome = row['Familia']
+        nome = nome.replace("_", " ") # Foi necessario devido a regra de validação de dados do excell
+        familia = Familias.objects.filter(name=nome).first()
         id_familia = familia.id
         subfamilia = SubFamilias.objects.filter(name=row['SubFamilia'], family_id=id_familia).first()
         id_subfamilia = subfamilia.id
