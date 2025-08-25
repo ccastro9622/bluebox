@@ -1,7 +1,3 @@
-import csv
-
-from django.db.models.functions import Trim, Replace
-from django.forms.widgets import Input
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -18,17 +14,15 @@ from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, D
     DescricaoAprovacaoFinalForm, ImportarDadosForm
 from .models import Descricao
 from admin_avaliacao.models import Familias, SubFamilias
-from admin_descricao.models import Descricoes, Gerencia, Formacao, Especializacoes, Habilitacoes, Areas, Experiencias
+from admin_descricao.models import Descricoes
 
-from rest_framework import viewsets, status
-from rest_framework.response import Response
 from django.db.models import Q
-from django.shortcuts import render
-from api.serializers import DocumentSerializer
 
 from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models, forms
+from bluebox.enviar_email import enviar_email
+
 
 import os
 
@@ -39,7 +33,7 @@ import xlsxwriter
 import requests
 import json
 
-from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
 
 import pandas as pd
@@ -387,7 +381,14 @@ class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
     # corrigir o problema de e-mail para descompentar
     def get_success_url(self):
         descricao = self.get_object()
-        return reverse_lazy("descricao:descricao-email", kwargs={'title': descricao.title, 'email': descricao.approver.email})
+
+        subject = 'Aprovação Pendente - BlueBox21'  # request.POST.get('subject', '')
+        message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + descricao.title + ')'
+        to_email = descricao.approver.email
+
+        enviar_email(subject, message, to_email)
+
+        return reverse_lazy("descricao:descricao-list-aprovador") #reverse_lazy("descricao:descricao-email", kwargs={'title': descricao.title, 'email': descricao.approver.email})
 # reverse_lazy("descricao:descricao-list-aprovador")
 
 
@@ -409,9 +410,18 @@ class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
         user_id = user_from_request(self.request)
         kwargs['tenant_id'] = tenant_id
         kwargs['user_id'] = user_id
-
         return kwargs
 
+    # def get_success_url(self):
+    #     descricao = self.get_object()
+    #
+    #     subject = 'Aprovação Pendente - BlueBox21'  # request.POST.get('subject', '')
+    #     message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + descricao.title + ')'
+    #     to_email = descricao.approver.email
+    #
+    #     enviar_email(subject, message, to_email)
+    #
+    #     return reverse_lazy("descricao:descricao-list-aprovacao")
 
 class DescricaoAprovacaoFinalUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'descricao/descricao_form_aprovacao_final.html'
@@ -497,14 +507,19 @@ def mostra_pdf(request):
 
 def envia_email(request, title, email):
 
-    subject = 'Aprovação Pendente - BlueBox21' #request.POST.get('subject', '')
-    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ') - https://bluebox21.herokuapp.com/'
-    from_email = 'envioautomatico@bluebox21.com ' # request.POST.get('title', '')
-    to_email = [email]
+    subject = 'Aprovacao Pendente - BlueBox21' #request.POST.get('subject', '')
+    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ')'
+    from_email = 'contato@bluebox21.com.br ' # request.POST.get('title', '')
+    to_email = email
+    retorno = ""
 
     if subject and message and from_email and to_email and to_email != None:
         try:
-            send_mail(subject, message, from_email, to_email)
+            retorno = enviar_email(subject, message, to_email, retorno)
+            # send_mail(subject, message, from_email, to_email)
+            print(retorno + "teste")
+            return HttpResponse(retorno)
+
         except BadHeaderError:
             return HttpResponse('Dados do e-mail inválidos')
         return HttpResponseRedirect("/descricao/descricao_rel_list/") #HttpResponseRedirect('../descricao-rel-list')

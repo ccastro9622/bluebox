@@ -155,16 +155,21 @@ AUTH_USER_MODEL = 'user_account.CustomUser'
 STATICFILES_DIRS = ['static']
 
 # Configurações de envio do e-mail
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST = 'smtp.office365.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = "suporte@bluebox21.com"
-# EMAIL_HOST_PASSWORD = "Drom3D@lho"
-EMAIL_HOST_USER = "pclinecomputadores@gmail.com"
-EMAIL_HOST_PASSWORD = "vskw xzlz roio ruuq"
+EMAIL_HOST = 'mail.bluebox21.com.br'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = False
+EMAIL_HOST_USER = "contato@bluebox21.com.br"
+EMAIL_HOST_PASSWORD = "AnChCr2021!"
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = "pclinecomputadores@gmail.com"
+# EMAIL_HOST_PASSWORD = "vskw xzlz roio ruuq"
 
 
 
