@@ -386,7 +386,7 @@ class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
         message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + descricao.title + ')'
         to_email = descricao.approver.email
 
-        enviar_email(subject, message, to_email)
+        # enviar_email(subject, message, to_email)
 
         return reverse_lazy("descricao:descricao-list-aprovador") #reverse_lazy("descricao:descricao-email", kwargs={'title': descricao.title, 'email': descricao.approver.email})
 # reverse_lazy("descricao:descricao-list-aprovador")
@@ -515,7 +515,7 @@ def envia_email(request, title, email):
 
     if subject and message and from_email and to_email and to_email != None:
         try:
-            retorno = enviar_email(subject, message, to_email, retorno)
+            # retorno = enviar_email(subject, message, to_email, retorno)
             # send_mail(subject, message, from_email, to_email)
             return HttpResponse(retorno)
 
