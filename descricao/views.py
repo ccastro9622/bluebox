@@ -21,7 +21,7 @@ from django.db.models import Q
 from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models, forms
-from bluebox.enviar_email import enviar_email
+from api.views import enviar_email
 
 
 
