@@ -21,7 +21,7 @@ from django.db.models import Q
 from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models, forms
-from bluebox import enviar_email
+from bluebox.enviar_email import enviar_email
 
 
 
@@ -516,7 +516,7 @@ def envia_email(request, title, email):
 
     if subject and message and from_email and to_email and to_email != None:
         try:
-            retorno = enviar_email(subject, message, to_email, retorno)
+            retorno = enviar_email(subject, message, to_email)
             # send_mail(subject, message, from_email, to_email)
             return HttpResponse(retorno)
 
