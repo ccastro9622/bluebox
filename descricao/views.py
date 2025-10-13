@@ -10,6 +10,7 @@ from master.models import Diretoria, Area
 from tenants.models import Tenant
 from tenants.utils import tenant_from_request, user_from_request, userkind_from_request
 from report.mixins import PdfResponseMixin
+from user_account.models import CustomUser
 from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
     DescricaoAprovacaoFinalForm, ImportarDadosForm
 from .models import Descricao
@@ -21,7 +22,7 @@ from django.db.models import Q
 from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models, forms
-# from bluebox.enviar_email import email
+from bluebox.enviar_email import enviodeemail
 
 import os
 
@@ -274,8 +275,17 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
         user_id = user_from_request(self.request)
         form.instance.user_id = user_id
         aprovado = self.request.POST.get('submit')
-        if aprovado == 'Aprovar':
+
+        if aprovado == 'Finalizar':
             form.instance.status_id = 2
+
+            cargo = form.instance.title
+            titulo = ('Definir Aprovador - Bluebox21')
+            message = 'Favor acessar o sistema Bluebox21 e definir o aprovador para o Cargo:  (' + cargo + ')'
+            user = CustomUser.objects.filter(default_tenant_id=tenant_id, kind="Master").first()
+            email = user.email
+
+            envia_email(titulo, message, email)
 
         return super(DescricaoCreateView, self).form_valid(form)
 
@@ -382,11 +392,11 @@ class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         descricao = self.get_object()
 
-        subject = 'Aprovação Pendente - BlueBox21'  # request.POST.get('subject', '')
+        subject = 'Aprovacao Pendente - BlueBox21'  # request.POST.get('subject', '')
         message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + descricao.title + ')'
         to_email = descricao.approver.email
 
-        email(subject, message, to_email)
+        envia_email(subject, message, to_email)
 
         return reverse_lazy("descricao:descricao-list-aprovador") #reverse_lazy("descricao:descricao-email", kwargs={'title': descricao.title, 'email': descricao.approver.email})
 # reverse_lazy("descricao:descricao-list-aprovador")
@@ -412,16 +422,19 @@ class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
         kwargs['user_id'] = user_id
         return kwargs
 
-    # def get_success_url(self):
-    #     descricao = self.get_object()
-    #
-    #     subject = 'Aprovação Pendente - BlueBox21'  # request.POST.get('subject', '')
-    #     message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + descricao.title + ')'
-    #     to_email = descricao.approver.email
-    #
-    #     email(subject, message, to_email)
-    #
-    #     return reverse_lazy("descricao:descricao-list-aprovacao")
+    def get_success_url(self):
+        descricao = self.get_object()
+
+
+        titulo = ('Aprovado pelo Gestor - Bluebox21')
+        message = 'O Cargo: (' + descricao.title + ')' + ' foi aprovado pelo gestor.'
+        user_id = user_from_request(self.request)
+        # user = CustomUser.objects.filter(id=user_id).first()
+        email = descricao.user_id.email
+
+        envia_email(titulo, message, email)
+
+        return reverse_lazy("descricao:descricao-list-aprovacao")
 
 class DescricaoAprovacaoFinalUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'descricao/descricao_form_aprovacao_final.html'
@@ -505,36 +518,47 @@ def mostra_pdf(request):
 
 
 
-def envia_email(request, title, email):
+def envia_email_acompanhamento(request, cargo, email):
 
-    subject = 'Aprovacao Pendente - BlueBox21' #request.POST.get('subject', '')
-    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ')'
-    from_email = 'contato@bluebox21.com.br ' # request.POST.get('title', '')
-    to_email = email
-    retorno = ""
+    titulo = ('Aprovacao Pendente - Bluebox21')
+    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + cargo + ') '
 
-    if subject and message and from_email and to_email and to_email != None:
+    retorno = envia_email(titulo, message, email)
+
+    return HttpResponse(retorno)
+    # return HttpResponseRedirect("/descricao/descricao_rel_list/")
+
+def envia_email(titulo, message, email):
+
+    if titulo and message and email != None:
         try:
-            retorno = email(subject, message, to_email)
-            # send_mail(subject, message, from_email, to_email)
-            return HttpResponse(retorno)
+            retorno = enviodeemail(titulo, message, email)
+            return retorno
 
         except BadHeaderError:
-            return HttpResponse('Dados do e-mail inválidos')
-        return HttpResponseRedirect("/descricao/descricao_rel_list/") #HttpResponseRedirect('../descricao-rel-list')
-    else:
-        # In reality we'd use a form class
-        # to get proper validation errors.
-        return HttpResponse('Verifique os campos de envio.')
+            return 'Dados do e-mail inválidos'
 
+    else:
+        return 'Verifique os campos de envio.'
 
 def envia_aprovacao(request, pk):
     aprovacao = get_object_or_404(models.Descricao, pk=pk)
     form = forms.DescricaoForm(request.POST or None, request.FILES or None, instance=aprovacao)
 
+
     # if form.is_valid():
     form_ = form.save(commit=False)
     form_.status_id = 2
+
+    tenant_id = tenant_from_request(request)
+    cargo = form_.title
+    titulo = ('Definir Aprovador - Bluebox21')
+    message = 'Favor acessar o sistema Bluebox21 e definir o aprovador para o Cargo:  (' + cargo + ')'
+    user = CustomUser.objects.filter(default_tenant_id=tenant_id, kind="Master").first()
+    email = user.email
+
+    envia_email(titulo, message, email)
+
     form_.save()
 
     return redirect("/descricao/descricao_list")
@@ -549,6 +573,7 @@ def envia_reprovacao(request, pk):
     # if form.is_valid():
     form_ = form.save(commit=False)
     form_.status_id = 4
+
     form_.save()
 
     return redirect("/descricao/descricao_list_aprovacao/")
@@ -671,6 +696,7 @@ class ImportarDadosView(View):
             arquivo = request.FILES['arquivo']
             df = pd.read_excel(arquivo)
             tenant_id = tenant_from_request(self.request)
+            user_id = user_from_request(self.request)
             numrow = 1
             erro = 0
             msn = ''
@@ -694,7 +720,7 @@ class ImportarDadosView(View):
                 # Itera sobre as linhas do DataFrame lido do arquivo Excel
                 # print(row)
                 last_id += 1
-                self.criar_descricao(row, last_id, sector_id)
+                self.criar_descricao(row, last_id, sector_id, tenant_id, user_id)
 
             return redirect('/descricao/descricao_list')
 
@@ -767,9 +793,9 @@ class ImportarDadosView(View):
         # # if len(nivel) == 0:
         # return HttpResponseRedirect("<h1> Erro na validação </h1>")
 
-    def criar_descricao(self, row, last_id, sector_id):
+    def criar_descricao(self, row, last_id, sector_id, tenant_id, user_id):
         # Use get_or_create para evitar a necessidade de verificar a existência antes de criar
-        tenant_id = tenant_from_request(self.request)
+
         diretoria = Diretoria.objects.get(name=row['Area'], tenant_id=tenant_id)
         id_diretoria = diretoria.id
         area = Area.objects.get(name=row['SubArea'], board_id=id_diretoria, tenant_id=tenant_id)
@@ -847,6 +873,9 @@ class ImportarDadosView(View):
                 'is_active': True,
                 'sector_id': sector_id,
                 'level_id': id_nivel,
+                'tenant_id': tenant_id,
+                'user_id': user_id,
+                'title_super': ' ',
 
                 'summary_goal': missao, #dadosjson.get('missao'),
                 'responsibility': responsabilidades,  #dadosjson.get('responsabilidades'),
@@ -861,53 +890,3 @@ class ImportarDadosView(View):
             }
         )
 
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-
-def email(subject, message, to_email):
-   # Configurações do servidor SMTP
-   smtp_server = 'mail.bluebox21.com.br'
-   smtp_port = 465  # 465 Ou 587 para TLS/SSL
-   smtp_user = 'contato@bluebox21.com.br'
-   smtp_password = 'AnChCr2021!'
-
-   # Dados do email
-   sender_email = 'contato@bluebox21.com.br'
-   receiver_email = to_email
-   subject = subject
-   body = message
-
-   # print(assunto)
-   # print(subject)
-   # print(body)
-
-   # Cria a mensagem
-   message = MIMEMultipart()
-   message['From'] = sender_email
-   message['To'] = receiver_email
-   message['Subject'] = subject
-   message.attach(MIMEText(body, 'plain'))
-
-   try:
-      # Conecta ao servidor SMTP
-      server = smtplib.SMTP_SSL(smtp_server, smtp_port)  # Use SSL/TLS
-      # server = smtplib.SMTP(smtp_server, smtp_port)  # Se não for SSL/TLS
-      # server.starttls() # Se não for SSL/TLS
-      server.login(smtp_user, smtp_password)
-
-      # Envia o email
-      server.sendmail(sender_email, receiver_email, message.as_string())
-
-      print("Email enviado com sucesso!")
-      return "Email enviado com sucesso!"
-
-   except Exception as e:
-      print(f"Ocorreu um erro ao enviar o email: {e}")
-      return f"Ocorreu um erro ao enviar o email: {e}"
-
-
-   finally:
-      # Fecha a conexão
-      if 'server' in locals() and server:
-          server.quit()

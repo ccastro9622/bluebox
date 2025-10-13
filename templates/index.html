@@ -48,8 +48,9 @@
                             <li><a href="{% url 'descricao:descricao-list-aprovacao' %}">Aprovação Pendente</a></li>
                             {% if request.user.kind == "Master" %}
                                 <li><a href="{% url 'descricao:descricao-list-aprovacao-final' %}">Aprovação Final</a></li>
+                                <li><a href="{% url 'descricao:descricao-rel-list' %}">Acompanhamento</a></li>
                             {% endif %}
-                            <li><a href="{% url 'descricao:descricao-rel-list' %}">Acompanhamento</a></li>
+
 <!--                            <li><a href="{% url 'descricao:descricao-rel' %}">Relatório2</a></li>-->
                             <li><a href="{% url 'descricao:descricao-manual' %}">Manual Elaboração</a></li>
                         </ul>

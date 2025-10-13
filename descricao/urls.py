@@ -17,7 +17,7 @@ urlpatterns = [
     path('ajax/load-sub_familias/', load_sub_familias, name='ajax_load_sub_familias'),
     path("descricao/<int:pk>", DescricaoPdfDetailView.as_view(), name="descricao-pdf"),
 
-    path("descricao/email/<str:title>/<str:email>", envia_email, name="descricao-email"),
+    path("descricao/email/<str:title>/<str:email>", envia_email_acompanhamento, name="descricao-email"),
 
     path("descricao_rel_list/", DescricaoRelListView.as_view(), name="descricao-rel-list"),
     path("descricao_pdf/<int:pk>", DescricaoPdfListView.as_view(), name="descricao-pdf-list"),
