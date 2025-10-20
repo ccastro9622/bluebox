@@ -467,6 +467,7 @@ class DescricaoAprovacaoFinalUpdateView(LoginRequiredMixin, UpdateView):
         # user = CustomUser.objects.filter(id=user_id).first()
         email = descricao.user_id.email
 
+
         envia_email(titulo, message, email)
 
         return reverse_lazy("descricao:descricao-list-aprovacao-final")
