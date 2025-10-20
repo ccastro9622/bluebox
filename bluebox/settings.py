@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'master',
     'report',
     'avaliacao',
+    'bluebox',
 ]
 
 MIDDLEWARE = [
