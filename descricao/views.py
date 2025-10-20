@@ -457,6 +457,21 @@ class DescricaoAprovacaoFinalUpdateView(LoginRequiredMixin, UpdateView):
         return kwargs
 
 
+    def get_success_url(self):
+        descricao = self.get_object()
+
+
+        titulo = ('Aprovado pelo Gestor Final - Bluebox21')
+        message = 'O Cargo: (' + descricao.title + ')' + ' foi aprovado pelo gestor final.'
+        user_id = user_from_request(self.request)
+        # user = CustomUser.objects.filter(id=user_id).first()
+        email = descricao.user_id.email
+
+        envia_email(titulo, message, email)
+
+        return reverse_lazy("descricao:descricao-list-aprovacao-final")
+
+
 class DescricaoPdfDetailView(PdfResponseMixin, DetailView):
     model = Descricao
     context_object_name = 'descricao'
