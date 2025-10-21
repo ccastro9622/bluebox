@@ -2,7 +2,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-def email(subject, message, to_email):
+def enviodeemail(subject, message, to_email):
    # Configurações do servidor SMTP
    smtp_server = 'mail.bluebox21.com.br'
    smtp_port = 465  # 465 Ou 587 para TLS/SSL
