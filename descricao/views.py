@@ -22,7 +22,7 @@ from django.db.models import Q
 from django.http import FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models, forms
-from bluebox.enviar_email import enviodeemail
+# from bluebox.enviar_email import enviodeemail
 
 import os
 
@@ -548,7 +548,7 @@ def envia_email(titulo, message, email):
 
     if titulo and message and email != None:
         try:
-            retorno = enviodeemail(titulo, message, email)
+            # retorno = enviodeemail(titulo, message, email)
             return retorno
 
         except BadHeaderError:
