@@ -65,6 +65,9 @@ class DiretoriaCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         tenant_id = tenant_from_request(self.request)
         form.instance.tenant_id = tenant_id
+
+        self.object = form.save()
+
         return super(DiretoriaCreateView, self).form_valid(form)
 
 
@@ -119,6 +122,9 @@ class AreaCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         tenant_id = tenant_from_request(self.request)
         form.instance.tenant_id = tenant_id
+
+        self.object = form.save()
+
         return super(AreaCreateView, self).form_valid(form)
 
 # pegar o tenant do usuario logado para filtrar a dropdonw

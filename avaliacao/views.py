@@ -107,7 +107,7 @@ class AvaliacaoCreateView(LoginRequiredMixin, CreateView):
         else:
             form.instance.ceo = True
 
-        form.save()
+        self.object = form.save()
         # Insere na tabela superiror imediado a avaliação cadastrada.
         Superior.objects.create(title=form.instance.title, tenant_id=tenant_id, evaluation_id=form.instance.id)
 
@@ -168,7 +168,7 @@ class AvaliacaoModeloCreateView(LoginRequiredMixin, CreateView):
             form.instance.ceo = True
 
 
-        form.save()
+        self.object = form.save()
         # Insere na tabela superior imediado a avaliação cadastrada.
         Superior.objects.create(title=form.instance.title, tenant_id=tenant_id, evaluation_id=form.instance.id)
 
@@ -220,7 +220,7 @@ class AvaliacaoUpdateView(LoginRequiredMixin, UpdateView):
         else:
             form.instance.ceo = False
 
-        form.save()
+        self.object = form.save()
 
         return super(AvaliacaoUpdateView, self).form_valid(form)
 

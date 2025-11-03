@@ -276,6 +276,8 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
         form.instance.user_id = user_id
         aprovado = self.request.POST.get('submit')
 
+        self.object = form.save()
+
         if aprovado == 'Finalizar':
             form.instance.status_id = 2
 
@@ -342,6 +344,9 @@ class DescricaoModeloCreateView(LoginRequiredMixin, CreateView):
         form.instance.tenant_id = tenant_id
         user_id = user_from_request(self.request)
         form.instance.user_id = user_id
+
+        self.object = form.save()
+
         return super(DescricaoModeloCreateView, self).form_valid(form)
 
     # pegar o tenant do usuario logado para filtrar a dropdonw
