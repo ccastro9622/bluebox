@@ -55,17 +55,21 @@
                             <li><a href="{% url 'descricao:descricao-manual' %}">Manual Elaboração</a></li>
                         </ul>
                     </li>
+
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Avaliação de Cargo <span class="sr-only">(current)</span></a></a>
-                        <ul>
-                            <li><a href="{% url 'descricao:descricaomodelo-list' %}">Com Descrição</a></li>
-                            <li><a href="{% url 'avaliacao:avaliacao-list' %}">Sem Descrição</a></li>
-                            <li><a href="{% url 'avaliacao:avaliacao-rel-list' %}">Visão Detalhada</a></li>
-                            <li><a href="{% url 'avaliacao:avaliacao-rel-list-matriz' %}">Visão Matriz</a></li>
-                            <li><a href="{% url 'avaliacao:avaliacao-rel-list-hierarquica' %}">Visão Hierárquica</a></li>
-                            <li><a href="{% url 'avaliacao:avaliacao-manual' %}">Manual Avaliação</a></li>
-                        </ul>
+                        {% if request.user.kind == "Master" %}
+                            <ul>
+                                <li><a href="{% url 'descricao:descricaomodelo-list' %}">Com Descrição</a></li>
+                                <li><a href="{% url 'avaliacao:avaliacao-list' %}">Sem Descrição</a></li>
+                                <li><a href="{% url 'avaliacao:avaliacao-rel-list' %}">Visão Detalhada</a></li>
+                                <li><a href="{% url 'avaliacao:avaliacao-rel-list-matriz' %}">Visão Matriz</a></li>
+                                <li><a href="{% url 'avaliacao:avaliacao-rel-list-hierarquica' %}">Visão Hierárquica</a></li>
+                                <li><a href="{% url 'avaliacao:avaliacao-manual' %}">Manual Avaliação</a></li>
+                            </ul>+
+                        {% endif %}
                     </li>
+
 <!--                    <li class="nav-item active">-->
 <!--                        <a class="nav-link" href="#">Remuneração</a>-->
 <!--                    </li>-->

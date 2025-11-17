@@ -896,7 +896,6 @@ class ImportarDadosView(View):
                 'level_id': id_nivel,
                 'tenant_id': tenant_id,
                 'user_id': user_id,
-                'title_super': ' ',
 
                 'summary_goal': missao, #dadosjson.get('missao'),
                 'responsibility': responsabilidades,  #dadosjson.get('responsabilidades'),

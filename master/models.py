@@ -29,6 +29,6 @@ class Area(TenantAwareModel):
 
     class Meta:
         ordering = ["name"]
-        unique_together = ('name', 'tenant_id',)
+        unique_together = ('name', 'board', 'tenant')
         verbose_name = 'Subárea da Empresa'
         verbose_name_plural = 'Subáreas da Empresa'
