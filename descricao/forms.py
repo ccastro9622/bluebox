@@ -101,6 +101,8 @@ class DescricaoForm(forms.ModelForm):
 # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
 
+
+
         tenant_id = kwargs.pop('tenant_id', None)
         super().__init__(*args, **kwargs)
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
@@ -139,6 +141,13 @@ class DescricaoForm(forms.ModelForm):
             if family_id:
                 self.fields['sub_familia'].queryset = SubFamilias.objects.filter(family_id=family_id.family_id).order_by('name')
 
+        super(DescricaoForm, self).__init__(*args, **kwargs)
+        # Focus on the first form field whenever an error occurred
+        if self.errors:
+            error_list = list(self.errors)
+            for item in error_list:
+                self.fields[item].widget.attrs.update({'autofocus': ''})
+                break  # Only autofocus the very first field with an error
 
 class DescricaoModeloForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe", required=False,

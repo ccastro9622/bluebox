@@ -39,6 +39,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 import pandas as pd
 from django.views import View
 
+from django.core.management.color import no_style
+from django.db import connection
+
 DOCUMENT_COLUMNS = (
     (0, 'title'),
     (1, 'status'),
@@ -539,10 +542,11 @@ def mostra_pdf(request):
 
 
 
-def envia_email_acompanhamento(request, cargo, email):
+def envia_email_acompanhamento(request, title, email):
+
 
     titulo = ('Aprovacao Pendente - Bluebox21')
-    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + cargo + ') '
+    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ') '
 
     retorno = envia_email(titulo, message, email)
 
@@ -742,6 +746,15 @@ class ImportarDadosView(View):
                 # print(row)
                 last_id += 1
                 self.criar_descricao(row, last_id, sector_id, tenant_id, user_id)
+
+            # python manage.py sqlsequencereset < app_label > | python manage.py dbshell
+
+            # Corrigir os index
+            sequence_sql = connection.ops.sequence_reset_sql(no_style(), [Descricao])
+            with connection.cursor() as cursor:
+                for sql in sequence_sql:
+                    cursor.execute(sql)
+
 
             return redirect('/descricao/descricao_list')
 
