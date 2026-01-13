@@ -268,7 +268,6 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
 
         initial['sector'] = sector_id
         initial['status'] = 1
-        # initial['id'] = 50
         return initial
 
     # Forçar o preenchimento do tenant_id com o tenant_id do usuario logado
@@ -278,6 +277,7 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
         user_id = user_from_request(self.request)
         form.instance.user_id = user_id
         aprovado = self.request.POST.get('submit')
+        form.instance.status_id = 1
 
         self.object = form.save()
 

@@ -91,31 +91,33 @@ class DescricaoForm(forms.ModelForm):
 
     class Meta:
         model = Descricao
-        fields = ['manage_team','title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas', 'areas2', 'areas3', 'areas4',
-                  'formation_desired', 'areas_desired', 'areas_desired2', 'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization',
-                  'area_specialization2', 'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
-                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family', 'sub_familia',
-                  'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3', 'knowledge', 'information',
-                  'approver', 'date_approval', 'status', 'date_conclusion', 'is_active', 'user_id', 'level', 'sector']
+        fields = ['manage_team','title', 'cbo', 'function', 'summary_goal', 'responsibility', 'formation', 'areas',
+                  'areas2', 'areas3', 'areas4', 'formation_desired', 'areas_desired', 'areas_desired2',
+                  'areas_desired3', 'areas_desired4', 'specialization', 'area_specialization', 'area_specialization2',
+                  'area_specialization3', 'area_specialization4', 'experience', 'position_team' ,
+                  'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family',
+                  'sub_familia', 'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3',
+                  'knowledge', 'information', 'approver', 'date_approval', 'status', 'date_conclusion', 'is_active',
+                  'user_id', 'level', 'sector']
 
-# Filtrar a dropdow
+    # Filtrar a dropdow
     def __init__(self, *args, **kwargs):
-
-
-
         tenant_id = kwargs.pop('tenant_id', None)
         super().__init__(*args, **kwargs)
+
+
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
         self.fields['approver'].queryset = CustomUser.objects.filter(default_tenant=tenant_id)
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         self.fields['status'].queryset = Status.objects.filter(id__in=[1])
-        # empresa = Tenant.objects.filter(id=tenant_id).first()
-        # print(empresa.sector_id)
-        # sector_id = int(empresa.sector_id)
-        # self.fields['sector'].queryset = Sector.objects.filter(id=sector_id)
-        # self.fields['sector'].widget.attrs['disabled'] = 'disabled'
+
+        self.fields['status'].widget.attrs['readonly'] = True
         # self.fields['status'].widget.attrs['disabled'] = 'disabled'
+        # self.fields['status'].disabled = True
+        # self.fields['status'].queryset = Status.objects.all()
+        # self.fields['status'].initial = Status.objects.filter(id__in=[1])
+        # self.fields['status'].disabled = True
 
 # Filtra a area pela diretoria
         if 'board' in self.data:
@@ -141,7 +143,7 @@ class DescricaoForm(forms.ModelForm):
             if family_id:
                 self.fields['sub_familia'].queryset = SubFamilias.objects.filter(family_id=family_id.family_id).order_by('name')
 
-        super(DescricaoForm, self).__init__(*args, **kwargs)
+
         # Focus on the first form field whenever an error occurred
         if self.errors:
             error_list = list(self.errors)
@@ -278,6 +280,12 @@ class DescricaoModeloForm(forms.ModelForm):
         elif self.instance.id:
             self.fields['sub_familia'].queryset = self.instance.family.sub_familia_set.order_by('name')
 
+        # Focus on the first form field whenever an error occurred
+        if self.errors:
+            error_list = list(self.errors)
+            for item in error_list:
+                self.fields[item].widget.attrs.update({'autofocus': ''})
+                break  # Only autofocus the very first field with an error
 
 # Definie aprovador
 class DescricaoAprovadorForm(forms.ModelForm):
@@ -391,6 +399,8 @@ class DescricaoAprovadorForm(forms.ModelForm):
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         self.fields['status'].queryset = Status.objects.filter(id__in=[3])
 
+        self.fields['status'].widget.attrs['readonly'] = True
+
 # Filtra a area pela diretoria
         if 'board' in self.data:
             try:
@@ -415,6 +425,12 @@ class DescricaoAprovadorForm(forms.ModelForm):
             if family_id:
                 self.fields['sub_familia'].queryset = SubFamilias.objects.filter(family_id=family_id.family_id).order_by('name')
 
+        # Focus on the first form field whenever an error occurred
+        if self.errors:
+            error_list = list(self.errors)
+            for item in error_list:
+                self.fields[item].widget.attrs.update({'autofocus': ''})
+                break  # Only autofocus the very first field with an error
 
 class DescricaoAprovacaoForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe", required=False,
@@ -550,6 +566,12 @@ class DescricaoAprovacaoForm(forms.ModelForm):
             if family_id:
                 self.fields['sub_familia'].queryset = SubFamilias.objects.filter(family_id=family_id.family_id).order_by('name')
 
+        # Focus on the first form field whenever an error occurred
+        if self.errors:
+            error_list = list(self.errors)
+            for item in error_list:
+                self.fields[item].widget.attrs.update({'autofocus': ''})
+                break  # Only autofocus the very first field with an error
 
 # Aprovação Final
 class DescricaoAprovacaoFinalForm(forms.ModelForm):
@@ -688,7 +710,12 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
             family_id = Descricao.objects.filter(id=self.instance.id).first()
             if family_id:
                 self.fields['sub_familia'].queryset = SubFamilias.objects.filter(family_id=family_id.family_id).order_by('name')
-
+        #Focus on the first form field whenever an error occurred
+        if self.errors:
+            error_list = list(self.errors)
+            for item in error_list:
+                self.fields[item].widget.attrs.update({'autofocus': ''})
+                break  # Only autofocus the very first field with an error
 
 class ImportarDadosForm(forms.Form):
     arquivo = forms.FileField()

@@ -222,7 +222,7 @@
 
     <button type="submit" class="btn btn-success">Salvar</button>
     {% if descricao.id != null %}
-        <a href="{% url 'descricao:descricao-aprovacao' descricao.id %}"><button type="button" class="btn btn-success">Finalizar/Aprovação</button></a>
+        <a href="{% url 'descricao:descricao-aprovacao' descricao.id %}"><button type="button" class="btn btn-primary">Finalizar</button></a>
     {% else %}
 <!--        <button type="submit" class="btn btn-success" value="aprovado">Finalizar/Aprovação</button>-->
         <input class="btn btn-primary" type="submit" name="submit" value="Finalizar" />
