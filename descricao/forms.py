@@ -657,14 +657,15 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
         return areas_required
 
     def clean_areas_desired(self):
-        formation_desired = self.cleaned_data['formation_desired']
-        areas_desired = self.cleaned_data['areas_desired']
-        formation = int(self.data.get('formation_desired'))
-        if formation_desired:
-            if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
-                if not areas_desired:
-                    raise forms.ValidationError('Informe pelo menos uma Área de Formação Desejada para o Grau de Escolaridade acima.')
-        return areas_desired
+        if self.instance.status.id != 5:
+            formation_desired = self.cleaned_data['formation_desired']
+            areas_desired = self.cleaned_data['areas_desired']
+            formation = int(self.data.get('formation_desired'))
+            if formation_desired:
+                if formation in [4, 5, 6, 7, 8, 9, 10, 11]:
+                    if not areas_desired:
+                        raise forms.ValidationError('Informe pelo menos uma Área de Formação Desejada para o Grau de Escolaridade acima.')
+            return areas_desired
 
 
     class Meta:
@@ -686,6 +687,19 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
         self.fields['area'].queryset = Area.objects.none()
         self.fields['sub_familia'].queryset = SubFamilias.objects.none()
         self.fields['status'].queryset = Status.objects.filter(id__in=[5])
+
+        print(self.instance.status.id)
+
+        if self.instance.status.id == 5:
+            # Campo que deve permanecer editável
+            campo_ativo = 'is_active'
+
+            # Percorre todos os campos e desabilita os outros
+            for field_name in self.fields:
+                if field_name != campo_ativo:
+                    self.fields[field_name].disabled = True
+
+
 
 # Filtra a area pela diretoria
         if 'board' in self.data:

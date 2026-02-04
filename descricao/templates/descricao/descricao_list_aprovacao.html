@@ -16,8 +16,9 @@
                         <tr>
                             <th>Descrição</th>
                             <th>Status</th>
+                            <th><center>Ativo</center></th>
                             <th><center>Editar</center></th>
-                            <th><center>Excluir</center></th>
+<!--                            <th><center>Excluir</center></th>-->
                             <th><center>Formulário</center></th>
                         </tr>
                     </thead>
@@ -26,8 +27,13 @@
                         <tr>
                             <td>{{descricao.title}}</td>
                             <td>{{descricao.status}}</td>
+                            {% if descricao.is_active == True %}
+                                <td><center>Sim</center></td>
+                            {% else %}
+                                <td><center>Não</center></td>
+                            {% endif %}
                             <td><a href="{% url 'descricao:descricao-update-aprovacao' descricao.id %}"><center><i class="fas fa-edit"></i></center></a></td>
-                            <td><a href="{% url 'descricao:descricao-delete' descricao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>
+<!--                            <td><a href="{% url 'descricao:descricao-delete' descricao.id %}"><center><i class="far fa-trash-alt"></i></center></a></td>-->
                             <td><a href="{% url 'descricao:descricao-pdf' descricao.id %}"><center><i class="far fa-file-alt"></i></center></a></td>
                         </tr>
                      {% endfor %}
