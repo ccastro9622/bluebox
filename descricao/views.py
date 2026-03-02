@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, CreateView, UpdateView
 from django.views.generic.detail import DetailView
@@ -5,6 +7,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from admin_descricao.models import Niveis
+from admin_geral.models import Sector
 from avaliacao.models import Avaliacao
 from master.models import Diretoria, Area
 from tenants.models import Tenant
@@ -286,7 +289,7 @@ class DescricaoCreateView(LoginRequiredMixin, CreateView):
 
             cargo = form.instance.title
             titulo = ('Definir Aprovador - Bluebox21')
-            message = 'Favor acessar o sistema Bluebox21 e definir o aprovador para o Cargo:  (' + cargo + ')'
+            message = 'Favor acessar o sistema Bluebox21 e definir o aprovador para o Cargo:  (' + cargo + ') Link: www.bluebox21.com.br'
             user = CustomUser.objects.filter(default_tenant_id=tenant_id, kind="Master").first()
             email = user.email
 
@@ -401,7 +404,7 @@ class DescricaoAprovadorUpdateView(LoginRequiredMixin, UpdateView):
         descricao = self.get_object()
 
         subject = 'Aprovacao Pendente - BlueBox21'  # request.POST.get('subject', '')
-        message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + descricao.title + ')'
+        message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + descricao.title + ') Link: www.bluebox21.com.br'
         to_email = descricao.approver.email
 
         envia_email(subject, message, to_email)
@@ -428,7 +431,16 @@ class DescricaoAprovacaoUpdateView(LoginRequiredMixin, UpdateView):
         user_id = user_from_request(self.request)
         kwargs['tenant_id'] = tenant_id
         kwargs['user_id'] = user_id
+
         return kwargs
+
+    # Forçar a data de aprovacao.
+    def form_valid(self, form):
+        form.instance.date_approval = datetime.now()
+
+        self.object = form.save()
+
+        return super(DescricaoAprovacaoUpdateView, self).form_valid(form)
 
     def get_success_url(self):
         descricao = self.get_object()
@@ -546,7 +558,7 @@ def envia_email_acompanhamento(request, title, email):
 
 
     titulo = ('Aprovacao Pendente - Bluebox21')
-    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ') '
+    message = 'Favor acessar o sistema Bluebox21 e aprovar o cargo pendente. (' + title + ') Link: www.bluebox21.com.br'
 
     retorno = envia_email(titulo, message, email)
 
@@ -613,27 +625,38 @@ def load_ia(request):
     sub_familia_id = request.GET.get('sub_familia')
     level_id = request.GET.get('level')
     sector_id = request.GET.get('sector')
+    adicional = request.GET.get('adicional')
 
-    # #Fixa Valor para teste
-    # title = 'Analista de RH'
-    # family_id = 1
-    # sub_familia_id = 2
-    # level_id = 4
-    # sector_id = 3
+    # Buscar o name do respectivo id.
+    familias = Familias.objects.filter(id=family_id).first()
+    sub_familias = SubFamilias.objects.filter(id=sub_familia_id).first()
+    level = Niveis.objects.filter(id=level_id).first()
+    sector = Sector.objects.filter(id=sector_id).first()
+
+    familias_name = familias.name
+    sub_familias_name = sub_familias.name
+    level_name = level.name
+    sector_name = sector.name
+
+
 
 
     url = "https://neogem-bluebox-716723353548.us-east1.run.app/pesquisar_cargo_api"
 
     payload = json.dumps({
         "des_cargo": title,
-        "familia": family_id,
-        "sub_familia": sub_familia_id,
-        "setor": sector_id,
-        "nivel": level_id
+        "familia": familias_name,
+        "sub_familia": sub_familias_name,
+        "setor": sector_name,
+        "nivel": level_name,
+        "adicional": adicional
     })
+
     headers = {
         'Content-Type': 'application/json'
     }
+
+    # print(payload)
 
     response = requests.request("POST", url, headers=headers, data=payload)
 
@@ -645,7 +668,7 @@ def load_ia(request):
     responsabilidades = responsabilidade.replace("[", "").replace("]","")
 
     competencia = str(dadosjson.get('competencias'))
-    competencias = competencia.replace("[", "").replace("]", "")
+    competencias = competencia.replace("[", "").replace("]", "").replace("'","")
 
     equipe = dadosjson.get('equipe')
     # gerencia = Gerencia.objects.filter(id=equipe).first()
@@ -670,6 +693,14 @@ def load_ia(request):
     habilitacao = dadosjson.get('habilidade')
     # habilitacoes = Habilitacoes.objects.filter(id=habilitacao).first()
     # habilitacao_name = habilitacoes.name
+
+    # print(competencias)
+    # print(complementar)
+    # print(area_formacao)
+    # print(experiencia)
+    # print(escolaridade)
+    # print(habilitacao)
+
 
 
     #Fixar para teste

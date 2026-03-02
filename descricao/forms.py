@@ -24,6 +24,9 @@ class DescricaoForm(forms.ModelForm):
     information = forms.CharField(label="Outras Informações", required=False,
                                    widget=forms.Textarea(attrs={'cols': 100, 'id': 'information'}))
 
+    adicional = forms.CharField(label="Informações Adicionais IA", required=False,
+                                widget=forms.Textarea(attrs={'rows': 2, 'cols': 100, 'id': 'adicional'}))
+
 
     #Valida preenchimento area de formacao complementar
     def clean_position_team(self):
@@ -39,7 +42,8 @@ class DescricaoForm(forms.ModelForm):
     def clean_area_specialization(self):
         specialization = self.cleaned_data['specialization']
         area_specialization = self.cleaned_data['area_specialization']
-        if specialization:
+
+        if specialization and str(specialization) != str('Nao Aplicavel'):
             if not area_specialization:
                 raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
         return area_specialization
@@ -104,8 +108,6 @@ class DescricaoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         tenant_id = kwargs.pop('tenant_id', None)
         super().__init__(*args, **kwargs)
-
-
         self.fields['board'].queryset = Diretoria.objects.filter(tenant_id=tenant_id)
         self.fields['approver'].queryset = CustomUser.objects.filter(default_tenant=tenant_id)
         self.fields['area'].queryset = Area.objects.none()
@@ -182,7 +184,7 @@ class DescricaoModeloForm(forms.ModelForm):
         specialization = self.cleaned_data['specialization']
         area_specialization = self.cleaned_data['area_specialization']
         if specialization:
-            if not area_specialization:
+            if not area_specialization and str(specialization) != str('Nao Aplicavel'):
                 raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
         return area_specialization
 
@@ -328,7 +330,7 @@ class DescricaoAprovadorForm(forms.ModelForm):
         specialization = self.cleaned_data['specialization']
         area_specialization = self.cleaned_data['area_specialization']
         if specialization:
-            if not area_specialization:
+            if not area_specialization and str(specialization) != str('Nao Aplicavel'):
                 raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
         return area_specialization
 
@@ -463,7 +465,7 @@ class DescricaoAprovacaoForm(forms.ModelForm):
         specialization = self.cleaned_data['specialization']
         area_specialization = self.cleaned_data['area_specialization']
         if specialization:
-            if not area_specialization:
+            if not area_specialization and str(specialization) != str('Nao Aplicavel'):
                 raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
         return area_specialization
 
@@ -617,7 +619,7 @@ class DescricaoAprovacaoFinalForm(forms.ModelForm):
         specialization = self.cleaned_data['specialization']
         area_specialization = self.cleaned_data['area_specialization']
         if specialization:
-            if not area_specialization:
+            if not area_specialization and str(specialization) != str('Nao Aplicavel'):
                 raise forms.ValidationError('Informe pelo menos uma Área de Formação Complementar para a Formação acima.')
         return area_specialization
 

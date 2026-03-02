@@ -56,6 +56,9 @@
                 {{ form.sector|as_crispy_field }}
             </div>
             <div class="col-md-4">
+                {{ form.adicional|as_crispy_field }}
+            </div>
+            <div class="col-md-4">
 <!--                <center>-->
                     <br>
                     <button onclick="DescricaoIA()" type="button" class="btn btn-primary"><b>  Usar IA</b></button>
@@ -273,8 +276,12 @@
         var sub_familiaoid = $("#id_sub_familia").val();         // Sub Familia
         var levelid = $("#id_level").val();                      // Nivel
         var sectorid = $("#id_sector").val();                    // Setor
+        var adicional = $("#adicional").val();
         var loading = $('.loading');                             // Ampulheta
 
+<!--        document.getElementById('summary_goal').value = '';-->
+<!--        document.getElementById('responsibility').value = '';-->
+<!--        document.getElementById('information').value = '';-->
 
         if ((title.trim().length == 0) || (familyid.trim().length == 0) || (sub_familiaoid.trim().length == 0) || (levelid.trim().length == 0) || (sectorid.trim().length == 0)) {
             alert('Para usar a IA, os campos: Título do Cargo, Família, Sub Família, Nivel do Cargo e Setor de Atuação devem ser preenchidos.');
@@ -290,6 +297,7 @@
               'sub_familia': sub_familiaoid,        // add the country id to the GET parameters,      // add the country id to the GET parameters
               'level': levelid,        // add the country id to the GET parameters,      // add the country id to the GET parameters
               'sector': sectorid,        // add the country id to the GET parameters,      // add the country id to the GET parameters
+              'adicional': adicional      // add the country id to the GET parameters
             },
 
             beforeSend: function(){
@@ -297,20 +305,22 @@
             },
 
             complete: function(){
-                loading.css('visibility', 'hidden'); // esconde o div
+                loading.css('visibility', 'hidden');// esconde o div
             },
 
             success: function (data) {   // `data` is the return of the `load_cities` view function
 
-<!--                alert(data);-->
                 data = data.split("|");
 
-<!--                alert(data[3]);-->
+<!--                alert(data[2]);-->
 
-                $('#summary_goal').html(data[0]);
-                $('#responsibility').html(data[1]);
-                $('#information').html(data[2]);
 
+                document.getElementById('summary_goal').value = data[0]
+                document.getElementById('responsibility').value = data[1]
+                document.getElementById('information').value = data[2]
+<!--                $('#summary_goal').html(data[0]);-->
+<!--                $('#responsibility').html(data[1]);-->
+<!--                $('#information').html(data[2]);-->
 <!--                $("#id_manage_team").html(data[3]);-->
                 $("#id_manage_team").val(Number(data[3]));
                 $('#id_formation_desired').val(Number(data[4]));
