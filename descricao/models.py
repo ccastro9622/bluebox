@@ -82,6 +82,7 @@ class Descricao(TenantAwareModel):
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
     level = models.ForeignKey(Niveis, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Nivel do Cargo')
     sector = models.ForeignKey(Sector, null=True, blank=True, on_delete=models.PROTECT, verbose_name='Setor de Atuação')
+    adicional = models.TextField(max_length=1000, verbose_name='Adicional', blank=True, default="")
 
     def __str__(self):
         return f"{self.title}"

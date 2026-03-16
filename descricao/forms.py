@@ -102,7 +102,7 @@ class DescricaoForm(forms.ModelForm):
                   'qualification', 'qualification2', 'qualification3', 'board', 'area', 'title_super','family',
                   'sub_familia', 'idioma', 'idioma2', 'idioma3', 'proficiency', 'proficiency2', 'proficiency3',
                   'knowledge', 'information', 'approver', 'date_approval', 'status', 'date_conclusion', 'is_active',
-                  'user_id', 'level', 'sector']
+                  'user_id', 'level', 'sector', 'adicional']
 
     # Filtrar a dropdow
     def __init__(self, *args, **kwargs):

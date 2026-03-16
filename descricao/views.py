@@ -771,12 +771,14 @@ class ImportarDadosView(View):
             last_id = last_desc.id
             empresa = Tenant.objects.filter(id=tenant_id).first()
             sector_id = empresa.sector_id
+            sector = Sector.objects.filter(id=sector_id).first()
+            sector_name = sector.name
 
             for _, row in df.iterrows():
                 # Itera sobre as linhas do DataFrame lido do arquivo Excel
                 # print(row)
                 last_id += 1
-                self.criar_descricao(row, last_id, sector_id, tenant_id, user_id)
+                self.criar_descricao(row, last_id, sector_name, sector_id, tenant_id, user_id)
 
             # python manage.py sqlsequencereset < app_label > | python manage.py dbshell
 
@@ -858,7 +860,7 @@ class ImportarDadosView(View):
         # # if len(nivel) == 0:
         # return HttpResponseRedirect("<h1> Erro na validação </h1>")
 
-    def criar_descricao(self, row, last_id, sector_id, tenant_id, user_id):
+    def criar_descricao(self, row, last_id, sector_name, sector_id, tenant_id, user_id):
         # Use get_or_create para evitar a necessidade de verificar a existência antes de criar
 
         diretoria = Diretoria.objects.get(name=row['Area'], tenant_id=tenant_id)
@@ -870,10 +872,14 @@ class ImportarDadosView(View):
         nome = nome.replace("_", " ") # Foi necessario devido a regra de validação de dados do excell
         familia = Familias.objects.filter(name=nome).first()
         id_familia = familia.id
+        familia_nome = familia.name
         subfamilia = SubFamilias.objects.filter(name=row['SubFamilia'], family_id=id_familia).first()
         id_subfamilia = subfamilia.id
+        subfamilia_nome = subfamilia.name
+
         nivel = Niveis.objects.get(name=row['Nivel'])
         id_nivel = nivel.id
+        nivel_nome = nivel.name
 
         #IA
 
@@ -881,10 +887,11 @@ class ImportarDadosView(View):
 
         payload = json.dumps({
             "des_cargo": row['Titulo'],
-            "familia": id_familia,
-            "sub_familia": id_subfamilia,
-            "setor": sector_id,
-            "nivel": id_nivel,
+            "familia": familia_nome,
+            "sub_familia": subfamilia_nome,
+            "setor": sector_name,
+            "nivel": nivel_nome,
+            "adicional": row['Adicional']
         })
         headers = {
             'Content-Type': 'application/json'
@@ -933,6 +940,7 @@ class ImportarDadosView(View):
                 'title_super': row['CargoSuperiorImediato'],
                 'family_id': id_familia,
                 'sub_familia_id': id_subfamilia,
+                'adicional': row['Adicional'],
                 'tenant_id': tenant_id,
                 'status_id': 1,
                 'is_active': True,
