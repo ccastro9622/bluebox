@@ -934,34 +934,34 @@ class ImportarDadosView(View):
         #Fim da IA -------------------------------
 
 
-        created = Descricao(
-                id = last_id,
-                title = row['Titulodocargo'],
-                area_id = id_area,
-                board_id = id_diretoria,
-                title_super = row['CargoSuperiorImediato'],
-                family_id = id_familia,
-                sub_familia_id = id_subfamilia,
-                adicional = row['Adicional'],
-                tenant_id = tenant_id,
-                status_id = 1,
-                is_active = True,
-                sector_id = sector_id,
-                level_id = id_nivel,
-                user_id = user_id,
-
-                summary_goal = missao, #dadosjson.get(missao),
-                responsibility = responsabilidades,  #dadosjson.get(responsabilidades),
-                information = competencias, #dadosjson.get(competencias)
-                manage_team_id = equipe, #dadosjson.get(equipe)
-                formation_desired_id = escolaridade, #dadosjson.get(escolaridade)
-                specialization_id = complementar, #dadosjson.get(formacao)
-                experience_id = experiencia, #dadosjson.get(experiencia)
-                areas_desired_id = area_formacao, #dadosjson.get(area)
-                qualification_id = habilitacao #dadosjson.get(habilidade)
-                )
-
-        created.save(force_insert=True)
+        # created = Descricao(
+        #         id = last_id,
+        #         title = row['Titulodocargo'],
+        #         area_id = id_area,
+        #         board_id = id_diretoria,
+        #         title_super = row['CargoSuperiorImediato'],
+        #         family_id = id_familia,
+        #         sub_familia_id = id_subfamilia,
+        #         adicional = row['Adicional'],
+        #         tenant_id = tenant_id,
+        #         status_id = 1,
+        #         is_active = True,
+        #         sector_id = sector_id,
+        #         level_id = id_nivel,
+        #         user_id = user_id,
+        #
+        #         summary_goal = missao, #dadosjson.get(missao),
+        #         responsibility = responsabilidades,  #dadosjson.get(responsabilidades),
+        #         information = competencias, #dadosjson.get(competencias)
+        #         manage_team_id = equipe, #dadosjson.get(equipe)
+        #         formation_desired_id = escolaridade, #dadosjson.get(escolaridade)
+        #         specialization_id = complementar, #dadosjson.get(formacao)
+        #         experience_id = experiencia, #dadosjson.get(experiencia)
+        #         areas_desired_id = area_formacao, #dadosjson.get(area)
+        #         qualification_id = habilitacao #dadosjson.get(habilidade)
+        #         )
+        #
+        # created.save(force_insert=True)
 
 def plano_contratado(request):
     # print("entrou")
