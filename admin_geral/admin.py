@@ -1,9 +1,14 @@
 from django.contrib import admin
-from .models import Plans, Sector, Nivelcargo, Origemcapital, Tipoempresa, Governanca, Dimensao, Core
+from .models import Plans, PlansAvaliacao, Sector, Nivelcargo, Origemcapital, Tipoempresa, Governanca, Dimensao, Core
 
 
 @admin.register(Plans)
 class PlansAdmin(admin.ModelAdmin):
+    ordering = ('name',)
+    pass
+
+@admin.register(PlansAvaliacao)
+class PlansavaliacaoAdmin(admin.ModelAdmin):
     ordering = ('name',)
     pass
 

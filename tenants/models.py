@@ -1,7 +1,7 @@
 from django.db import models
 from django_cpf_cnpj.fields import CNPJField
 
-from admin_geral.models import Sector, Origemcapital, Tipoempresa, Governanca, Dimensao, Core
+from admin_geral.models import Sector, Origemcapital, Tipoempresa, Governanca, Dimensao, Core, Plans, PlansAvaliacao
 
 
 class Tenant(models.Model):
@@ -51,9 +51,9 @@ class Tenant(models.Model):
     company = models.ForeignKey(Tipoempresa, null=False, default="",  on_delete=models.PROTECT, verbose_name='Constituição do Capital')
     governanca = models.ForeignKey(Governanca, null=False, default="",  on_delete=models.PROTECT, verbose_name='Governança')
     size = models.ForeignKey(Dimensao, null=False, default="",  on_delete=models.PROTECT, verbose_name='Faturamento Bruto')
-    core = models.ForeignKey(Core, null=True, default="", on_delete=models.PROTECT,
-                             verbose_name='Processos Core da Empresa')
-
+    core = models.ForeignKey(Core, null=True, default="", on_delete=models.PROTECT,verbose_name='Processos Core da Empresa')
+    plano = models.ForeignKey(Plans, null=True, on_delete=models.PROTECT, verbose_name='Plano Descrição')
+    planoaval = models.ForeignKey(PlansAvaliacao, null=True, on_delete=models.PROTECT, verbose_name='Plano Avaliação')
     # name = models.CharField(max_length=100)
 
     def __str__(self):

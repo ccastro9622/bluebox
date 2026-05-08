@@ -75,7 +75,7 @@ width:180px;
 }
 
 .dashboard span {
-    font-size: 40px;
+    font-size: 30px;
     display: block;
     width: 100%
 }
@@ -86,7 +86,7 @@ width:180px;
     color: #FFFFFF;
     padding: 20px;
     box-sizing: border-box;
-    height: 130px;
+    height: 100px;
     width: 30%;
     text-align: center
 }

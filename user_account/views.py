@@ -9,8 +9,9 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from admin_geral.models import PlansAvaliacao, Plans
 from tenants.utils import tenant_from_request
-from .models import CustomUser
+from .models import CustomUser, Tenant
 from user_account.forms import CustomUserCreationForm, CustomUserChangeForm
 from descricao.models import Descricao
 from avaliacao.models import Avaliacao
@@ -70,7 +71,15 @@ def index(request):
     avaliacao = Avaliacao.objects.filter(tenant_id=tenant_id).count()
     pendente = Descricao.objects.filter(tenant_id=tenant_id, status_id__in=[3]).count()
 
-    return render(request, 'index.html', {'descricao': descricao, 'avaliacao':avaliacao, 'pendente':pendente})
+    #Planos
+    empresa = Tenant.objects.filter(default_tenant=tenant_id).first()
+
+    plandesc = Plans.objects.filter(id = empresa.plano_id).first()
+    planaval = PlansAvaliacao.objects.filter(id = empresa.planoaval_id).first()
+
+
+    return render(request, 'index.html', {'descricao': descricao, 'avaliacao':avaliacao,
+                                          'pendente':pendente, 'plandesc': plandesc, 'planaval': planaval })
 
 
 def sair(request):

@@ -1,11 +1,15 @@
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Plans, Sector, Nivelcargo, Origemcapital, Tipoempresa, Governanca, Dimensao, Core
+from .models import Plans, Sector, Nivelcargo, Origemcapital, Tipoempresa, Governanca, Dimensao, Core, PlansAvaliacao
 
 
 class PlansDetailView(LoginRequiredMixin, DetailView):
     model = Plans
+    context_object_name = "plans"
+
+class PlansAvaliacaoDetailView(LoginRequiredMixin, DetailView):
+    model = PlansAvaliacao
     context_object_name = "plans"
 
 

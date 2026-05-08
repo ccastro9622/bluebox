@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from admin_descricao.models import Niveis
-from admin_geral.models import Sector
+from admin_geral.models import Sector, Plans
 from avaliacao.models import Avaliacao
 from master.models import Diretoria, Area
 from tenants.models import Tenant
@@ -776,7 +776,7 @@ class ImportarDadosView(View):
 
             for _, row in df.iterrows():
                 # Itera sobre as linhas do DataFrame lido do arquivo Excel
-                # print(row)
+                print(df.iterrows())
                 last_id += 1
                 self.criar_descricao(row, last_id, sector_name, sector_id, tenant_id, user_id)
 
@@ -799,11 +799,11 @@ class ImportarDadosView(View):
         # Trata a Area ou Diretoria que é o nome antigo.
 
         try:
-            Descricao.objects.get(title=row['Titulo'], tenant_id=tenant_id)
+            Descricao.objects.get(title=row['Titulodocargo'], tenant_id=tenant_id)
         except Descricao.DoesNotExist:
             msn = msn
         else:
-            msn += 'Linha ' + str(numrow) + ' - O Título do Cargo "' + row['Titulo'] + '" já existe!!\n'
+            msn += 'Linha ' + str(numrow) + ' - O Título do Cargo "' + row['Titulodocargo'] + '" já existe!!\n'
 
         try:
             diretoria = Diretoria.objects.get(name=row['Area'], tenant_id=tenant_id)
@@ -886,7 +886,7 @@ class ImportarDadosView(View):
         url = "https://neogem-bluebox-716723353548.us-east1.run.app/pesquisar_cargo_api"
 
         payload = json.dumps({
-            "des_cargo": row['Titulo'],
+            "des_cargo": row['Titulodocargo'],
             "familia": familia_nome,
             "sub_familia": subfamilia_nome,
             "setor": sector_name,
@@ -909,32 +909,37 @@ class ImportarDadosView(View):
         competencia = str(dadosjson.get('competencias'))
         competencias = competencia.replace("[", "").replace("]", "")
 
-        equipe = dadosjson.get('equipe')
+        equipe = str(dadosjson.get('equipe'))
+        equipe = int(equipe.replace("{'codigo': ", "").replace("}", ""))
 
         if equipe is None:
             equipe = 1
 
-        escolaridade = dadosjson.get('escolaridade')
+        escolaridade = str(dadosjson.get('escolaridade'))
+        escolaridade = int(escolaridade.replace("{'codigo': ", "").replace("}", ""))
 
         complementar = dadosjson.get('formacao')
 
-        experiencia = dadosjson.get('experiencia')
+        experiencia = str(dadosjson.get('experiencia'))
+        experiencia = int(experiencia.replace("{'codigo': ", "").replace("}", ""))
 
         if experiencia is None:
             experiencia = 1
 
-        area_formacao = dadosjson.get('area')
+        area_formacao = str(dadosjson.get('area1'))
+        area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
 
-        habilitacao = dadosjson.get('habilidade')
+        habilitacao = str(dadosjson.get('habilidade'))
+        habilitacao = int(habilitacao.replace("{'codigo': ", "").replace("}", ""))
 
         #Fim da IA -------------------------------
 
 
         descricao, criado = Descricao.objects.get_or_create(
-            title=row['Titulo'],
+            title=row['Titulodocargo'],
             defaults={
                 'id': last_id,
-                'title': row['Titulo'],
+                'title': row['Titulodocargo'],
                 'area_id': id_area,
                 'board_id': id_diretoria,
                 'title_super': row['CargoSuperiorImediato'],
@@ -962,3 +967,19 @@ class ImportarDadosView(View):
             }
         )
 
+def plano_contratado(request):
+    # print("entrou")
+    # tenant_id = tenant_from_request(request)
+    # empresa = Tenant.objects.filter(id=tenant_id).first()
+    # plano_id = empresa.plano_id
+    planos = Plans.objects.filter(id=1).first()
+    # print(planos)
+    # # Conta os itens atuais
+    # contagem_atual = Descricao.objects.filter(tenant_id=tenant_id).count()
+    # print(contagem_atual)
+    # print(plano.value)
+    #
+    # # limite = "Seu plano({plano.name}) limita a {plano.value} Descrições."
+    # if contagem_atual >= plano.value:
+    #     return HttpResponse("Seu plano({plano.name}) limita a {plano.value} Descrições.")
+    return render(request, 'descricao/plano_contratado.html', {'planos': planos})

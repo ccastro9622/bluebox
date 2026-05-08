@@ -1,9 +1,11 @@
 from django import forms
+from django.db import connection
 
+from admin_geral.models import Plans
 from tenants.models import Tenant
 # from rest_framework.fields import ReadOnlyField
 
-from tenants.utils import user_from_request
+from tenants.utils import user_from_request, tenant_from_request
 from .models import *
 
 
@@ -27,6 +29,27 @@ class DescricaoForm(forms.ModelForm):
     adicional = forms.CharField(label="Informações Adicionais IA", required=False,
                                 widget=forms.Textarea(attrs={'rows': 2, 'cols': 100, 'id': 'adicional'}))
 
+
+
+    # # Limita a quantidade de descrições pela quantidade contratada.
+    # def clean(self):
+    #
+    #     cleaned_data = super().clean()
+    #
+    #     tenant_id = self.tenant
+    #     empresa = Tenant.objects.filter(id=tenant_id).first()
+    #     plano_id = empresa.plano_id
+    #     plano = Plans.objects.filter(id=plano_id).first()
+    #     print(plano_id)
+    #     # Conta os itens atuais
+    #     contagem_atual = Descricao.objects.filter(tenant_id=tenant_id).count()
+    #     print(contagem_atual)
+    #     print(plano.value)
+    #     if contagem_atual >= plano.value:
+    #         print('entrou no if')
+    #         raise forms.ValidationError(f"Seu plano ({plano.name}) limita a {plano.value} Descrições.")
+    #
+    #     return cleaned_data
 
     #Valida preenchimento area de formacao complementar
     def clean_position_team(self):
@@ -121,7 +144,9 @@ class DescricaoForm(forms.ModelForm):
         # self.fields['status'].initial = Status.objects.filter(id__in=[1])
         # self.fields['status'].disabled = True
 
-# Filtra a area pela diretoria
+        self.tenant = tenant_id
+
+        # Filtra a area pela diretoria
         if 'board' in self.data:
             try:
                 board_id = int(self.data.get('board'))
@@ -147,11 +172,11 @@ class DescricaoForm(forms.ModelForm):
 
 
         # Focus on the first form field whenever an error occurred
-        if self.errors:
-            error_list = list(self.errors)
-            for item in error_list:
-                self.fields[item].widget.attrs.update({'autofocus': ''})
-                break  # Only autofocus the very first field with an error
+        # if self.errors:
+        #     error_list = list(self.errors)
+        #     for item in error_list:
+        #         self.fields[item].widget.attrs.update({'autofocus': ''})
+        #         break  # Only autofocus the very first field with an error
 
 class DescricaoModeloForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe", required=False,

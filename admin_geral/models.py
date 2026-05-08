@@ -4,7 +4,7 @@ from django.db import models
 class Plans(models.Model):
     name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
     detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
-    value = models.DecimalField(max_digits=8, decimal_places=2, default=0, verbose_name='Valor')
+    value = models.DecimalField(max_digits=8, decimal_places=0, default=0, verbose_name='Qtde Descrições')
     discount = models.CharField(max_length=255, verbose_name='Cupom', blank=True, default="")
     percent = models.IntegerField(blank=True, null=True, default=0, verbose_name='Percentual')
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
@@ -13,8 +13,23 @@ class Plans(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Plano'
-        verbose_name_plural = 'Planos'
+        verbose_name = 'Plano Descrição'
+        verbose_name_plural = 'Planos Descrição'
+
+class PlansAvaliacao(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Nome*', unique=True)
+    detail = models.CharField(max_length=255, verbose_name='Descrição', blank=True, default="")
+    value = models.DecimalField(max_digits=8, decimal_places=0, default=0, verbose_name='Qtde Avaliações')
+    discount = models.CharField(max_length=255, verbose_name='Cupom', blank=True, default="")
+    percent = models.IntegerField(blank=True, null=True, default=0, verbose_name='Percentual')
+    is_active = models.BooleanField(default=True, verbose_name='Ativo')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Plano Avaliaçãoo'
+        verbose_name_plural = 'Planos Avaliação'
 
 
 class Sector(models.Model):
