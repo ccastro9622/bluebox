@@ -925,7 +925,7 @@ class ImportarDadosView(View):
         if experiencia is None:
             experiencia = 1
 
-        area_formacao = str(dadosjson.get('area1'))
+        area_formacao = 1 #str(dadosjson.get('area1'))
         # area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
 
         habilitacao = str(dadosjson.get('habilidade'))
