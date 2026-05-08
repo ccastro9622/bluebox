@@ -776,7 +776,6 @@ class ImportarDadosView(View):
 
             for _, row in df.iterrows():
                 # Itera sobre as linhas do DataFrame lido do arquivo Excel
-                print(df.iterrows())
                 last_id += 1
                 self.criar_descricao(row, last_id, sector_name, sector_id, tenant_id, user_id)
 
@@ -927,7 +926,7 @@ class ImportarDadosView(View):
             experiencia = 1
 
         area_formacao = str(dadosjson.get('area1'))
-        area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
+        # area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
 
         habilitacao = str(dadosjson.get('habilidade'))
         habilitacao = int(habilitacao.replace("{'codigo': ", "").replace("}", ""))
@@ -935,44 +934,39 @@ class ImportarDadosView(View):
         #Fim da IA -------------------------------
 
 
-        descricao, criado = Descricao.objects.get_or_create(
-            title=row['Titulodocargo'],
-            defaults={
-                'id': last_id,
-                'title': row['Titulodocargo'],
-                'area_id': id_area,
-                'board_id': id_diretoria,
-                'title_super': row['CargoSuperiorImediato'],
-                'family_id': id_familia,
-                'sub_familia_id': id_subfamilia,
-                'adicional': row['Adicional'],
-                'tenant_id': tenant_id,
-                'status_id': 1,
-                'is_active': True,
-                'sector_id': sector_id,
-                'level_id': id_nivel,
-                'tenant_id': tenant_id,
-                'user_id': user_id,
+        created = Descricao.objects.create(
+                id = last_id,
+                title = row['Titulodocargo'],
+                area_id = id_area,
+                board_id = id_diretoria,
+                title_super = row['CargoSuperiorImediato'],
+                family_id = id_familia,
+                sub_familia_id = id_subfamilia,
+                adicional = row['Adicional'],
+                tenant_id = tenant_id,
+                status_id = 1,
+                is_active = True,
+                sector_id = sector_id,
+                level_id = id_nivel,
+                user_id = user_id,
 
-                'summary_goal': missao, #dadosjson.get('missao'),
-                'responsibility': responsabilidades,  #dadosjson.get('responsabilidades'),
-                'information': competencias, #dadosjson.get('competencias')
-                'manage_team_id': equipe, #dadosjson.get('equipe')
-                'formation_desired_id': escolaridade, #dadosjson.get('escolaridade')
-                'specialization_id': complementar, #dadosjson.get('formacao')
-                'experience_id': experiencia, #dadosjson.get('experiencia')
-                'areas_desired_id': area_formacao, #dadosjson.get('area')
-                'qualification_id': habilitacao #dadosjson.get('habilidade')
-
-            }
-        )
+                summary_goal = missao, #dadosjson.get(missao),
+                responsibility = responsabilidades,  #dadosjson.get(responsabilidades),
+                information = competencias, #dadosjson.get(competencias)
+                manage_team_id = equipe, #dadosjson.get(equipe)
+                formation_desired_id = escolaridade, #dadosjson.get(escolaridade)
+                specialization_id = complementar, #dadosjson.get(formacao)
+                experience_id = experiencia, #dadosjson.get(experiencia)
+                areas_desired_id = area_formacao, #dadosjson.get(area)
+                qualification_id = habilitacao #dadosjson.get(habilidade)
+                )
 
 def plano_contratado(request):
     # print("entrou")
     # tenant_id = tenant_from_request(request)
     # empresa = Tenant.objects.filter(id=tenant_id).first()
     # plano_id = empresa.plano_id
-    planos = Plans.objects.filter(id=1).first()
+    # planos = Plans.objects.filter(id=1).first()
     # print(planos)
     # # Conta os itens atuais
     # contagem_atual = Descricao.objects.filter(tenant_id=tenant_id).count()
