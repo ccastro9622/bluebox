@@ -934,7 +934,7 @@ class ImportarDadosView(View):
         #Fim da IA -------------------------------
 
 
-        created = Descricao.objects.create(
+        created = Descricao(
                 id = last_id,
                 title = row['Titulodocargo'],
                 area_id = id_area,
@@ -960,6 +960,8 @@ class ImportarDadosView(View):
                 areas_desired_id = area_formacao, #dadosjson.get(area)
                 qualification_id = habilitacao #dadosjson.get(habilidade)
                 )
+
+        created.save(force_insert=True)
 
 def plano_contratado(request):
     # print("entrou")
