@@ -39,5 +39,5 @@ urlpatterns = [
          name="descricao-update-aprovacao-final"),
     path('ajax/load-ia/', load_ia, name='ajax_load_ia'),
     path('ajax/plano_contratado/', plano_contratado, name='ajax_plano_contratado'),
-    path('progress/<str:task_id>/', verificar_progresso, name='task_progress'),
+    # path('progress/<str:task_id>/', verificar_progresso, name='task_progress'),
 ]

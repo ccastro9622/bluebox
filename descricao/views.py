@@ -45,9 +45,8 @@ from django.db import connection
 
 from .tasks import processar_planilha_task
 import os
-
-from django.http import JsonResponse
-from .models import ProgressoTarefa
+# from django.http import JsonResponse
+# from .models import ProgressoTarefa
 
 DOCUMENT_COLUMNS = (
     (0, 'title'),
@@ -1013,11 +1012,11 @@ def plano_contratado(request):
 #         return JsonResponse({'progresso': 0, 'status': 'Aguardando início...'})
 
 
-def verificar_progresso(request, task_id):
-    try:
-        print('Entrou para verificar progresso')
-        progress = ProgressoTarefa.objects.get(task_id=task_id)
-        print('vai retornar progresso')
-        return JsonResponse({'percentage': progress.progresso, 'status': progress.status})
-    except ProgressoTarefa.DoesNotExist:
-        return JsonResponse({'percentage': 0, 'status': 'Pending'})
+# def verificar_progresso(request, task_id):
+#     try:
+#         print('Entrou para verificar progresso')
+#         progress = ProgressoTarefa.objects.get(task_id=task_id)
+#         print('vai retornar progresso')
+#         return JsonResponse({'percentage': progress.progresso, 'status': progress.status})
+#     except ProgressoTarefa.DoesNotExist:
+#         return JsonResponse({'percentage': 0, 'status': 'Pending'})

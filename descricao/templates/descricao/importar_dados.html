@@ -49,23 +49,23 @@
 
     }
 
-    const taskId = "1";
+<!--    const taskId = "1";-->
 
-    const interval = setInterval(async () => {
-        const response = await fetch(`/progress/${taskId}/`);
-        const data = await response.json();
+<!--    const interval = setInterval(async () => {-->
+<!--        const response = await fetch(`/progress/${taskId}/`);-->
+<!--        const data = await response.json();-->
 
-        console.log(`Progresso: ${data.percentage}%`);
+<!--        console.log(`Progresso: ${data.percentage}%`);-->
 
-        // Atualize a barra de progresso no seu HTML
-        document.getElementById('barra-progresso').style.width = `${data.percentage}%`;
-        document.getElementById('barra-progresso').textContent = `${data.percentage}%`;
+<!--        // Atualize a barra de progresso no seu HTML-->
+<!--        document.getElementById('barra-progresso').style.width = `${data.percentage}%`;-->
+<!--        document.getElementById('barra-progresso').textContent = `${data.percentage}%`;-->
 
-        if (data.status === 'Concluido') {
-            clearInterval(interval);
-            alert('Tarefa finalizada!');
-        }
-    }, 1000);
+<!--        if (data.status === 'Concluido') {-->
+<!--            clearInterval(interval);-->
+<!--            alert('Tarefa finalizada!');-->
+<!--        }-->
+<!--    }, 1000);-->
 
 
 <!--    const tarefaId = "1"; // Identificador único da tarefa-->
