@@ -65,7 +65,11 @@ INSTALLED_APPS = [
     'report',
     'avaliacao',
     'bluebox',
+    'background_task',
 ]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
