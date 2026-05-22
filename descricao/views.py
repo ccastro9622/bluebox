@@ -7,7 +7,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from admin_descricao.models import Niveis
-from admin_geral.models import Sector, Plans
+from admin_geral.models import Sector
 from avaliacao.models import Avaliacao
 from master.models import Diretoria, Area
 from tenants.models import Tenant
@@ -27,8 +27,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from . import models, forms
 from descricao.enviaremail import enviodeemail
 
-import os
-
 from io import BytesIO
 
 import xlsxwriter
@@ -37,13 +35,19 @@ import requests
 import json
 
 from django.core.mail import BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 
 import pandas as pd
 from django.views import View
 
 from django.core.management.color import no_style
 from django.db import connection
+
+from .tasks import processar_planilha_task
+import os
+
+from django.http import JsonResponse
+from .models import ProgressoTarefa
 
 DOCUMENT_COLUMNS = (
     (0, 'title'),
@@ -749,6 +753,7 @@ class ImportarDadosView(View):
         form = ImportarDadosForm(request.POST, request.FILES)
 
         if form.is_valid():
+            print('entrou no is_valid')
             arquivo = request.FILES['arquivo']
             df = pd.read_excel(arquivo)
             tenant_id = tenant_from_request(self.request)
@@ -765,8 +770,10 @@ class ImportarDadosView(View):
 
             if msn != '':
                 raise Http404(msn)
+# Terminou a validação.        
 
-
+            print('validou')
+            # Pega os dados faltantes para importação da planilha
             last_desc = Descricao.objects.last()
             last_id = last_desc.id
             empresa = Tenant.objects.filter(id=tenant_id).first()
@@ -774,12 +781,27 @@ class ImportarDadosView(View):
             sector = Sector.objects.filter(id=sector_id).first()
             sector_name = sector.name
 
-            for _, row in df.iterrows():
-                # Itera sobre as linhas do DataFrame lido do arquivo Excel
-                last_id += 1
-                self.criar_descricao(row, last_id, sector_name, sector_id, tenant_id, user_id)
 
-            # python manage.py sqlsequencereset < app_label > | python manage.py dbshell
+# Começa a importação
+            # Salva o arquivo temporariamente
+            temp_path = f'temp/{arquivo.name}'
+            with open(temp_path, 'wb+') as destination:
+                for chunk in arquivo.chunks():
+                    destination.write(chunk)
+
+            print('salvou temporario')
+            user = user_id.id
+            # Chama a tarefa em segundo plano
+            processar_planilha_task(temp_path,last_id, sector_name, sector_id, tenant_id, user)
+
+            print('processou')
+            
+            # for _, row in df.iterrows():
+            #     # Itera sobre as linhas do DataFrame lido do arquivo Excel
+            #     last_id += 1
+            #     self.criar_descricao(row, last_id, sector_name, sector_id, tenant_id, user_id)
+
+# Fim da importaçao                
 
             # Corrigir os index
             sequence_sql = connection.ops.sequence_reset_sql(no_style(), [Descricao])
@@ -788,7 +810,7 @@ class ImportarDadosView(View):
                     cursor.execute(sql)
 
 
-            return redirect('/descricao/descricao_list')
+            # return redirect('/descricao/descricao_list')
 
         return render(request, self.template_name, {'form': form})
 
@@ -934,34 +956,34 @@ class ImportarDadosView(View):
         #Fim da IA -------------------------------
 
 
-        # created = Descricao(
-        #         id = last_id,
-        #         title = row['Titulodocargo'],
-        #         area_id = id_area,
-        #         board_id = id_diretoria,
-        #         title_super = row['CargoSuperiorImediato'],
-        #         family_id = id_familia,
-        #         sub_familia_id = id_subfamilia,
-        #         adicional = row['Adicional'],
-        #         tenant_id = tenant_id,
-        #         status_id = 1,
-        #         is_active = True,
-        #         sector_id = sector_id,
-        #         level_id = id_nivel,
-        #         user_id = user_id,
-        #
-        #         summary_goal = missao, #dadosjson.get(missao),
-        #         responsibility = responsabilidades,  #dadosjson.get(responsabilidades),
-        #         information = competencias, #dadosjson.get(competencias)
-        #         manage_team_id = equipe, #dadosjson.get(equipe)
-        #         formation_desired_id = escolaridade, #dadosjson.get(escolaridade)
-        #         specialization_id = complementar, #dadosjson.get(formacao)
-        #         experience_id = experiencia, #dadosjson.get(experiencia)
-        #         areas_desired_id = area_formacao, #dadosjson.get(area)
-        #         qualification_id = habilitacao #dadosjson.get(habilidade)
-        #         )
-        #
-        # created.save(force_insert=True)
+        created = Descricao(
+                id = last_id,
+                title = row['Titulodocargo'],
+                area_id = id_area,
+                board_id = id_diretoria,
+                title_super = row['CargoSuperiorImediato'],
+                family_id = id_familia,
+                sub_familia_id = id_subfamilia,
+                adicional = row['Adicional'],
+                tenant_id = tenant_id,
+                status_id = 1,
+                is_active = True,
+                sector_id = sector_id,
+                level_id = id_nivel,
+                user_id = user_id,
+
+                summary_goal = missao, #dadosjson.get(missao),
+                responsibility = responsabilidades,  #dadosjson.get(responsabilidades),
+                information = competencias, #dadosjson.get(competencias)
+                manage_team_id = equipe, #dadosjson.get(equipe)
+                formation_desired_id = escolaridade, #dadosjson.get(escolaridade)
+                specialization_id = complementar, #dadosjson.get(formacao)
+                experience_id = experiencia, #dadosjson.get(experiencia)
+                areas_desired_id = area_formacao, #dadosjson.get(area)
+                qualification_id = habilitacao #dadosjson.get(habilidade)
+                )
+
+        created.save(force_insert=True)
 
 def plano_contratado(request):
     # print("entrou")
@@ -979,3 +1001,23 @@ def plano_contratado(request):
     # if contagem_atual >= plano.value:
     #     return HttpResponse("Seu plano({plano.name}) limita a {plano.value} Descrições.")
     return render(request, 'descricao/plano_contratado.html', {'planos': planos})
+
+
+
+
+# def verificar_progresso(request, tarefa_id):
+#     try:
+#         tarefa = ProgressoTarefa.objects.get(tarefa_id=tarefa_id)
+#         return JsonResponse({'progresso': tarefa.progresso, 'status': tarefa.status})
+#     except ProgressoTarefa.DoesNotExist:
+#         return JsonResponse({'progresso': 0, 'status': 'Aguardando início...'})
+
+
+def verificar_progresso(request, task_id):
+    try:
+        print('Entrou para verificar progresso')
+        progress = ProgressoTarefa.objects.get(task_id=task_id)
+        print('vai retornar progresso')
+        return JsonResponse({'percentage': progress.progresso, 'status': progress.status})
+    except ProgressoTarefa.DoesNotExist:
+        return JsonResponse({'percentage': 0, 'status': 'Pending'})

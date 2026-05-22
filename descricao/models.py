@@ -91,3 +91,9 @@ class Descricao(TenantAwareModel):
         unique_together = ('title', 'tenant_id', 'is_active')
         verbose_name = 'Descricao'
         verbose_name_plural = 'Descricao'
+
+
+class ProgressoTarefa(models.Model):
+    tarefa_id = models.CharField(max_length=100, unique=True)
+    progresso = models.IntegerField(default=0) # 0 a 100
+    status = models.CharField(max_length=50, default="Pendente")

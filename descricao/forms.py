@@ -172,11 +172,11 @@ class DescricaoForm(forms.ModelForm):
 
 
         # Focus on the first form field whenever an error occurred
-        # if self.errors:
-        #     error_list = list(self.errors)
-        #     for item in error_list:
-        #         self.fields[item].widget.attrs.update({'autofocus': ''})
-        #         break  # Only autofocus the very first field with an error
+        if self.errors:
+            error_list = list(self.errors)
+            for item in error_list:
+                self.fields[item].widget.attrs.update({'autofocus': ''})
+                break  # Only autofocus the very first field with an error
 
 class DescricaoModeloForm(forms.ModelForm):
     position_team = forms.CharField(label="Cargos da Equipe", required=False,
