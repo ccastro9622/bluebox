@@ -783,7 +783,7 @@ class ImportarDadosView(View):
 
 # Começa a importação
             # Salva o arquivo temporariamente
-            temp_path = f'tmp/{arquivo.name}'
+            temp_path = f'/tmp/{arquivo.name}'
             with open(temp_path, 'wb+') as destination:
                 for chunk in arquivo.chunks():
                     destination.write(chunk)
