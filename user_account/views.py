@@ -72,7 +72,7 @@ def index(request):
     pendente = Descricao.objects.filter(tenant_id=tenant_id, status_id__in=[3]).count()
 
     #Planos
-    empresa = Tenant.objects.filter(default_tenant=tenant_id).first()
+    empresa = Tenant.objects.filter(id=tenant_id).first()
 
     plandesc = Plans.objects.filter(id = empresa.plano_id).first()
     planaval = PlansAvaliacao.objects.filter(id = empresa.planoaval_id).first()
