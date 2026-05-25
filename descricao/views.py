@@ -803,7 +803,9 @@ class ImportarDadosView(View):
 
             # Salva o arquivo no diretório temporário
             nome_salvo = fs.save(arquivo.name, arquivo)
+            print(nome_salvo)
             caminho_completo = fs.path(nome_salvo)
+            print(caminho_completo)
 
             # Aqui você pode manipular o arquivo aberto em 'caminho_completo'
             # com bibliotecas como pandas ou openpyxl
