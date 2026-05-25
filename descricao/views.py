@@ -754,7 +754,7 @@ class ImportarDadosView(View):
         if form.is_valid():
             print('entrou no is_valid')
             arquivo = request.FILES['arquivo']
-            # df = pd.read_excel(arquivo)
+            df = pd.read_excel(arquivo)
             tenant_id = tenant_from_request(self.request)
             user_id = user_from_request(self.request)
             numrow = 1
