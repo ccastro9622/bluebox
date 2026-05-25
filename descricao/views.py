@@ -1,3 +1,4 @@
+import tempfile
 from datetime import datetime
 
 from django.urls import reverse_lazy
@@ -781,18 +782,42 @@ class ImportarDadosView(View):
             sector_name = sector.name
 
 
-# Começa a importação
+            # Começa a importação
             # Salva o arquivo temporariamente
             print('inicia salvou temporario')
-            temp_path = f'/tmp/{arquivo.name}'
-            with open(temp_path, 'wb+') as destination:
-                for chunk in arquivo.chunks():
-                    destination.write(chunk)
+            # temp_path = f'/tmp/{arquivo.name}'
+
+
+
+            from openpyxl import load_workbook, Workbook
+            temp_path = os.path.join('/tmp', arquivo.name)
+            print(temp_path)
+
+            # import os
+            from django.core.files.storage import FileSystemStorage
+            # from django.http import HttpResponse
+
+
+            # Instancia o FileSystemStorage apontando para a pasta /tmp
+            fs = FileSystemStorage(location='/tmp')
+
+            # Salva o arquivo no diretório temporário
+            nome_salvo = fs.save(arquivo.name, arquivo)
+            caminho_completo = fs.path(nome_salvo)
+
+            # Aqui você pode manipular o arquivo aberto em 'caminho_completo'
+            # com bibliotecas como pandas ou openpyxl
+
+
+            # temp_path = os.path.join('/tmp',arquivo.name)
+            # with open(temp_path, 'wb+') as destination:
+            #     for chunk in arquivo.chunks():
+            #         destination.write(chunk)
 
             print('salvou temporario')
             user = user_id.id
             # Chama a tarefa em segundo plano
-            processar_planilha_task(temp_path,last_id, sector_name, sector_id, tenant_id, user)
+            processar_planilha_task(caminho_completo,last_id, sector_name, sector_id, tenant_id, user)
 
             print('processou')
             
