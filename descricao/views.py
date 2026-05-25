@@ -754,7 +754,7 @@ class ImportarDadosView(View):
         if form.is_valid():
             print('entrou no is_valid')
             arquivo = request.FILES['arquivo']
-            df = pd.read_excel(arquivo)
+            # df = pd.read_excel(arquivo)
             tenant_id = tenant_from_request(self.request)
             user_id = user_from_request(self.request)
             numrow = 1
@@ -783,6 +783,7 @@ class ImportarDadosView(View):
 
 # Começa a importação
             # Salva o arquivo temporariamente
+            print('inicia salvou temporario')
             temp_path = f'/tmp/{arquivo.name}'
             with open(temp_path, 'wb+') as destination:
                 for chunk in arquivo.chunks():
