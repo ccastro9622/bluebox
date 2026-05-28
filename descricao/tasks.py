@@ -10,6 +10,11 @@ from master.models import Diretoria, Area
 from tenants.models import Tenant
 from tenants.utils import tenant_from_request, user_from_request, userkind_from_request
 
+import boto3
+import io
+import pandas as pd
+from django.conf import settings
+
 from descricao.models import Descricao, ProgressoTarefa
 from admin_avaliacao.models import Familias, SubFamilias
 
@@ -18,11 +23,26 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
 
     progresso_obj, criado = ProgressoTarefa.objects.get_or_create(tarefa_id=1)
 
+    s3_client = boto3.client(
+        's3',
+        endpoint_url='https://s3.us-west-000.backblazeb2.com',
+        aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+    )
 
+    # Cria um buffer de bytes na memória
+    response = s3_client.get_object(
+        Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+        Key=file_path
+    )
+
+    # Lê os dados do S3 e converte para DataFrame
+    file_content = response['Body'].read()
+    df = pd.read_excel(io.BytesIO(file_content))  # ou pd.read_csv() para CSV
 
     try:
         # Lê a planilha com pandas
-        df = pd.read_excel(file_path)  # Ou pd.read_csv
+        # df = pd.read_excel(file_path)  # Ou pd.read_csv
 
         quantidade_linhas = len(df)
 

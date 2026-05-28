@@ -46,8 +46,9 @@ from django.db import connection
 
 from .tasks import processar_planilha_task
 import os
-# from django.http import JsonResponse
-# from .models import ProgressoTarefa
+
+import boto3
+from django.conf import settings
 
 DOCUMENT_COLUMNS = (
     (0, 'title'),
@@ -753,13 +754,11 @@ class ImportarDadosView(View):
         form = ImportarDadosForm(request.POST, request.FILES)
 
         if form.is_valid():
-            print('entrou no is_valid')
             arquivo = request.FILES['arquivo']
             df = pd.read_excel(arquivo)
             tenant_id = tenant_from_request(self.request)
             user_id = user_from_request(self.request)
             numrow = 1
-            erro = 0
             msn = ''
 
             for _, row in df.iterrows():
@@ -772,7 +771,6 @@ class ImportarDadosView(View):
                 raise Http404(msn)
 # Terminou a validação.        
 
-            print('validou')
             # Pega os dados faltantes para importação da planilha
             last_desc = Descricao.objects.last()
             last_id = last_desc.id
@@ -781,47 +779,45 @@ class ImportarDadosView(View):
             sector = Sector.objects.filter(id=sector_id).first()
             sector_name = sector.name
 
-
-            # Começa a importação
-            # Salva o arquivo temporariamente
-            print('inicia salvou temporario')
-            # temp_path = f'/tmp/{arquivo.name}'
-
-
-
             from openpyxl import load_workbook, Workbook
             temp_path = os.path.join('/tmp', arquivo.name)
-            print(temp_path)
 
-            # import os
-            from django.core.files.storage import FileSystemStorage
-            # from django.http import HttpResponse
+            from django.core.files.storage import default_storage
 
+            # Salvando um arquivo de texto
+            # caminho_no_s3 = temp_path #'documentos/meu_arquivo.txt'
+            # conteudo = arquivo
 
-            # Instancia o FileSystemStorage apontando para a pasta /tmp
-            fs = FileSystemStorage(location='/tmp')
+            caminho_completo = default_storage.save(arquivo.name, arquivo)
 
-            # Salva o arquivo no diretório temporário
-            nome_salvo = fs.save(arquivo.name, arquivo)
-            print(nome_salvo)
-            caminho_completo = fs.path(nome_salvo)
-            print(caminho_completo)
+            # s3_client = boto3.client(
+            #     's3',
+            #     endpoint_url='https://s3.us-west-000.backblazeb2.com',
+            #     aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            #     aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
+            # )
+            # 
+            # file_data = request.FILES['arquivo'].read()
+            # 
+            # # 2. Carrega os dados em um buffer na memória (File-like object)
+            # mem_file = BytesIO(file_data)
+            # 
+            # # 3. Importante: Resetar o cursor do arquivo para a posição inicial
+            # mem_file.seek(0)
+            # 
+            # # 4. Envia os dados da memória para o bucket
+            # s3_client.upload_fileobj(
+            #     Fileobj=mem_file,
+            #     Bucket=settings.AWS_STORAGE_BUCKET_NAME,
+            #     Key=temp_path
+            # )
 
-            # Aqui você pode manipular o arquivo aberto em 'caminho_completo'
-            # com bibliotecas como pandas ou openpyxl
-
-
-            # temp_path = os.path.join('/tmp',arquivo.name)
-            # with open(temp_path, 'wb+') as destination:
-            #     for chunk in arquivo.chunks():
-            #         destination.write(chunk)
-
-            print('salvou temporario')
+           
             user = user_id.id
             # Chama a tarefa em segundo plano
             processar_planilha_task(caminho_completo,last_id, sector_name, sector_id, tenant_id, user)
 
-            print('processou')
+  
             
             # for _, row in df.iterrows():
             #     # Itera sobre as linhas do DataFrame lido do arquivo Excel
