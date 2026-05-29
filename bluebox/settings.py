@@ -66,9 +66,25 @@ INSTALLED_APPS = [
     'avaliacao',
     'bluebox',
     'background_task',
+    'storages'
 ]
 
+# Configuração de Armazenamento do Django
+# Define o S3 como armazenamento padrão para arquivos de mídia
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
+
+# Credenciais e Endpoint do Backblaze B2
+AWS_ACCESS_KEY_ID = '000af6837cd1eb8000000000c'
+AWS_SECRET_ACCESS_KEY = 'K0004EIV6rjpgBOgWRS1niy19p4w5IQ'
+AWS_STORAGE_BUCKET_NAME = 'bluebox21'
+
+# Defina a região do seu bucket (ex: us-west-004, eu-central-003)
+AWS_S3_REGION_NAME = 'us-west-000'
+
+# Configuração do Endpoint B2 Compatível com S3
+AWS_S3_ENDPOINT_URL = 'https://s3.us-west-000.backblazeb2.com'
 
 
 MIDDLEWARE = [
