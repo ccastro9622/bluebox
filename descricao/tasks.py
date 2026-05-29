@@ -108,7 +108,8 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             escolaridade = str(dadosjson.get('escolaridade'))
             escolaridade = int(escolaridade.replace("{'codigo': ", "").replace("}", ""))
 
-            complementar = dadosjson.get('formacao')
+            complementar = str(dadosjson.get('formacao'))
+            complementar = int(complementar.replace("{'codigo': ", "").replace("}", ""))
 
             experiencia = str(dadosjson.get('experiencia'))
             experiencia = int(experiencia.replace("{'codigo': ", "").replace("}", ""))
