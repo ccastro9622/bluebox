@@ -100,10 +100,15 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             competencias = competencia.replace("[", "").replace("]", "")
 
             equipe = str(dadosjson.get('equipe'))
-            equipe = int(equipe.replace("{'codigo': ", "").replace("}", ""))
 
-            if equipe is None:
-                equipe = 1
+            equipe = str(equipe.replace("{'codigo': ", "").replace("}", ""))
+
+            if equipe =='None':
+                equipe = '1'
+
+            equipe = int(equipe)
+
+
 
             escolaridade = str(dadosjson.get('escolaridade'))
             escolaridade = int(escolaridade.replace("{'codigo': ", "").replace("}", ""))
@@ -112,10 +117,12 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             complementar = int(complementar.replace("{'codigo': ", "").replace("}", ""))
 
             experiencia = str(dadosjson.get('experiencia'))
-            experiencia = int(experiencia.replace("{'codigo': ", "").replace("}", ""))
+            experiencia = str(experiencia.replace("{'codigo': ", "").replace("}", ""))
 
-            if experiencia is None:
-                experiencia = 1
+            if experiencia == 'None':
+                experiencia = '1'
+
+            experiencia = int(experiencia)
 
             area_formacao = 1  # str(dadosjson.get('area1'))
             # area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
