@@ -100,35 +100,40 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             competencias = competencia.replace("[", "").replace("]", "")
 
             equipe = str(dadosjson.get('equipe'))
-
-            equipe = str(equipe.replace("{'codigo': ", "").replace("}", ""))
-
-            if equipe =='None':
-                equipe = '1'
-
-            equipe = int(equipe)
-
+            if equipe == 'None':
+                equipe = 1
+            else:
+                equipe = int(equipe.replace("{'codigo': ", "").replace("}", ""))
 
 
             escolaridade = str(dadosjson.get('escolaridade'))
-            escolaridade = int(escolaridade.replace("{'codigo': ", "").replace("}", ""))
+            if escolaridade == 'None':
+                escolaridade = 1
+            else:
+                escolaridade = int(escolaridade.replace("{'codigo': ", "").replace("}", ""))
 
             complementar = str(dadosjson.get('formacao'))
-            complementar = int(complementar.replace("{'codigo': ", "").replace("}", ""))
+            if complementar == 'None':
+                complementar = 1
+            else:
+                complementar = int(complementar.replace("{'codigo': ", "").replace("}", ""))
+
 
             experiencia = str(dadosjson.get('experiencia'))
-            experiencia = str(experiencia.replace("{'codigo': ", "").replace("}", ""))
-
             if experiencia == 'None':
-                experiencia = '1'
+                experiencia = 1
+            else:
+                experiencia = int(experiencia.replace("{'codigo': ", "").replace("}", ""))
 
-            experiencia = int(experiencia)
 
             area_formacao = 1  # str(dadosjson.get('area1'))
             # area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
 
             habilitacao = str(dadosjson.get('habilidade'))
-            habilitacao = int(habilitacao.replace("{'codigo': ", "").replace("}", ""))
+            if habilitacao == 'None':
+                habilitacao = 1
+            else:
+                habilitacao = int(habilitacao.replace("{'codigo': ", "").replace("}", ""))
 
             # Fim da IA -------------------------------
 
@@ -167,7 +172,7 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             progresso_obj.progresso = percentual
             progresso_obj.status = f"Processando {i + 1} de {quantidade_linhas}"
             progresso_obj.save()
-
+            i += 1
 
 
     except Exception as e:
