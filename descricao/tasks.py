@@ -103,27 +103,27 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             if equipe == 'None':
                 equipe = 1
             else:
-                equipe = int(equipe.replace("{'codigo': ", "").replace("}", ""))
+                equipe = int(equipe.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
 
             escolaridade = str(dadosjson.get('escolaridade'))
             if escolaridade == 'None':
                 escolaridade = 1
             else:
-                escolaridade = int(escolaridade.replace("{'codigo': ", "").replace("}", ""))
+                escolaridade = int(escolaridade.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
             complementar = str(dadosjson.get('formacao'))
             if complementar == 'None':
                 complementar = 1
             else:
-                complementar = int(complementar.replace("{'codigo': ", "").replace("}", ""))
+                complementar = int(complementar.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
 
             experiencia = str(dadosjson.get('experiencia'))
             if experiencia == 'None':
                 experiencia = 1
             else:
-                experiencia = int(experiencia.replace("{'codigo': ", "").replace("}", ""))
+                experiencia = int(experiencia.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
 
             area_formacao = 1  # str(dadosjson.get('area1'))
@@ -133,7 +133,7 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             if habilitacao == 'None':
                 habilitacao = 1
             else:
-                habilitacao = int(habilitacao.replace("{'codigo': ", "").replace("}", ""))
+                habilitacao = int(habilitacao.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
             # Fim da IA -------------------------------
 
