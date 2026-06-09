@@ -50,7 +50,7 @@
                         {% else %}
                             <td><center>Não</center></td>
                         {% endif %}
-                        {% if descricao.is_active == False %}
+                        {% if descricao.is_active == False or descricao.status_id == 5 %}
                             <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>
 <!--                            <td><a href="#"><center><i class="fas fa-ban"></i></center></a></td>-->
                         {% else %}
