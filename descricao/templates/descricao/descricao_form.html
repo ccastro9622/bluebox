@@ -317,19 +317,19 @@
 <!--                alert(data[2]);-->
 
 
-                document.getElementById('summary_goal').value = data[0]
-                document.getElementById('responsibility').value = data[1]
-                document.getElementById('information').value = data[2]
-<!--                $('#summary_goal').html(data[0]);-->
-<!--                $('#responsibility').html(data[1]);-->
-<!--                $('#information').html(data[2]);-->
-<!--                $("#id_manage_team").html(data[3]);-->
+                document.getElementById('summary_goal').value = data[0].trim()
+                document.getElementById('responsibility').value = data[1].trim()
+                document.getElementById('information').value = data[2].trim()
+
                 $("#id_manage_team").val(Number(data[3]));
                 $('#id_formation_desired').val(Number(data[4]));
                 $('#id_specialization').val(Number(data[5]));
                 $('#id_experience').val(Number(data[6]));
                 $("#id_areas_desired").val(Number(data[7]));
-                $("#id_qualification").val(Number(data[8]));
+                $('#id_areas_desired2').val(Number(data[8]));
+                $('#id_areas_desired3').val(Number(data[9]));
+                $('#id_areas_desired4').val(Number(data[10]));
+                $("#id_qualification").val(Number(data[11]));
 
             }
 

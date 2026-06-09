@@ -691,7 +691,10 @@ def load_ia(request):
     # experiencias = Experiencias.objects.filter(id=experiencia).first()
     # experiencia_name = experiencias.name
 
-    area_formacao = dadosjson.get('area')
+    area_formacao = dadosjson.get('area1')
+    area_formacao2 = dadosjson.get('area2')
+    area_formacao3 = dadosjson.get('area3')
+    area_formacao4 = dadosjson.get('area4')
     # areas = Areas.objects.filter(id=area_formacao).first()
     # area_formacao_name = areas.name
 
@@ -730,12 +733,14 @@ def load_ia(request):
                     'complementar': complementar,
                     'experiencia': experiencia,
                     'area_formacao': area_formacao,
+                    'area_formacao2': area_formacao2,
+                    'area_formacao3': area_formacao3,
+                    'area_formacao4': area_formacao4,
                     'habilitacao': habilitacao,
 
                     })
 
     return render(request, 'descricao/ia_dropdown_list_options.html', {'ias': ia_list})
-
 
 
 class ImportarDadosView(View):
