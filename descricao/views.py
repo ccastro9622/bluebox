@@ -870,19 +870,27 @@ class ImportarDadosView(View):
 
         nome = row['Familia']
         nome = nome.replace("_", " ") # Foi necessario devido a regra de validação de dados do excell
-        if Familias.objects.filter(name=nome).exists():
-            familias = Familias.objects.filter(name=nome).first()
-            id_familia = familias.id
-        else:
+
+        try:
+            familia = Familias.objects.get(name=nome)
+        except Familias.DoesNotExist:
             msn += 'Linha ' + str(numrow) + ' - A Familia "' + nome + '" não existe!!\n'
+        else:
+            id_familia = familia.id
+
+        # if Familias.objects.filter(name=nome).exists():
+        #     familias = Familias.objects.filter(name=nome).first()
+        #     id_familia = familias.id
+        # else:
+        #     msn += 'Linha ' + str(numrow) + ' - A Familia "' + nome + '" não existe!!\n'
+
 
         # Trata e verifica se a  SubFamilia existe
         try:
-            SubFamilias.objects.get(name=nome, family_id = id_familia)
+            SubFamilias.objects.get(name=row['SubFamilia'], family_id = id_familia)
         except SubFamilias.DoesNotExist:
             msn += 'Linha ' + str(numrow) + ' - A SubFamilia "' + row['SubFamilia'] + '" não existe para a Familia "' + \
                    row['Familia'] + '"!!\n'
-
 
         try:
             Niveis.objects.get(name=row['Nivel'])
