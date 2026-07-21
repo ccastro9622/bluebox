@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 def enviodeemail(subject, message, to_email):
    # Configurações do servidor SMTP
    smtp_server = 'mail.bluebox21.com.br'
-   smtp_port = 465  #   465 Ou 587 para TLS/SSL
+   smtp_port = 587  #   465 Ou 587 para TLS/SSL
    smtp_user = 'contato@bluebox21.com.br'
    smtp_password = 'AnChCr2021!'
 
