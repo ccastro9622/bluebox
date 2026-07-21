@@ -126,8 +126,18 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
                 experiencia = int(experiencia.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
 
-            area_formacao = 1  # str(dadosjson.get('area1'))
-            # area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
+            area_formacao = str(dadosjson.get('area1'))
+            area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
+
+            area_formacao2 = str(dadosjson.get('area2'))
+            area_formacao2 = int(area_formacao2.replace("{'codigo': ", "").replace("}", ""))
+
+            area_formacao3 = str(dadosjson.get('area3'))
+            area_formacao3 = int(area_formacao3.replace("{'codigo': ", "").replace("}", ""))
+
+            area_formacao4 = str(dadosjson.get('area4'))
+            area_formacao4 = int(area_formacao4.replace("{'codigo': ", "").replace("}", ""))
+
 
             habilitacao = str(dadosjson.get('habilidade'))
             if habilitacao == 'None':
@@ -163,6 +173,9 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
                 specialization_id=complementar,  # dadosjson.get(formacao)
                 experience_id=experiencia,  # dadosjson.get(experiencia)
                 areas_desired_id=area_formacao,  # dadosjson.get(area)
+                areas_desired2_id=area_formacao2,
+                areas_desired3_id=area_formacao3,
+                areas_desired4_id=area_formacao4,
                 qualification_id=habilitacao  # dadosjson.get(habilidade)
             )
 

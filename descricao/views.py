@@ -183,14 +183,17 @@ def export_users_csv(request):
     format.set_border()
 
     data = ([['Titulo', 'Status', 'Função',  'Area', 'SubArea', 'Familia', 'Subfamilia', 'Cargo Superior',
-     'Gestao de Equipe', 'Cargos', 'Missao', 'Responsabilidades', 'Formacao_Desejada', 'Area_Formacao_Desejada',
+     'Gestao de Equipe', 'Cargos', 'Missao', 'Responsabilidades', 'Formacao_Desejada', 'Area_Formacao_Desejada 1',
+     'Area_Formacao_Desejada 2','Area_Formacao_Desejada 3','Area_Formacao_Desejada 4',
      'Experiencia', 'Idioma', 'Proficiencia', 'Habilitacao', 'Conhecimento', 'Outros', 'Aprovador']])
 
     for descricao in descricoes:
         data += [[descricao.title, str(descricao.status) ,descricao.function, str(descricao.board) , str(descricao.area),
                   str(descricao.family), str(descricao.sub_familia), descricao.title_super , str(descricao.manage_team),
                   descricao.position_team, descricao.summary_goal, descricao.responsibility,
-                  str(descricao.formation_desired), str(descricao.areas_desired), str(descricao.experience), str(descricao.idioma), str(descricao.proficiency),
+                  str(descricao.formation_desired), str(descricao.areas_desired2), str(descricao.areas_desired3),
+                  str(descricao.areas_desired4),
+                  str(descricao.experience), str(descricao.idioma), str(descricao.proficiency),
                   str(descricao.qualification), descricao.knowledge, descricao.information, str(descricao.approver)]]
 
     for row_num , columns in enumerate(data):
