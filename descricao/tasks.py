@@ -138,7 +138,6 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             area_formacao4 = str(dadosjson.get('area4'))
             area_formacao4 = int(area_formacao4.replace("{'codigo': ", "").replace("}", ""))
 
-
             habilitacao = str(dadosjson.get('habilidade'))
             if habilitacao == 'None':
                 habilitacao = 1
