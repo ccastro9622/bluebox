@@ -128,31 +128,31 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
 
             area_formacao = str(dadosjson.get('area1'))
             if area_formacao == 'None':
-                area_formacao = 'Null'
+                area_formacao = 94
             else:
                 area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
 
             area_formacao2 = str(dadosjson.get('area2'))
             if area_formacao2 == 'None':
-                area_formacao2 = 'Null'
+                area_formacao2 = 94
             else:
                 area_formacao2 = int(area_formacao2.replace("{'codigo': ", "").replace("}", ""))
 
             area_formacao3 = str(dadosjson.get('area3'))
             if area_formacao3 == 'None':
-                area_formacao3 = 'Null'
+                area_formacao3 = 94
             else:
                 area_formacao3 = int(area_formacao3.replace("{'codigo': ", "").replace("}", ""))
 
             area_formacao4 = str(dadosjson.get('area4'))
             if area_formacao4 == 'None':
-                area_formacao4 = 'Null'
+                area_formacao4 = 94
             else:
                 area_formacao4 = int(area_formacao4.replace("{'codigo': ", "").replace("}", ""))
 
             habilitacao = str(dadosjson.get('habilidade'))
             if habilitacao == 'None':
-                habilitacao = 'Null'
+                habilitacao = 35
             else:
                 habilitacao = int(habilitacao.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
