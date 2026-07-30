@@ -127,16 +127,28 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
 
 
             area_formacao = str(dadosjson.get('area1'))
-            area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
+            if area_formacao == 'None':
+                area_formacao = 'Null'
+            else:
+                area_formacao = int(area_formacao.replace("{'codigo': ", "").replace("}", ""))
 
             area_formacao2 = str(dadosjson.get('area2'))
-            area_formacao2 = int(area_formacao2.replace("{'codigo': ", "").replace("}", ""))
+            if area_formacao2 == 'None':
+                area_formacao2 = 'Null'
+            else:
+                area_formacao2 = int(area_formacao2.replace("{'codigo': ", "").replace("}", ""))
 
             area_formacao3 = str(dadosjson.get('area3'))
-            area_formacao3 = int(area_formacao3.replace("{'codigo': ", "").replace("}", ""))
+            if area_formacao3 == 'None':
+                area_formacao3 = 'Null'
+            else:
+                area_formacao3 = int(area_formacao3.replace("{'codigo': ", "").replace("}", ""))
 
             area_formacao4 = str(dadosjson.get('area4'))
-            area_formacao4 = int(area_formacao4.replace("{'codigo': ", "").replace("}", ""))
+            if area_formacao4 == 'None':
+                area_formacao4 = 'Null'
+            else:
+                area_formacao4 = int(area_formacao4.replace("{'codigo': ", "").replace("}", ""))
 
             habilitacao = str(dadosjson.get('habilidade'))
             if habilitacao == 'None':
@@ -189,6 +201,9 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
 
     except Exception as e:
         print(f"Erro ao processar planilha: {e}")
+        progresso_obj.progresso = 999
+        progresso_obj.status = "Erro ao processar planilha. Linha: " + str(last_id)
+        progresso_obj.save()
 
 
     progresso_obj.progresso = 100
