@@ -191,8 +191,8 @@ def export_users_csv(request):
         data += [[descricao.title, str(descricao.status) ,descricao.function, str(descricao.board) , str(descricao.area),
                   str(descricao.family), str(descricao.sub_familia), descricao.title_super , str(descricao.manage_team),
                   descricao.position_team, descricao.summary_goal, descricao.responsibility,
-                  str(descricao.formation_desired), str(descricao.areas_desired2), str(descricao.areas_desired3),
-                  str(descricao.areas_desired4),
+                  str(descricao.formation_desired), str(descricao.areas_desired), str(descricao.areas_desired2),
+                  str(descricao.areas_desired3), str(descricao.areas_desired4),
                   str(descricao.experience), str(descricao.idioma), str(descricao.proficiency),
                   str(descricao.qualification), descricao.knowledge, descricao.information, str(descricao.approver)]]
 
