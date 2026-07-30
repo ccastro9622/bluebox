@@ -9,7 +9,8 @@ class Formacao(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Ativo')
 
     def __str__(self):
-        return f"{self.code}" f" - {self.name}"
+        # return f"{self.code}" f" - {self.name}"
+        return f"{self.name}"
 
     class Meta:
         ordering = ["code"]

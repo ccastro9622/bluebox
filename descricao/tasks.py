@@ -108,7 +108,7 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
 
             escolaridade = str(dadosjson.get('escolaridade'))
             if escolaridade == 'None':
-                escolaridade = 1
+                escolaridade = 999
             else:
                 escolaridade = int(escolaridade.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
@@ -140,7 +140,7 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
 
             habilitacao = str(dadosjson.get('habilidade'))
             if habilitacao == 'None':
-                habilitacao = 1
+                habilitacao = 'Null'
             else:
                 habilitacao = int(habilitacao.replace("{'codigo': ", "").replace("{'ig': ", "").replace("}", ""))
 
