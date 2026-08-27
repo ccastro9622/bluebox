@@ -840,8 +840,8 @@ class ImportarDadosView(View):
                 for sql in sequence_sql:
                     cursor.execute(sql)
 
-
-            # return redirect('/descricao/descricao_list')
+            # 3. Retorna o ID para o HTML saber qual tarefa monitorar
+            return JsonResponse({'progress_id': 1})
 
         return render(request, self.template_name, {'form': form})
         # return JsonResponse({'progress_id': 1}) #progresso.id})
@@ -1058,9 +1058,23 @@ def plano_contratado(request):
 def verificar_progresso(request, tarefa_id):
     try:
         tarefa = ProgressoTarefa.objects.get(tarefa_id=tarefa_id)
-        return JsonResponse({'progresso': tarefa.progresso, 'status': tarefa.status})
+        return JsonResponse({
+            'status': tarefa.status,
+            'progresso': tarefa.progresso
+        })
     except ProgressoTarefa.DoesNotExist:
-        return JsonResponse({'progresso': 0, 'status': 'Aguardando início...'})
+        return JsonResponse({'error': 'Tarefa não encontrada'}, status=404)
+
+# def consultar_progresso(request, progress_id):
+#     # Rota GET que o JavaScript chamará repetidamente
+#     try:
+#         progresso = TaskProgress.objects.get(id=progress_id)
+#         return JsonResponse({
+#             'status': progresso.status,
+#             'percentage': progresso.percentage
+#         })
+#     except TaskProgress.DoesNotExist:
+#         return JsonResponse({'error': 'Tarefa não encontrada'}, status=404)
 
 
 # def verificar_progresso(request, task_id):

@@ -20,7 +20,7 @@
     <br>
     <br>
     <br>
-    <form method="post" enctype="multipart/form-data">
+    <form id="importar_dados" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         {{ form.as_p }}
@@ -29,31 +29,35 @@
             <img src='https://i.sstatic.net/fLkAW.gif' alt=''/>
         </div>
         <br>
+
         <button id="btn-iniciar" onclick="dispararTask()" type="submit" class="btn btn-primary">Importar</button>
-
-<!--        &lt;!&ndash; Botão para disparar a ação &ndash;&gt;-->
-<!--        <button id="btn-iniciar" class="btn btn-primary mb-4" onclick="dispararTask()">-->
-<!--            Importar-->
-<!--        </button>-->
-
         <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
+
          <br>
          <br>
 <!--        <div id="status-container">Progresso: <span id="barra-progresso">0%</span></div>-->
- <!-- Container da barra (escondido inicialmente) -->
-        <div id="container-progresso" class="d-none">
-            <div class="progress mb-2" style="height: 25px; width: 500px;">
-                <div id="barra-progresso"
-                     class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                     role="progressbar"
-                     style="width: 0%;"
-                     aria-valuenow="0"
-                     aria-valuemin="0"
-                     aria-valuemax="100">0%</div>
+<!-- &lt;!&ndash; Container da barra (escondido inicialmente) &ndash;&gt;-->
+<!--        <div id="container-progresso" class="d-none">-->
+<!--            <div class="progress mb-2" style="height: 25px; width: 500px;">-->
+<!--                <div id="barra-progresso"-->
+<!--                     class="progress-bar progress-bar-striped progress-bar-animated bg-success"-->
+<!--                     role="progressbar"-->
+<!--                     style="width: 0%;"-->
+<!--                     aria-valuenow="0"-->
+<!--                     aria-valuemin="0"-->
+<!--                     aria-valuemax="100">0%</div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; Texto auxiliar para o status &ndash;&gt;-->
+<!--            <small id="status-texto" class="text-muted">Aguardando...</small>-->
+<!--        </div>-->
+
+                <!-- Barra de Progresso Visual -->
+        <div style="width: 100%; bg-color: #ddd; margin-top: 20px;">
+            <div id="barraProgresso" style="width: 0%; height: 30px; background-color: #4CAF50; text-align: center; color: white;">
+                0%
             </div>
-            <!-- Texto auxiliar para o status -->
-            <small id="status-texto" class="text-muted">Aguardando...</small>
         </div>
+        <p id="statusTexto">Status: Aguardando início</p>
     </form>
 
 </div>
@@ -63,11 +67,52 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
 
-async function dispararTask() {
+function dispararTask() {
     var loading = $('.loading');
     loading.css('visibility', 'visible'); // exibe o div
-<!--    alert('Vai chamar o monitor')-->
-    monitorarProgresso(1);
+
+}
+
+document.getElementById('importar_dados').addEventListener('submit', function(e) {
+    e.preventDefault(); // Impede o recarregamento padrão da página
+
+    const formData = new FormData(this);
+
+    // Envia o método POST para iniciar a tarefa
+    fetch('', {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-CSRFToken': formData.get('csrfmiddlewaretoken') }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.progress_id) {
+            // Se a tarefa iniciou, começa a monitorar a cada 1 segundo (1000ms)
+            iniciarMonitoramento(data.progress_id);
+        }
+    });
+});
+
+function iniciarMonitoramento(progressId) {
+    const intervalo = setInterval(() => {
+        // Faz a requisição GET para consultar o progresso atualizado no banco
+        fetch(`/verificar_progresso/${progressId}/`)
+        .then(response => response.json())
+        .then(data => {
+            const barra = document.getElementById('barraProgresso');
+            const statusText = document.getElementById('statusTexto');
+
+            // Atualiza o HTML com os dados do banco de dados
+            barra.style.width = data.progresso + '%';
+            barra.innerText = data.progresso + '%';
+            statusText.innerText = 'Status: ' + data.status;
+
+            // Se chegou a 100% ou concluiu, para de fazer requisições
+            if (data.progresso >= 100 || data.status === 'Concluído') {
+                clearInterval(intervalo);
+            }
+        });
+    }, 1000);
 }
 
 <!--async function dispararTask() {-->
@@ -97,45 +142,45 @@ async function dispararTask() {
 <!--    }-->
 <!--}-->
 
-function monitorarProgresso(progressId) {
-    const barra = document.getElementById('barra-progresso');
-    const statusTexto = document.getElementById('status-texto');
-    const btn = document.getElementById('btn-iniciar');
+<!--function monitorarProgresso(progressId) {-->
+<!--    const barra = document.getElementById('barra-progresso');-->
+<!--    const statusTexto = document.getElementById('status-texto');-->
+<!--    const btn = document.getElementById('btn-iniciar');-->
 
-    const intervalo = setInterval(async () => {
-        try {
-            // Consulta o endpoint de progresso
-            const response = await fetch(`/verificar_progresso/${progressId}/`);
-            const dados = await response.json();
+<!--    const intervalo = setInterval(async () => {-->
+<!--        try {-->
+<!--            // Consulta o endpoint de progresso-->
+<!--            const response = await fetch(`/verificar_progresso/${progressId}/`);-->
+<!--            const dados = await response.json();-->
 
-            // Atualiza a largura, o texto interno e o atributo de acessibilidade
-            barra.style.width = `${dados.percent}%`;
-            barra.innerText = `${dados.percent}%`;
-            barra.setAttribute('aria-valuenow', dados.percent);
+<!--            // Atualiza a largura, o texto interno e o atributo de acessibilidade-->
+<!--            barra.style.width = `${dados.percent}%`;-->
+<!--            barra.innerText = `${dados.percent}%`;-->
+<!--            barra.setAttribute('aria-valuenow', dados.percent);-->
 
-            // Atualiza o texto do status (ex: "Processando...", "Concluído")
-            statusTexto.innerText = dados.status;
+<!--            // Atualiza o texto do status (ex: "Processando...", "Concluído")-->
+<!--            statusTexto.innerText = dados.status;-->
 
-            // Verifica se terminou
-            if (dados.percent === 100 || dados.status === 'Concluído') {
-                clearInterval(intervalo);
+<!--            // Verifica se terminou-->
+<!--            if (dados.percent === 100 || dados.status === 'Concluído') {-->
+<!--                clearInterval(intervalo);-->
 
-                // Remove a animação de listras para indicar finalização estática
-                barra.classList.remove('progress-bar-striped', 'progress-bar-animated');
-                statusTexto.innerHTML = '<span class="text-success">✔ Processo concluído com sucesso!</span>';
+<!--                // Remove a animação de listras para indicar finalização estática-->
+<!--                barra.classList.remove('progress-bar-striped', 'progress-bar-animated');-->
+<!--                statusTexto.innerHTML = '<span class="text-success">✔ Processo concluído com sucesso!</span>';-->
 
-                // Opcional: reativa o botão após alguns segundos
-                setTimeout(() => {
-                    btn.disabled = false;
-                    btn.innerText = "Iniciar Novo Processamento";
-                }, 2000);
-            }
-        } catch (error) {
-            clearInterval(intervalo);
-            statusTexto.innerHTML = '<span class="text-danger">❌ Erro ao consultar o progresso.</span>';
-        }
-    }, 2000); // Consulta a cada 2 segundos
-}
+<!--                // Opcional: reativa o botão após alguns segundos-->
+<!--                setTimeout(() => {-->
+<!--                    btn.disabled = false;-->
+<!--                    btn.innerText = "Iniciar Novo Processamento";-->
+<!--                }, 2000);-->
+<!--            }-->
+<!--        } catch (error) {-->
+<!--            clearInterval(intervalo);-->
+<!--            statusTexto.innerHTML = '<span class="text-danger">❌ Erro ao consultar o progresso.</span>';-->
+<!--        }-->
+<!--    }, 2000); // Consulta a cada 2 segundos-->
+<!--}-->
 
 
 </script>

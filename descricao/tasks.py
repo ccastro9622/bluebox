@@ -2,6 +2,7 @@ import pandas as pd
 from background_task import background
 import requests
 import json
+import time
 
 from admin_descricao.models import Niveis
 from admin_geral.models import Sector, Plans
@@ -52,6 +53,7 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
 
         # Cria instâncias do modelo
         for index, row in df.iterrows():
+            time.sleep(2)
 
             diretoria = Diretoria.objects.get(name=row['Area'], tenant_id=tenant_id)
             id_diretoria = diretoria.id
