@@ -197,7 +197,6 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             progresso_obj.progresso = percentual
             progresso_obj.status = f"Processando {i + 1} de {quantidade_linhas}"
             progresso_obj.save()
-
             i += 1
 
 
