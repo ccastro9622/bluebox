@@ -193,10 +193,10 @@ def processar_planilha_task(file_path,last_id, sector_name, sector_id, tenant_id
             created.save(force_insert=True)
 
             percentual = int(((i + 1) / quantidade_linhas) * 100)
-            if percentual > progresso_obj.progresso:
-                progresso_obj.progresso = percentual
-                progresso_obj.status = f"Processando {i + 1} de {quantidade_linhas}"
-                progresso_obj.save()
+            # if percentual > progresso_obj.progresso:
+            progresso_obj.progresso = percentual
+            progresso_obj.status = f"Processando {i + 1} de {quantidade_linhas}"
+            progresso_obj.save()
 
             i += 1
 
