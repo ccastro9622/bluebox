@@ -97,3 +97,4 @@ class ProgressoTarefa(models.Model):
     tarefa_id = models.CharField(max_length=100, unique=True)
     progresso = models.IntegerField(default=0) # 0 a 100
     status = models.CharField(max_length=50, default="Pendente")
+    # updated_at = models.DateTimeField(auto_now=True)

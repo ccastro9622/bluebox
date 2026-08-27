@@ -29,11 +29,31 @@
             <img src='https://i.sstatic.net/fLkAW.gif' alt=''/>
         </div>
         <br>
-        <button onclick="CarregaIA()" type="submit" class="btn btn-primary">Importar</button>
+        <button id="btn-iniciar" onclick="dispararTask()" type="submit" class="btn btn-primary">Importar</button>
+
+<!--        &lt;!&ndash; Botão para disparar a ação &ndash;&gt;-->
+<!--        <button id="btn-iniciar" class="btn btn-primary mb-4" onclick="dispararTask()">-->
+<!--            Importar-->
+<!--        </button>-->
+
         <a href="{% url 'descricao:descricao-list' %}"><button type="button" class="btn btn-secondary">Cancelar</button></a>
          <br>
          <br>
-        <div id="status-container">Progresso: <span id="barra-progresso">0%</span></div>
+<!--        <div id="status-container">Progresso: <span id="barra-progresso">0%</span></div>-->
+ <!-- Container da barra (escondido inicialmente) -->
+        <div id="container-progresso" class="d-none">
+            <div class="progress mb-2" style="height: 25px; width: 500px;">
+                <div id="barra-progresso"
+                     class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                     role="progressbar"
+                     style="width: 0%;"
+                     aria-valuenow="0"
+                     aria-valuemin="0"
+                     aria-valuemax="100">0%</div>
+            </div>
+            <!-- Texto auxiliar para o status -->
+            <small id="status-texto" class="text-muted">Aguardando...</small>
+        </div>
     </form>
 
 </div>
@@ -43,43 +63,80 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
 
-    function CarregaIA() {
-        var loading = $('.loading');
-        loading.css('visibility', 'visible'); // exibe o div
+function dispararTask() {
+    var loading = $('.loading');
+    loading.css('visibility', 'visible'); // exibe o div
+    alert('Vai chamar o monitor')
+    monitorarProgresso(1);
+}
 
-    }
+<!--async function dispararTask() {-->
+<!--    const btn = document.getElementById('btn-iniciar');-->
+<!--    const container = document.getElementById('container-progresso');-->
 
-<!--    const taskId = "1";-->
+<!--    // Desativa o botão para evitar múltiplos cliques-->
+<!--    btn.disabled = true;-->
+<!--    btn.innerText = "Processando...";-->
 
-<!--    const interval = setInterval(async () => {-->
-<!--        const response = await fetch(`/progress/${taskId}/`);-->
-<!--        const data = await response.json();-->
+<!--    // Mostra o container da barra-->
+<!--    container.classList.remove('d-none');-->
 
-<!--        console.log(`Progresso: ${data.percentage}%`);-->
+<!--    try {-->
+<!--        // 1. Chama a sua view que inicia a task-->
+<!--        alert('Vai chamar a tarefa');-->
+<!--        const response = await fetch('/iniciar-task/');-->
+<!--        alert('Chamou a tarefa');-->
+<!--        const dados = await response.json();-->
+<!--        alert('retornou a tarefa');-->
 
-<!--        // Atualize a barra de progresso no seu HTML-->
-<!--        document.getElementById('barra-progresso').style.width = `${data.percentage}%`;-->
-<!--        document.getElementById('barra-progresso').textContent = `${data.percentage}%`;-->
+<!--        // 2. Começa o monitoramento usando o ID retornado-->
+<!--        monitorarProgresso(1);-->
+<!--    } catch (error) {-->
+<!--        alert(error + 'Erro ao iniciar a tarefa.');-->
+<!--        btn.disabled = false;-->
+<!--    }-->
+<!--}-->
 
-<!--        if (data.status === 'Concluido') {-->
-<!--            clearInterval(interval);-->
-<!--            alert('Tarefa finalizada!');-->
-<!--        }-->
-<!--    }, 1000);-->
+function monitorarProgresso(progressId) {
+    const barra = document.getElementById('barra-progresso');
+    const statusTexto = document.getElementById('status-texto');
+    const btn = document.getElementById('btn-iniciar');
 
+    const intervalo = setInterval(async () => {
+        try {
+            // Consulta o endpoint de progresso
+            const response = await fetch(`/verificar_progresso/${progressId}/`);
+            const dados = await response.json();
 
-<!--    const tarefaId = "1"; // Identificador único da tarefa-->
-<!--    const intervalo = setInterval(() => {-->
-<!--        fetch('/progress/${tarefaId}/')-->
-<!--            .then(response => response.json())-->
-<!--            .then(data => {-->
-<!--                document.getElementById('barra-progresso').innerText = ${data.progresso}% - ${data.status};-->
+            // Atualiza a largura, o texto interno e o atributo de acessibilidade
+            barra.style.width = `${dados.percent}%`;
+            barra.innerText = `${dados.percent}%`;
+            barra.setAttribute('aria-valuenow', dados.percent);
 
-<!--                if (data.progresso >= 100) {-->
-<!--                    clearInterval(intervalo);-->
-<!--                }-->
-<!--            });-->
-<!--    }, 2000); // Checa o servidor a cada 2 segundos-->
+            // Atualiza o texto do status (ex: "Processando...", "Concluído")
+            statusTexto.innerText = dados.status;
+
+            // Verifica se terminou
+            if (dados.percent === 100 || dados.status === 'Concluído') {
+                clearInterval(intervalo);
+
+                // Remove a animação de listras para indicar finalização estática
+                barra.classList.remove('progress-bar-striped', 'progress-bar-animated');
+                statusTexto.innerHTML = '<span class="text-success">✔ Processo concluído com sucesso!</span>';
+
+                // Opcional: reativa o botão após alguns segundos
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerText = "Iniciar Novo Processamento";
+                }, 2000);
+            }
+        } catch (error) {
+            clearInterval(intervalo);
+            statusTexto.innerHTML = '<span class="text-danger">❌ Erro ao consultar o progresso.</span>';
+        }
+    }, 2000); // Consulta a cada 2 segundos
+}
+
 
 </script>
 

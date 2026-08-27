@@ -17,13 +17,13 @@ from report.mixins import PdfResponseMixin
 from user_account.models import CustomUser
 from .forms import DescricaoForm, DescricaoModeloForm, DescricaoAprovadorForm, DescricaoAprovacaoForm, \
     DescricaoAprovacaoFinalForm, ImportarDadosForm
-from .models import Descricao
+from .models import Descricao, ProgressoTarefa
 from admin_avaliacao.models import Familias, SubFamilias
 from admin_descricao.models import Descricoes
 
 from django.db.models import Q
 
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models, forms
 from descricao.enviaremail import enviodeemail
@@ -760,7 +760,7 @@ class ImportarDadosView(View):
 
     def post(self, request):
         form = ImportarDadosForm(request.POST, request.FILES)
-
+        print('Entrou na view')
         if form.is_valid():
             arquivo = request.FILES['arquivo']
             df = pd.read_excel(arquivo)
@@ -844,6 +844,7 @@ class ImportarDadosView(View):
             # return redirect('/descricao/descricao_list')
 
         return render(request, self.template_name, {'form': form})
+        # return JsonResponse({'progress_id': 1}) #progresso.id})
 
     def validar_dados(self, row, tenant_id, numrow, msn, form):
         id_diretoria = 0
@@ -1042,14 +1043,24 @@ def plano_contratado(request):
     return render(request, 'descricao/plano_contratado.html', {'planos': planos})
 
 
-
-
-# def verificar_progresso(request, tarefa_id):
+#
+# def checar_progresso(request, progress_id):
 #     try:
-#         tarefa = ProgressoTarefa.objects.get(tarefa_id=tarefa_id)
-#         return JsonResponse({'progresso': tarefa.progresso, 'status': tarefa.status})
-#     except ProgressoTarefa.DoesNotExist:
-#         return JsonResponse({'progresso': 0, 'status': 'Aguardando início...'})
+#         progresso = TaskProgress.objects.get(id=progress_id)
+#         return JsonResponse({
+#             'percent': progresso.percent,
+#             'status': progresso.status
+#         })
+#     except TaskProgress.DoesNotExist:
+#         return JsonResponse({'error': 'Task não encontrada'}, status=404)
+
+
+def verificar_progresso(request, tarefa_id):
+    try:
+        tarefa = ProgressoTarefa.objects.get(tarefa_id=tarefa_id)
+        return JsonResponse({'progresso': tarefa.progresso, 'status': tarefa.status})
+    except ProgressoTarefa.DoesNotExist:
+        return JsonResponse({'progresso': 0, 'status': 'Aguardando início...'})
 
 
 # def verificar_progresso(request, task_id):

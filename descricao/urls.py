@@ -40,4 +40,12 @@ urlpatterns = [
     path('ajax/load-ia/', load_ia, name='ajax_load_ia'),
     path('ajax/plano_contratado/', plano_contratado, name='ajax_plano_contratado'),
     # path('progress/<str:task_id>/', verificar_progresso, name='task_progress'),
+
+    # Endpoint que o fetch chama para disparar a task em background
+    path('importar_dados/iniciar-task/', ImportarDadosView.as_view(), name='iniciar_task'),
+
+    # Endpoint que o fetch consulta de 2 em 2 segundos para ler o percentual
+    # O <int:progress_id> garante que o Django capture o ID como um número inteiro
+    path('verificar_progresso/<int:progress_id>/', verificar_progresso, name='verificar_progresso'),
+
 ]
